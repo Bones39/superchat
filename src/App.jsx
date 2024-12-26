@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createUserWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
 import './App.css'
 
-import firebase from 'firebase/compat/app'
-import { Firestore } from 'firebase/firestore'
-import { auth, googleProvider } from './firebaseConfig'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { auth, googleProvider, firestoreDb } from './firebaseConfig'
+import { getDocs, collection, onSnapshot } from 'firebase/firestore';
 
 function App() {
 
@@ -39,8 +39,36 @@ function App() {
 		}
 	}
 
-	console.log(auth?.currentUser?.email);
-	
+	// ------- related to chatroom -------
+	// get the messages collection
+	const messagesRef = collection(firestoreDb, 'messages');
+	const [messages, setMessages] = useState([]);
+	// const query = messagesRef.orderBy('createdAt').limit(25);
+
+	// const [messages] = useCollectionData();
+
+	useEffect(() => {
+		/* const getMessages = async () => {
+			try {
+				const dataSnapshot = await getDocs(messagesRef);
+				const filterData = dataSnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
+				setMessages(filterData);
+				console.log(filterData);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+
+		getMessages(); */
+
+		const unsub = onSnapshot(messagesRef, (dataSnapshot) => {
+			const filterData = dataSnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
+			setMessages(filterData);
+			console.log(filterData);
+		});
+
+	}, [])
+
   return (
 	<>
 		{
@@ -48,6 +76,8 @@ function App() {
 			<div>
 				authentified as {auth?.currentUser?.email}
 				<button onClick={logout}>Disconnect</button>
+				{/* // chat room */}
+				{messages && messages.map(message => <div key={message.id}>{message.text}</div>)}
 			</div> :
 			<div>
 				<input type="text" placeholder='Email'/>
