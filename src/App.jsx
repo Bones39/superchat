@@ -1,33 +1,62 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { createUserWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+import firebase from 'firebase/compat/app'
+import { Firestore } from 'firebase/firestore'
+import { auth, googleProvider } from './firebaseConfig'
 
+function App() {
+
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+
+	const signIn = async () => {
+		try {
+			await createUserWithEmailAndPassword(auth, email, password);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	const signInWithGoogle = async () => {
+		try {
+			await signInWithPopup(auth, googleProvider);
+			setEmail(auth?.currentUser?.email);
+			console.log(auth?.currentUser?.email);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	const logout = async () => {
+		try {
+			await signOut(auth);
+			setEmail("");
+			console.log(auth?.currentUser?.email);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	console.log(auth?.currentUser?.email);
+	
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+	<>
+		{
+			auth?.currentUser?
+			<div>
+				authentified as {auth?.currentUser?.email}
+				<button onClick={logout}>Disconnect</button>
+			</div> :
+			<div>
+				<input type="text" placeholder='Email'/>
+				<input type="password" placeholder='password'/>
+				<button onClick={signIn}>Sign In</button>
+				<button onClick={signInWithGoogle}>Sign In with Google</button>
+			</div>
+		}
+	</>
   )
 }
 
