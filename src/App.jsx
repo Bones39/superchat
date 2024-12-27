@@ -43,24 +43,8 @@ function App() {
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
 	const [messages, setMessages] = useState([]);
-	// const query = messagesRef.orderBy('createdAt').limit(25);
-
-	// const [messages] = useCollectionData();
 
 	useEffect(() => {
-		/* const getMessages = async () => {
-			try {
-				const dataSnapshot = await getDocs(messagesRef);
-				const filterData = dataSnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
-				setMessages(filterData);
-				console.log(filterData);
-			} catch (error) {
-				console.log(error);
-			}
-		}
-
-		getMessages(); */
-
 		const unsub = onSnapshot(messagesRef, (dataSnapshot) => {
 			const filterData = dataSnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 			setMessages(filterData);
@@ -72,13 +56,16 @@ function App() {
   return (
 	<>
 		{
+			// component chat room
 			auth?.currentUser?
 			<div>
-				authentified as {auth?.currentUser?.email}
+				authentified as {auth?.currentUser?.email}<br />
+				user ID: {auth?.currentUser?.uid}
 				<button onClick={logout}>Disconnect</button>
 				{/* // chat room */}
-				{messages && messages.map(message => <div key={message.id}>{message.text}</div>)}
+				{messages && messages.map(message => <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>)}
 			</div> :
+			// component authentification page
 			<div>
 				<input type="text" placeholder='Email'/>
 				<input type="password" placeholder='password'/>
