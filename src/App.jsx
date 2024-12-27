@@ -4,12 +4,16 @@ import './App.css'
 
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { auth, googleProvider, firestoreDb } from './firebaseConfig'
-import { getDocs, collection, onSnapshot } from 'firebase/firestore';
+import { getDocs, collection, onSnapshot, addDoc } from 'firebase/firestore';
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/firestore';
+
 
 function App() {
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [formValue, setFormValue] = useState("");
 
 	const signIn = async () => {
 		try {
@@ -44,6 +48,18 @@ function App() {
 	const messagesRef = collection(firestoreDb, 'messages');
 	const [messages, setMessages] = useState([]);
 
+	const sendMessage = async (e) => {
+		e.preventDefault();
+
+		const {uid} = auth.currentUser;
+
+		await addDoc(messagesRef, {
+			text: formValue,
+			uid,
+			createdAt: firebase.firestore.FieldValue.serverTimestamp()
+		})
+	}
+
 	useEffect(() => {
 		const unsub = onSnapshot(messagesRef, (dataSnapshot) => {
 			const filterData = dataSnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
@@ -64,6 +80,11 @@ function App() {
 				<button onClick={logout}>Disconnect</button>
 				{/* // chat room */}
 				{messages && messages.map(message => <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>)}
+				{/* // form component */}
+				<form onSubmit={sendMessage}>
+					<input type="text" value={formValue} onChange={(e)=>setFormValue(e.target.value)}/>
+					<button type='submit'>SEND</button>
+				</form>
 			</div> :
 			// component authentification page
 			<div>
