@@ -58,7 +58,10 @@ function App() {
 			text: formValue,
 			uid,
 			createdAt: firebase.firestore.FieldValue.serverTimestamp()
-		})
+		});
+
+		// reset the value in the input field once sent
+		setFormValue("");
 	}
 
 	useEffect(() => {
