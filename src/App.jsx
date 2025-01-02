@@ -7,6 +7,7 @@ import { auth, googleProvider, firestoreDb } from './firebaseConfig'
 import { getDocs, collection, onSnapshot, addDoc, query, orderBy } from 'firebase/firestore';
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore';
+import { useAuth } from './context'
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [formValue, setFormValue] = useState("");
+	const { userIsLoggedIn } = useAuth();
 
 	const signIn = async () => {
 		try {
@@ -77,7 +79,7 @@ function App() {
 	<>
 		{
 			// component chat room
-			auth?.currentUser?
+			userIsLoggedIn?
 			<div>
 				authentified as {auth?.currentUser?.email}<br />
 				user ID: {auth?.currentUser?.uid}
