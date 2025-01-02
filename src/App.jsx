@@ -4,7 +4,7 @@ import './App.css'
 
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { auth, googleProvider, firestoreDb } from './firebaseConfig'
-import { getDocs, collection, onSnapshot, addDoc } from 'firebase/firestore';
+import { getDocs, collection, onSnapshot, addDoc, query, orderBy } from 'firebase/firestore';
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore';
 
@@ -46,6 +46,7 @@ function App() {
 	// ------- related to chatroom -------
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
+	const messageQuery = query(messagesRef, orderBy("createdAt"));
 	const [messages, setMessages] = useState([]);
 
 	const sendMessage = async (e) => {
@@ -61,11 +62,11 @@ function App() {
 	}
 
 	useEffect(() => {
-		const unsub = onSnapshot(messagesRef, (dataSnapshot) => {
-			const filterData = dataSnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
-			setMessages(filterData);
-			console.log(filterData);
-		});
+		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
+				const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
+				setMessages(filterData);
+				console.log(filterData);
+			});
 
 	}, [])
 
