@@ -48,7 +48,7 @@ function App() {
 	// ------- related to chatroom -------
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
-	const messageQuery = query(messagesRef, orderBy("createdAt"), limit(25));
+	const messageQuery = query(messagesRef, orderBy("createdAt"));
 	const [messages, setMessages] = useState([]);
 
 	const sendMessage = async (e) => {
