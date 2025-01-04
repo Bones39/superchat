@@ -4,7 +4,7 @@ import './App.css'
 
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { auth, googleProvider, firestoreDb } from './firebaseConfig'
-import { getDocs, collection, onSnapshot, addDoc, query, orderBy } from 'firebase/firestore';
+import { getDocs, collection, onSnapshot, addDoc, query, orderBy, limit } from 'firebase/firestore';
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore';
 import { useAuth } from './context'
@@ -48,7 +48,7 @@ function App() {
 	// ------- related to chatroom -------
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
-	const messageQuery = query(messagesRef, orderBy("createdAt"));
+	const messageQuery = query(messagesRef, orderBy("createdAt"), limit(25));
 	const [messages, setMessages] = useState([]);
 
 	const sendMessage = async (e) => {
@@ -84,8 +84,10 @@ function App() {
 				authentified as {auth?.currentUser?.email}<br />
 				user ID: {auth?.currentUser?.uid}
 				<button onClick={logout}>Disconnect</button>
-				{/* // chat room */}
-				{messages && messages.map(message => <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>)}
+				<div className="chatroom">
+					{/* // chat room */}
+					{messages && messages.map(message => <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>)}
+				</div>
 				{/* // form component */}
 				<form onSubmit={sendMessage}>
 					<input type="text" value={formValue} onChange={(e)=>setFormValue(e.target.value)}/>
