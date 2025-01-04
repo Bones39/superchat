@@ -89,7 +89,7 @@ function App() {
 					{messages && messages.map(message => <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>)}
 				</div>
 				{/* // form component */}
-				<form onSubmit={sendMessage}>
+				<form className='messageInput' onSubmit={sendMessage}>
 					<input type="text" value={formValue} onChange={(e)=>setFormValue(e.target.value)}/>
 					<button type='submit'>SEND</button>
 				</form>
