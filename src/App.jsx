@@ -76,7 +76,7 @@ function App() {
 	}, [])
 
   return (
-	<>
+	<main>
 		{
 			// component chat room
 			userIsLoggedIn?
@@ -102,7 +102,7 @@ function App() {
 				<button onClick={signInWithGoogle}>Sign In with Google</button>
 			</div>
 		}
-	</>
+	</main>
   )
 }
 

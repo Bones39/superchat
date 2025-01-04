@@ -1,9 +1,38 @@
 #root {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem;
-  /* text-align: center; */
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 2rem;
+	/* background-color: aqua; */
+	/* text-align: center; */
 }
+
+body {
+	margin: 0;
+	display: flex;
+	place-items: center;
+	min-width: 320px;
+	min-height: 100vh;
+  }
+
+  button {
+	border-radius: 8px;
+	border: 1px solid transparent;
+	padding: 0.6em 1.2em;
+	font-size: 1em;
+	font-weight: 500;
+	font-family: inherit;
+	margin: 0 5px;
+	/* background-color: #1a1a1a; */
+	cursor: pointer;
+	transition: border-color 0.25s;
+  }
+  button:hover {
+	border-color: #646cff;
+  }
+  button:focus,
+  button:focus-visible {
+	outline: 4px auto -webkit-focus-ring-color;
+  }
 
 .chatroom {
 	width: 500px;
@@ -20,6 +49,7 @@
 
 input {
 	width: 100%;
+	border-radius: 10px;
 }
 
 .sent {
