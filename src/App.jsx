@@ -48,7 +48,7 @@ function App() {
 	// ------- related to chatroom -------
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
-	const messageQuery = query(messagesRef, orderBy("createdAt"));
+	const messageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(25));
 	const [messages, setMessages] = useState([]);
 
 	const sendMessage = async (e) => {
@@ -69,7 +69,7 @@ function App() {
 	useEffect(() => {
 		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
 				const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
-				setMessages(filterData);
+				setMessages(filterData.reverse());
 				console.log(filterData);
 			});
 
