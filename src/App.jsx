@@ -70,7 +70,7 @@ function App() {
 		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
 				const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 				setMessages(filterData.reverse());
-				console.log(filterData);
+				// console.log(filterData);
 			});
 
 	}, [])
@@ -86,7 +86,22 @@ function App() {
 				<button onClick={logout}>Disconnect</button>
 				<div className="chatroom">
 					{/* // chat room */}
-					{messages && messages.map(message => <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>)}
+					{messages && messages.map((message, index) =>
+						index !== 0 && messages[index-1].uid !== message.uid && message.uid !== auth.currentUser.uid?
+						// add a div containing the user if the message is a new message -> put this in a new component!!
+							<>
+								<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`}>Am</div>
+								<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
+							</>
+						:
+						index === 0 && message.uid !== auth.currentUser.uid?
+							<>
+								<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`}>Am</div>
+								<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
+							</>
+						:
+						<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
+					)}
 				</div>
 				{/* // form component */}
 				<form className='messageInput' onSubmit={sendMessage}>
