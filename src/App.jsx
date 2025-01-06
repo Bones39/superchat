@@ -61,6 +61,8 @@ function App() {
 			text: formValue,
 			uid,
 			allias: currentUser.email.substring(0,2),
+			// take the first to number in the ui
+			photoId: currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2),
 			createdAt: firebase.firestore.FieldValue.serverTimestamp()
 		});
 
@@ -92,7 +94,7 @@ function App() {
 						index !== 0 && messages[index-1].uid !== message.uid && message.uid !== auth.currentUser.uid?
 						// add a div containing the user if the message is a new message -> put this in a new component!!
 							<div key={message.id + 'div'}>
-								<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'}>{message.allias}</div>
+								<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${message.photoId}.jpg")`}}>{message.allias}</div>
 								<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
 							</div>
 						:
