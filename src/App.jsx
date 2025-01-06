@@ -15,7 +15,7 @@ function App() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [formValue, setFormValue] = useState("");
-	const { userIsLoggedIn } = useAuth();
+	const { userIsLoggedIn, currentUser } = useAuth();
 
 	const signIn = async () => {
 		try {
@@ -48,6 +48,7 @@ function App() {
 	// ------- related to chatroom -------
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
+	const userRef = collection(firestoreDb, 'Users')
 	const messageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(25));
 	const [messages, setMessages] = useState([]);
 
@@ -59,6 +60,7 @@ function App() {
 		await addDoc(messagesRef, {
 			text: formValue,
 			uid,
+			allias: currentUser.email.substring(0,2),
 			createdAt: firebase.firestore.FieldValue.serverTimestamp()
 		});
 
@@ -89,16 +91,16 @@ function App() {
 					{messages && messages.map((message, index) =>
 						index !== 0 && messages[index-1].uid !== message.uid && message.uid !== auth.currentUser.uid?
 						// add a div containing the user if the message is a new message -> put this in a new component!!
-							<>
-								<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`}>Am</div>
+							<div key={message.id + 'div'}>
+								<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'}>{message.allias}</div>
 								<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
-							</>
+							</div>
 						:
 						index === 0 && message.uid !== auth.currentUser.uid?
-							<>
-								<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`}>Am</div>
+							<div key={message.id + 'div2'}>
+								<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`}>{message.allias}</div>
 								<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
-							</>
+							</div>
 						:
 						<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
 					)}

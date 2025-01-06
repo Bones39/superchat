@@ -74,8 +74,8 @@ input {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 30px;
-	height: 30px;
+	width: 13px;
+	height: 13px;
 	border-radius: 50%;
 	background-color: aqua;
 }
