@@ -72,13 +72,12 @@ input {
 
 .userTag {
 	display: flex;
-	color: azure;
+	color: white;
 	justify-content: center;
 	align-items: center;
 	width: 13px;
 	height: 13px;
 	border-radius: 50%;
-	/* background-color: aqua; */
-	/* background-image: url("https://randomuser.me/api/portraits/men/12.jpg"); */
-	object-fit: cover;
+	border: solid #646cff 2px;
+	margin-bottom: 2px;
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createUserWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
 import './App.css'
 
@@ -16,6 +16,8 @@ function App() {
 	const [password, setPassword] = useState("");
 	const [formValue, setFormValue] = useState("");
 	const { userIsLoggedIn, currentUser } = useAuth();
+
+	const dummy = useRef();
 
 	const signIn = async () => {
 		try {
@@ -60,7 +62,7 @@ function App() {
 		await addDoc(messagesRef, {
 			text: formValue,
 			uid,
-			allias: currentUser.email.substring(0,2),
+			allias: currentUser.email.substring(0,3),
 			// take the first to number in the ui
 			photoId: currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2),
 			createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -68,15 +70,16 @@ function App() {
 
 		// reset the value in the input field once sent
 		setFormValue("");
+
+		// dummy.current.scrollIntoView();
 	}
 
 	useEffect(() => {
 		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
-				const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
-				setMessages(filterData.reverse());
-				// console.log(filterData);
-			});
-
+			const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
+			setMessages(filterData.reverse());
+			// console.log(filterData);
+		});
 	}, [])
 
   return (
@@ -106,6 +109,7 @@ function App() {
 						:
 						<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
 					)}
+					<div ref={dummy}></div>
 				</div>
 				{/* // form component */}
 				<form className='messageInput' onSubmit={sendMessage}>
