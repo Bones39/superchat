@@ -83,5 +83,11 @@ input {
 }
 
 .signIn {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	row-gap: 20px;
 	width: 400px;
+	height: 540px;
+	/* box-shadow: -1rem 0 1rem #555555; */
 }
