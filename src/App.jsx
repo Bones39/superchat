@@ -8,6 +8,7 @@ import { getDocs, collection, onSnapshot, addDoc, query, orderBy, limit } from '
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore';
 import { useAuth } from './context'
+import LogIn from './components/LogIn'
 
 
 function App() {
@@ -109,6 +110,7 @@ function App() {
 						:
 						<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
 					)}
+					<LogIn messages={messages}></LogIn>
 					<div ref={dummy}></div>
 				</div>
 				{/* // form component */}
@@ -119,10 +121,11 @@ function App() {
 			</div> :
 			// component authentification page
 			<div>
-				<input type="text" placeholder='Email'/>
+				<LogIn signIn={signIn} signInWithGoogle={signInWithGoogle}></LogIn>
+				{/* <input type="text" placeholder='Email'/>
 				<input type="password" placeholder='password'/>
 				<button onClick={signIn}>Sign In</button>
-				<button onClick={signInWithGoogle}>Sign In with Google</button>
+				<button onClick={signInWithGoogle}>Sign In with Google</button> */}
 			</div>
 		}
 	</main>

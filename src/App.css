@@ -81,3 +81,7 @@ input {
 	border: solid #646cff 2px;
 	margin-bottom: 2px;
 }
+
+.signIn {
+	width: 400px;
+}
