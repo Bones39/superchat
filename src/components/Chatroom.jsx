@@ -1,6 +1,6 @@
 import { auth } from '../firebaseConfig'
 
-const Chatroom = ({messages, formValue, sendMessage, setFormValue, dummyRef}) => {
+const Chatroom = ({messages, formValue, sendMessage, setFormValue, dummy}) => {
 	return(
 		<>
 			<div className="chatroom">
@@ -21,7 +21,7 @@ const Chatroom = ({messages, formValue, sendMessage, setFormValue, dummyRef}) =>
 					:
 					<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
 				)}
-				<div ref={dummyRef}></div>
+				<div ref={dummy}></div>
 			</div>
 			<form className='messageInput' onSubmit={sendMessage}>
 				<input type="text" value={formValue} onChange={(e)=>setFormValue(e.target.value)}/>

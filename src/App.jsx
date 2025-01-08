@@ -75,6 +75,14 @@ function App() {
 		// dummy.current.scrollIntoView();
 	}
 
+	const Props = {
+		messages,
+		dummy,
+		sendMessage,
+		formValue,
+		setFormValue
+	}
+
 	useEffect(() => {
 		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
 			const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
