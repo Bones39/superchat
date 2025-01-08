@@ -2,8 +2,6 @@
 	max-width: 900px;
 	margin: 0 auto;
 	padding: 2rem;
-	/* background-color: aqua; */
-	/* text-align: center; */
 }
 
 body {
@@ -11,7 +9,7 @@ body {
 	display: flex;
 	place-items: center;
 	min-width: 320px;
-	min-height: 100vh;
+	/* min-height: 100vh; */
   }
 
   button {
@@ -22,7 +20,6 @@ body {
 	font-weight: 500;
 	font-family: inherit;
 	margin: 0 5px;
-	/* background-color: #1a1a1a; */
 	cursor: pointer;
 	transition: border-color 0.25s;
   }
@@ -42,6 +39,7 @@ body {
 }
 
 .messageInput {
+	/** display flex bind the height of the input to the height of the button */
 	display: flex;
 	width: 500px;
 	margin-top: 10px;
@@ -50,6 +48,11 @@ body {
 input {
 	width: 100%;
 	border-radius: 10px;
+}
+
+.signInInput {
+	width: 80%;
+	height: 38px;
 }
 
 .sent {
@@ -85,9 +88,12 @@ input {
 .signIn {
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	flex-direction: column;
+	border-radius: 10px;
 	row-gap: 20px;
-	width: 400px;
+	width: 480px;
 	height: 540px;
-	/* box-shadow: -1rem 0 1rem #555555; */
+	/* background-size: cover; */
+	background-image: url("./assets/signIn_cat_image.jpeg");
 }
