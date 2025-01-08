@@ -75,7 +75,7 @@ function App() {
 		// dummy.current.scrollIntoView();
 	}
 
-	const Props = {
+	const props = {
 		messages,
 		dummy,
 		sendMessage,
@@ -101,7 +101,7 @@ function App() {
 				user ID: {auth?.currentUser?.uid}
 				<button onClick={logout}>Disconnect</button>
 				{/* Mettre les props dans un objet unique */}
-				<Chatroom messages={messages} dummyRef={dummy} sendMessage={sendMessage} formValue={formValue} setFormValue={setFormValue}></Chatroom>
+				<Chatroom props={props} ></Chatroom>
 			</div>
 			:
 			// component authentification page

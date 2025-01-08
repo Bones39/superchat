@@ -1,6 +1,8 @@
 import { auth } from '../firebaseConfig'
 
-const Chatroom = ({messages, formValue, sendMessage, setFormValue, dummy}) => {
+const Chatroom = ({props}) => {
+	const {messages, formValue, sendMessage, setFormValue, dummy} = props;
+
 	return(
 		<>
 			<div className="chatroom">
