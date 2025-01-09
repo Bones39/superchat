@@ -13,20 +13,27 @@ const Chatroom = ({props}) => {
 							|| (index === 0 && message.uid !== auth.currentUser.uid);
 						// display the picture above the message if the first message is not from the current user or if a message comes after a message which is not his
 						if (bDisplayUserPicture) {
-							return(
-								<div key={message.id + 'div'}>
+							return (
+								<div key={message.id + "div"}>
 									<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${message.photoId}.jpg")`}}>{message.allias}</div>
 									<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
+									<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id + "timeStamp"}>{message.createdAt}</div>
 								</div>
 							)
 						} else {
-							return <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>;
+							return (
+								<div key={message.id + "div"}>
+									<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
+									<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id + "timeStamp"}>{message.createdAt}</div>
+								</div>
+							)
 						}
 					}
 					
 				)}
 				<div ref={dummy}></div>
 			</div>
+			{/** display the form*/}
 			<form className='messageInput' onSubmit={sendMessage}>
 				<input type="text" value={formValue} onChange={(e)=>setFormValue(e.target.value)}/>
 				<button type='submit'>SEND</button>
