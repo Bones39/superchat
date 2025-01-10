@@ -49,6 +49,7 @@ function App() {
 	}
 
 	// ------- related to chatroom -------
+	// test changing author
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
 	const userRef = collection(firestoreDb, 'Users')
