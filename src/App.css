@@ -56,6 +56,8 @@ input {
 }
 
 .sent {
+	display: flex;
+	flex-direction: column;
 	background-color: rgb(119, 173, 243);
 	align-self: end;
 	/* text-align: right; */
@@ -96,4 +98,11 @@ input {
 	height: 540px;
 	/* background-size: cover; */
 	background-image: url("./assets/signIn_cat_image.jpeg");
+}
+
+.timeStamp {
+	margin-top: 6px;
+	/* align-self: end; */
+	/* justify-self: end; */
+	font-size: 0.55em;
 }
