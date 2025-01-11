@@ -12,20 +12,21 @@ const Chatroom = ({props}) => {
 						let bDisplayUserPicture = (index !== 0 && messages[index-1].uid !== message.uid && message.uid !== auth.currentUser.uid)
 							|| (index === 0 && message.uid !== auth.currentUser.uid);
 						// display the picture above the message if the first message is not from the current user or if a message comes after a message which is not his
+						console.log(bDisplayUserPicture);
 						if (bDisplayUserPicture) {
 							return (
-								<div key={message.id + "div"}>
+								<>
 									<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${message.photoId}.jpg")`}}>{message.allias}</div>
 									<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
-									<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id + "timeStamp"}>{message.createdAt}</div>
-								</div>
+									{/* <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id + "timeStamp"}>{message.createdAt}</div> */}
+								</>
 							)
 						} else {
 							return (
-								<div key={message.id + "div"}>
+								<>
 									<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
-									<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id + "timeStamp"}>{message.createdAt}</div>
-								</div>
+									{/* <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id + "timeStamp"}>{message.createdAt}</div> */}
+								</>
 							)
 						}
 					}
