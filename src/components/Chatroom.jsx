@@ -1,4 +1,5 @@
 import { auth } from '../firebaseConfig'
+import firebase from 'firebase/compat/app'
 
 const Chatroom = ({props}) => {
 	const {messages, formValue, sendMessage, setFormValue, dummy} = props;
@@ -11,7 +12,7 @@ const Chatroom = ({props}) => {
 					{
 						let bDisplayUserPicture = (index !== 0 && messages[index-1].uid !== message.uid && message.uid !== auth.currentUser.uid)
 							|| (index === 0 && message.uid !== auth.currentUser.uid);
-						const date = new Date(message.createdAt.seconds * 1000);
+						const date = new Date((message.createdAt?.seconds ? message.createdAt.seconds : firebase.firestore.FieldValue.serverTimestamp()) * 1000);
 						const formatedDate = `${date.toLocaleString()}`
 						// display the picture above the message if the first message is not from the current user or if a message comes after a message which is not his
 						if (bDisplayUserPicture) {
