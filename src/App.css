@@ -59,7 +59,7 @@ input {
 	display: flex;
 	flex-direction: column;
 	background-color: rgb(119, 173, 243);
-	align-self: end;
+	/* align-self: end; */
 	/* text-align: right; */
 	border-radius: 15px;
 	padding: 1rem;
@@ -101,8 +101,22 @@ input {
 }
 
 .timeStamp {
-	margin-top: 6px;
+	margin-top: 2px;
+	margin-bottom: 5px;
 	/* align-self: end; */
 	/* justify-self: end; */
 	font-size: 0.55em;
+	align-self: end;	
+}
+
+.left {
+	display: flex;
+	flex-direction: column;
+	align-self:flex-start;
+}
+
+.right {
+	display: flex;
+	flex-direction: column;
+	align-self: flex-end;
 }

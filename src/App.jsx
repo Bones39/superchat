@@ -59,21 +59,23 @@ function App() {
 	const sendMessage = async (e) => {
 		e.preventDefault();
 
-		const {uid} = auth.currentUser;
+		if (formValue !== "") {
+			const {uid} = auth.currentUser;
+	
+			await addDoc(messagesRef, {
+				text: formValue,
+				uid,
+				allias: currentUser.email.substring(0,3),
+				// take the first two number in the ui
+				photoId: currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2),
+				createdAt: firebase.firestore.FieldValue.serverTimestamp()
+			});
+	
+			// reset the value in the input field once sent
+			setFormValue("");
+			// dummy.current.scrollIntoView();
+		}
 
-		await addDoc(messagesRef, {
-			text: formValue,
-			uid,
-			allias: currentUser.email.substring(0,3),
-			// take the first to number in the ui
-			photoId: currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2),
-			createdAt: firebase.firestore.FieldValue.serverTimestamp()
-		});
-
-		// reset the value in the input field once sent
-		setFormValue("");
-
-		// dummy.current.scrollIntoView();
 	}
 
 	const props = {
