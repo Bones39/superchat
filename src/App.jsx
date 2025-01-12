@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth'
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 
@@ -9,6 +9,13 @@ import LogIn from './components/LogIn'
 import Chatroom from './components/chatroom'
 import { useAuth } from './context'
 import { auth, firestoreDb, googleProvider } from './firebaseConfig'
+
+// to do
+/* 
+- faire marcher le sign In
+    - tester en mettant un <Form>
+    - envoyer la valeur de password et mail dans la fonction signIn jusqu'à createUserWithEmailAndPassword (utiliser setPassword et setEmail)
+*/
 
 
 function App() {
@@ -22,7 +29,10 @@ function App() {
 
 	const signIn = async () => {
 		try {
+			setEmail(auth?.currentUser?.email);
+			setPassword(auth?.currentUser?.email);
 			await createUserWithEmailAndPassword(auth, email, password);
+			// await signInWithEmailAndPassword(auth, email, password);
 		} catch (error) {
 			console.log(error);
 		}
@@ -49,7 +59,6 @@ function App() {
 	}
 
 	// ------- related to chatroom -------
-	// test changing author
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
 	const userRef = collection(firestoreDb, 'Users')

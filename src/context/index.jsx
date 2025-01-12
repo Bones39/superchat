@@ -8,6 +8,8 @@ export function useAuth () {
 	return useContext(AuthContext);
 }
 
+// set user auth:  https://www.youtube.com/watch?v=WpIDez53SK4
+
 export function AuthProvider({children}) {
 	const [currentUser, setCurrentUser] = useState(null);
 	const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
