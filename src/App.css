@@ -55,6 +55,10 @@ input {
 	height: 38px;
 }
 
+.signInInput:hover {
+	border-color: #e4e4e4;
+}
+
 .sent {
 	display: flex;
 	flex-direction: column;
