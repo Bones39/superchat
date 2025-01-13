@@ -10,7 +10,7 @@ import Chatroom from './components/chatroom'
 import { useAuth } from './context'
 import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
-// to do
+// todo
 /* 
 - faire marcher le sign In
     - tester en mettant un <Form>
@@ -27,14 +27,15 @@ function App() {
 
 	const dummy = useRef();
 
-	const signIn = async () => {
+	const signIn = async (e) => {
+		e.preventDefault();
 		try {
-			setEmail(auth?.currentUser?.email);
-			setPassword(auth?.currentUser?.email);
 			await createUserWithEmailAndPassword(auth, email, password);
-			// await signInWithEmailAndPassword(auth, email, password);
 		} catch (error) {
-			console.log(error);
+			console.log(`${error}`);
+			if (error.message.includes("email-already-in-use")) {
+				await signInWithEmailAndPassword(auth, email, password);
+			}
 		}
 	}
 
@@ -84,7 +85,6 @@ function App() {
 			setFormValue("");
 			// dummy.current.scrollIntoView();
 		}
-
 	}
 
 	const props = {
@@ -93,6 +93,15 @@ function App() {
 		sendMessage,
 		formValue,
 		setFormValue
+	}
+
+	const signInProps = {
+		email,
+		setEmail,
+		password,
+		setPassword,
+		signIn,
+		signInWithGoogle
 	}
 
 	useEffect(() => {
@@ -117,7 +126,7 @@ function App() {
 			</div>
 			:
 			// component authentification page
-			<LogIn signIn={signIn} signInWithGoogle={signInWithGoogle}></LogIn>
+			<LogIn props={signInProps} /* signIn={signIn} signInWithGoogle={signInWithGoogle} */></LogIn>
 		}
 	</main>
   )
