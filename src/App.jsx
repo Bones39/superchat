@@ -12,9 +12,11 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
 // todo
 /* 
+- corriger le scrolling une fois un nouveau message envoyé
+- créeer un composant qui liste les personnes connectée
 - faire marcher le sign In
-    - tester en mettant un <Form>
-    - envoyer la valeur de password et mail dans la fonction signIn jusqu'à createUserWithEmailAndPassword (utiliser setPassword et setEmail)
+    - tester en mettant un <Form> OK
+    - envoyer la valeur de password et mail dans la fonction signIn jusqu'à createUserWithEmailAndPassword (utiliser setPassword et setEmail) OK
 */
 
 
