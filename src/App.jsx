@@ -77,7 +77,7 @@ function App() {
 				uid,
 				allias: currentUser.email.substring(0,3),
 				// take the first two number in the ui
-				photoId: currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2),
+				photoId: currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''),
 				createdAt: firebase.firestore.FieldValue.serverTimestamp()
 			});
 	
