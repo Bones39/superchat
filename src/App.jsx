@@ -7,12 +7,13 @@ import 'firebase/compat/firestore'
 import { addDoc, collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
 import LogIn from './components/LogIn'
 import Chatroom from './components/chatroom'
+import Lobby from './components/Lobby'
 import { useAuth } from './context'
 import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
 // todo
 /* 
-- corriger le scrolling une fois un nouveau message envoyé
+- corriger le scrolling une fois un nouveau message envoyé OK
 - créeer un composant qui liste les personnes connectée
 - faire marcher le sign In
     - tester en mettant un <Form> OK
@@ -65,10 +66,16 @@ function App() {
 	// ------- related to chatroom -------
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
-	const userRef = collection(firestoreDb, 'Users')
 	const messageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(25));
 	const [messages, setMessages] = useState([]);
-
+	
+	// ------- related to Lobby -------
+	const connectedRef = collection(firestoreDb, 'connected');
+	// const userRef = collection(firestoreDb, 'Users')
+	const connectedQuery = query(connectedRef);
+	const [connected, setConnected] = useState([]);
+	
+	// r
 	const sendMessage = async (e) => {
 		e.preventDefault();
 
@@ -107,11 +114,21 @@ function App() {
 		signInWithGoogle
 	}
 
+	const lobbyProps = {
+		connected
+	}
+
 	useEffect(() => {
 		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
 			const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 			setMessages(filterData.reverse());
 			scrollHere.current.scrollIntoView();
+		});
+
+		const un = onSnapshot(connectedQuery, (querySnapshot) => {
+			const connectedUsers = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
+			setConnected(connectedUsers);
+			console.log(connectedUsers);
 		});
 	}, [])
 
@@ -127,6 +144,7 @@ function App() {
 				{/* Mettre les props dans un objet unique */}
 				<Chatroom props={props} ></Chatroom>
 				<div ref={scrollHere}></div>
+				<Lobby props={lobbyProps}></Lobby>
 			</div>
 			:
 			// component authentification page

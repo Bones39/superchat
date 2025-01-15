@@ -124,3 +124,12 @@ input {
 	flex-direction: column;
 	align-self: flex-end;
 }
+
+.lobby {
+	position: fixed;
+	top: 100px;
+	left: 25px;
+	width: 350px;
+	height: 430px;
+	background-color: aqua;
+}
