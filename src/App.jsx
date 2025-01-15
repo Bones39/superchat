@@ -28,6 +28,7 @@ function App() {
 	const { userIsLoggedIn, currentUser } = useAuth();
 
 	const dummy = useRef();
+	const scrollHere = useRef();
 
 	const signIn = async (e) => {
 		e.preventDefault();
@@ -85,7 +86,7 @@ function App() {
 	
 			// reset the value in the input field once sent
 			setFormValue("");
-			// dummy.current.scrollIntoView();
+			dummy.current.scrollIntoView();
 		}
 	}
 
@@ -110,7 +111,7 @@ function App() {
 		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
 			const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 			setMessages(filterData.reverse());
-			// console.log(filterData);
+			scrollHere.current.scrollIntoView();
 		});
 	}, [])
 
@@ -125,6 +126,7 @@ function App() {
 				<button onClick={logout}>Disconnect</button>
 				{/* Mettre les props dans un objet unique */}
 				<Chatroom props={props} ></Chatroom>
+				<div ref={scrollHere}></div>
 			</div>
 			:
 			// component authentification page
