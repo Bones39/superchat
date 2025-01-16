@@ -4,7 +4,7 @@ import './App.css'
 
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
-import { addDoc, collection, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { addDoc, deleteDoc, collection, doc, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
 import LogIn from './components/LogIn'
 import Chatroom from './components/chatroom'
 import Lobby from './components/Lobby'
@@ -31,10 +31,41 @@ function App() {
 	const dummy = useRef();
 	const scrollHere = useRef();
 
+		// ------- related to chatroom -------
+	// get the messages collection
+	const messagesRef = collection(firestoreDb, 'messages');
+	const messageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(25));
+	const [messages, setMessages] = useState([]);
+	
+	// ------- related to Lobby -------
+	const connectedRef = collection(firestoreDb, 'connected');
+	// const userRef = collection(firestoreDb, 'Users')
+	const connectedQuery = query(connectedRef);
+	const [connected, setConnected] = useState([]);
+
+	const updateConnectionState = async (action) => {
+		switch (action) {
+			case "connection":
+				await addDoc(connectedRef, {
+					email: email
+				});
+		
+			default:
+				await addDoc(connectedRef, {
+					email
+				});
+		}
+	}
+
 	const signIn = async (e) => {
 		e.preventDefault();
 		try {
 			await createUserWithEmailAndPassword(auth, email, password);
+			// await updateConnectionState("connection");
+			console.log("sign in: " + email);
+			await addDoc(connectedRef, {
+				email: email
+			});
 		} catch (error) {
 			console.log(`${error}`);
 			if (error.message.includes("email-already-in-use")) {
@@ -47,7 +78,10 @@ function App() {
 		try {
 			await signInWithPopup(auth, googleProvider);
 			setEmail(auth?.currentUser?.email);
-			console.log(auth?.currentUser?.email);
+			console.log("sign in: " + auth?.currentUser?.email);
+			await addDoc(connectedRef, {
+				email: auth?.currentUser?.email
+			});
 		} catch (error) {
 			console.log(error);
 		}
@@ -58,22 +92,11 @@ function App() {
 			await signOut(auth);
 			setEmail("");
 			console.log(auth?.currentUser?.email);
+			await deleteDoc(doc(firestoreDb, "connected", "gTlkyQSYpPmQq6Nzrkt2"));
 		} catch (error) {
 			console.log(error);
 		}
 	}
-
-	// ------- related to chatroom -------
-	// get the messages collection
-	const messagesRef = collection(firestoreDb, 'messages');
-	const messageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(25));
-	const [messages, setMessages] = useState([]);
-	
-	// ------- related to Lobby -------
-	const connectedRef = collection(firestoreDb, 'connected');
-	// const userRef = collection(firestoreDb, 'Users')
-	const connectedQuery = query(connectedRef);
-	const [connected, setConnected] = useState([]);
 	
 	// r
 	const sendMessage = async (e) => {
