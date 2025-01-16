@@ -128,7 +128,6 @@ function App() {
 		const un = onSnapshot(connectedQuery, (querySnapshot) => {
 			const connectedUsers = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 			setConnected(connectedUsers);
-			console.log(connectedUsers);
 		});
 	}, [])
 

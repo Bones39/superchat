@@ -1,8 +1,8 @@
-const Lobby = ({connected}) => {
-	console.log(`from the lobby connected: ${connected}`);
+const Lobby = ({props}) => {
+	const {connected} = props;
 	return (
 		<div className="lobby">
-			{connected && connected.map((connectedUser) => <div>Test</div>)}
+			{connected && connected.map((connectedUser) => <div key={`lobby-${connectedUser.id}`}>{connectedUser.email}</div>)}
 		</div>
 	)
 }
