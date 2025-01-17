@@ -4,7 +4,7 @@ import './App.css'
 
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
-import { addDoc, deleteDoc, collection, doc, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
+import { addDoc, deleteDoc, setDoc,collection, doc, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
 import LogIn from './components/LogIn'
 import Chatroom from './components/chatroom'
 import Lobby from './components/Lobby'
@@ -63,13 +63,20 @@ function App() {
 			await createUserWithEmailAndPassword(auth, email, password);
 			// await updateConnectionState("connection");
 			console.log("sign in: " + email);
-			await addDoc(connectedRef, {
+			/* await addDoc(connectedRef, {
 				email: email
+			}); */
+			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
+				email: auth?.currentUser?.email
 			});
 		} catch (error) {
 			console.log(`${error}`);
 			if (error.message.includes("email-already-in-use")) {
 				await signInWithEmailAndPassword(auth, email, password);
+				console.log("sign in: " + email);
+				await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
+					email: auth?.currentUser?.email
+				});
 			}
 		}
 	}
@@ -79,7 +86,11 @@ function App() {
 			await signInWithPopup(auth, googleProvider);
 			setEmail(auth?.currentUser?.email);
 			console.log("sign in: " + auth?.currentUser?.email);
-			await addDoc(connectedRef, {
+			/* await addDoc(connectedRef, {
+				email: auth?.currentUser?.email
+			}); */
+			// Add a new document in collection "cities"
+			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
 				email: auth?.currentUser?.email
 			});
 		} catch (error) {
@@ -89,10 +100,20 @@ function App() {
 
 	const logout = async () => {
 		try {
-			await signOut(auth);
-			setEmail("");
+			await deleteDoc(doc(firestoreDb, "connected", auth?.currentUser?.email));
 			console.log(auth?.currentUser?.email);
-			await deleteDoc(doc(firestoreDb, "connected", "gTlkyQSYpPmQq6Nzrkt2"));
+			setEmail("");
+			/* const connectedUserQuery = query(connectedRef, where('email'=auth?.currentUser?.email));
+			const docRef = doc(db, "cities", "SF");
+			const docSnap = await getDoc(connectedRef);
+			
+			if (docSnap.exists()) {
+				console.log("Document data:", docSnap.data());
+				} else {
+					// docSnap.data() will be undefined in this case
+				console.log("No such document!");
+				} */
+			await signOut(auth);
 		} catch (error) {
 			console.log(error);
 		}
