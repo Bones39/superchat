@@ -13,8 +13,12 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
 // todo
 /* 
-- corriger le scrolling une fois un nouveau message envoyé OK
 - créeer un composant qui liste les personnes connectée
+	- commencer par faire marcher la visibilité en fonction de l'état de connexion  OK
+	- travaIller sur le style:
+		- ajouter la photo et l'allias avant le nom OK
+		- changer la taille et le family font
+- corriger le scrolling une fois un nouveau message envoyé OK
 - faire marcher le sign In
     - tester en mettant un <Form> OK
     - envoyer la valeur de password et mail dans la fonction signIn jusqu'à createUserWithEmailAndPassword (utiliser setPassword et setEmail) OK
@@ -42,6 +46,8 @@ function App() {
 	// const userRef = collection(firestoreDb, 'Users')
 	const connectedQuery = query(connectedRef);
 	const [connected, setConnected] = useState([]);
+	const [photoId, setPhotoId] = useState("");
+	const [allias, setAllias] = useState("");
 
 	const updateConnectionState = async (action) => {
 		switch (action) {
@@ -64,7 +70,9 @@ function App() {
 			// await updateConnectionState("connection");
 			console.log("sign in: " + email);
 			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
-				email: auth?.currentUser?.email
+				email: auth?.currentUser?.email,
+				allias,
+				photoId
 			});
 		} catch (error) {
 			console.log(`${error}`);
@@ -73,7 +81,9 @@ function App() {
 				await signInWithEmailAndPassword(auth, email, password);
 				console.log("sign in: " + email);
 				await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
-					email: auth?.currentUser?.email
+					email: auth?.currentUser?.email,
+					allias,
+					photoId
 				});
 			}
 		}
@@ -86,7 +96,9 @@ function App() {
 			// await updateConnectionState("connection");
 			console.log("sign in: " + auth?.currentUser?.email);
 			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
-				email: auth?.currentUser?.email
+				email: auth?.currentUser?.email,
+				allias,
+				photoId
 			});
 		} catch (error) {
 			console.log(error);
@@ -115,9 +127,9 @@ function App() {
 			await addDoc(messagesRef, {
 				text: formValue,
 				uid,
-				allias: currentUser.email.substring(0,3),
+				allias: allias,// currentUser.email.substring(0,3),
 				// take the first two number in the ui
-				photoId: currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''),
+				photoId: photoId, //currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''),
 				createdAt: firebase.firestore.FieldValue.serverTimestamp()
 			});
 	
@@ -145,10 +157,14 @@ function App() {
 	}
 
 	const lobbyProps = {
-		connected
+		connected,
+		allias,
+		photoId
 	}
 
 	useEffect(() => {
+		setPhotoId(currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
+		setAllias(currentUser.email.substring(0,3));
 		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
 			const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 			setMessages(filterData.reverse());
