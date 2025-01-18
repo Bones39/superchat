@@ -63,14 +63,12 @@ function App() {
 			await createUserWithEmailAndPassword(auth, email, password);
 			// await updateConnectionState("connection");
 			console.log("sign in: " + email);
-			/* await addDoc(connectedRef, {
-				email: email
-			}); */
 			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
 				email: auth?.currentUser?.email
 			});
 		} catch (error) {
 			console.log(`${error}`);
+			// chech if the error is beacaus the account already exists
 			if (error.message.includes("email-already-in-use")) {
 				await signInWithEmailAndPassword(auth, email, password);
 				console.log("sign in: " + email);
@@ -85,11 +83,8 @@ function App() {
 		try {
 			await signInWithPopup(auth, googleProvider);
 			setEmail(auth?.currentUser?.email);
+			// await updateConnectionState("connection");
 			console.log("sign in: " + auth?.currentUser?.email);
-			/* await addDoc(connectedRef, {
-				email: auth?.currentUser?.email
-			}); */
-			// Add a new document in collection "cities"
 			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
 				email: auth?.currentUser?.email
 			});
@@ -100,19 +95,10 @@ function App() {
 
 	const logout = async () => {
 		try {
+			// await updateConnectionState("connection");
 			await deleteDoc(doc(firestoreDb, "connected", auth?.currentUser?.email));
 			console.log(auth?.currentUser?.email);
 			setEmail("");
-			/* const connectedUserQuery = query(connectedRef, where('email'=auth?.currentUser?.email));
-			const docRef = doc(db, "cities", "SF");
-			const docSnap = await getDoc(connectedRef);
-			
-			if (docSnap.exists()) {
-				console.log("Document data:", docSnap.data());
-				} else {
-					// docSnap.data() will be undefined in this case
-				console.log("No such document!");
-				} */
 			await signOut(auth);
 		} catch (error) {
 			console.log(error);
@@ -191,7 +177,7 @@ function App() {
 			</div>
 			:
 			// component authentification page
-			<LogIn props={signInProps} /* signIn={signIn} signInWithGoogle={signInWithGoogle} */></LogIn>
+			<LogIn props={signInProps}></LogIn>
 		}
 	</main>
   )
