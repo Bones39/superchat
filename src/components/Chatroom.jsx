@@ -10,6 +10,7 @@ const Chatroom = ({props}) => {
 				{/* // chat room */}
 				{messages && messages.map((message, index) =>
 					{
+						if(!message || !auth.currentUser) return(<></>);
 						let bDisplayUserPicture = (index !== 0 && messages[index-1].uid !== message.uid && message.uid !== auth.currentUser.uid)
 							|| (index === 0 && message.uid !== auth.currentUser.uid);
 						const date = new Date((message.createdAt?.seconds ? message.createdAt.seconds : firebase.firestore.FieldValue.serverTimestamp()) * 1000);

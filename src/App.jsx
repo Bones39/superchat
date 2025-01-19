@@ -13,11 +13,15 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
 // todo
 /* 
-- créeer un composant qui liste les personnes connectée
+- faire une unique fontion pour set les different state photoId et allias lorsqu'on se connect et se deco (prendre ce qu'il y a entre les lignes 91 et 99)
+	- appeler cette fonction dans signIn(try et catch) et dans signInWithGoogle
+- créeer un composant qui liste les personnes connectée EN COURS
 	- commencer par faire marcher la visibilité en fonction de l'état de connexion  OK
 	- travaIller sur le style:
 		- ajouter la photo et l'allias avant le nom OK
 		- changer la taille et le family font
+		- redimensionner les photos de profil dans le lobby ok
+	- trouver un moyen de deconnecter l'utilisateur qd l'onglet est fermé
 - corriger le scrolling une fois un nouveau message envoyé OK
 - faire marcher le sign In
     - tester en mettant un <Form> OK
@@ -71,9 +75,13 @@ function App() {
 			console.log("sign in: " + email);
 			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
 				email: auth?.currentUser?.email,
-				allias,
-				photoId
+				allias: currentUser.email.substring(0,3),
+				photoId: currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, '')
 			});
+			if (currentUser) {
+				setPhotoId(currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
+				setAllias(currentUser.email.substring(0,3))
+			};
 		} catch (error) {
 			console.log(`${error}`);
 			// chech if the error is beacaus the account already exists
@@ -82,9 +90,13 @@ function App() {
 				console.log("sign in: " + email);
 				await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
 					email: auth?.currentUser?.email,
-					allias,
-					photoId
+					allias: auth?.currentUser?.email.substring(0,3),
+					photoId: auth?.currentUser?.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, '')
 				});
+				if (auth.currentUser) {
+					setPhotoId(auth.currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
+					setAllias(auth.currentUser.email.substring(0,3))
+				};
 			}
 		}
 	}
@@ -163,18 +175,21 @@ function App() {
 	}
 
 	useEffect(() => {
-		setPhotoId(currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
-		setAllias(currentUser.email.substring(0,3));
+		/* if (currentUser) {
+			setPhotoId(currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
+			setAllias(currentUser.email.substring(0,3))
+		}; */
 		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
 			const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 			setMessages(filterData.reverse());
-			scrollHere.current.scrollIntoView();
 		});
 
 		const un = onSnapshot(connectedQuery, (querySnapshot) => {
 			const connectedUsers = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 			setConnected(connectedUsers);
 		});
+
+		// scrollHere?.current.scrollIntoView();
 	}, [])
 
   return (
