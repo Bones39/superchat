@@ -35,7 +35,6 @@ const Chatroom = ({props}) => {
 							)
 						}
 					}
-					
 				)}
 				<div ref={dummy}></div>
 			</div>

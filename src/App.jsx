@@ -13,7 +13,7 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
 // todo
 /* 
-- corriger le scrolling quand on se connecte une premiere fois
+- corriger le scrolling quand on se connecte une premiere fois EN COURS
 - faire une unique fontion pour set les different state photoId et allias lorsqu'on se connect et se deco (prendre ce qu'il y a entre les lignes 91 et 99) OK
 	- appeler cette fonction dans signIn(try et catch) et dans signInWithGoogle OK
 - créeer un composant qui liste les personnes connectée EN COURS
@@ -75,6 +75,7 @@ function App() {
 		e.preventDefault();
 		try {
 			await createUserWithEmailAndPassword(auth, email, password);
+			setEmail(auth?.currentUser?.email);
 			console.log("sign in: " + email);
 			updateConnectionState("connection");
 		} catch (error) {
@@ -82,6 +83,7 @@ function App() {
 			// check if the error is beacaus the account already exists
 			if (error.message.includes("email-already-in-use")) {
 				await signInWithEmailAndPassword(auth, email, password);
+				setEmail(auth?.currentUser?.email);
 				console.log("sign in: " + email);
 				updateConnectionState("connection");
 			}
@@ -102,7 +104,6 @@ function App() {
 	const logout = async () => {
 		try {
 			updateConnectionState();
-			console.log(auth?.currentUser?.email);
 			setEmail("");
 			await signOut(auth);
 		} catch (error) {
@@ -110,7 +111,6 @@ function App() {
 		}
 	}
 	
-	// r
 	const sendMessage = async (e) => {
 		e.preventDefault();
 
@@ -166,7 +166,8 @@ function App() {
 			setConnected(connectedUsers);
 		});
 
-		// scrollHere?.current.scrollIntoView();
+		// the use effect is called only once, ie when the connection page appears (not called again if the user connect unless some dependencies are put in the dep array)
+		// scrollHere?.current?.scrollIntoView();
 	}, [])
 
   return (
