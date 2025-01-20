@@ -13,8 +13,9 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
 // todo
 /* 
-- faire une unique fontion pour set les different state photoId et allias lorsqu'on se connect et se deco (prendre ce qu'il y a entre les lignes 91 et 99)
-	- appeler cette fonction dans signIn(try et catch) et dans signInWithGoogle
+- corriger le scrolling quand on se connecte une premiere fois
+- faire une unique fontion pour set les different state photoId et allias lorsqu'on se connect et se deco (prendre ce qu'il y a entre les lignes 91 et 99) OK
+	- appeler cette fonction dans signIn(try et catch) et dans signInWithGoogle OK
 - créeer un composant qui liste les personnes connectée EN COURS
 	- commencer par faire marcher la visibilité en fonction de l'état de connexion  OK
 	- travaIller sur le style:
@@ -54,16 +55,19 @@ function App() {
 	const [allias, setAllias] = useState("");
 
 	const updateConnectionState = async (action) => {
-		switch (action) {
-			case "connection":
-				await addDoc(connectedRef, {
-					email: email
-				});
-		
-			default:
-				await addDoc(connectedRef, {
-					email
-				});
+		if (action === "connection") {
+			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
+				email: auth?.currentUser?.email,
+				allias: auth?.currentUser?.email.substring(0,3),
+				photoId: auth?.currentUser?.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, '')
+			});
+			if (auth.currentUser) {
+				// set the states to be used in component
+				setPhotoId(auth.currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
+				setAllias(auth.currentUser.email.substring(0,3))
+			};
+		} else {
+			await deleteDoc(doc(firestoreDb, "connected", auth?.currentUser?.email));
 		}
 	}
 
@@ -71,32 +75,15 @@ function App() {
 		e.preventDefault();
 		try {
 			await createUserWithEmailAndPassword(auth, email, password);
-			// await updateConnectionState("connection");
 			console.log("sign in: " + email);
-			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
-				email: auth?.currentUser?.email,
-				allias: currentUser.email.substring(0,3),
-				photoId: currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, '')
-			});
-			if (currentUser) {
-				setPhotoId(currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
-				setAllias(currentUser.email.substring(0,3))
-			};
+			updateConnectionState("connection");
 		} catch (error) {
 			console.log(`${error}`);
-			// chech if the error is beacaus the account already exists
+			// check if the error is beacaus the account already exists
 			if (error.message.includes("email-already-in-use")) {
 				await signInWithEmailAndPassword(auth, email, password);
 				console.log("sign in: " + email);
-				await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
-					email: auth?.currentUser?.email,
-					allias: auth?.currentUser?.email.substring(0,3),
-					photoId: auth?.currentUser?.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, '')
-				});
-				if (auth.currentUser) {
-					setPhotoId(auth.currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
-					setAllias(auth.currentUser.email.substring(0,3))
-				};
+				updateConnectionState("connection");
 			}
 		}
 	}
@@ -105,22 +92,16 @@ function App() {
 		try {
 			await signInWithPopup(auth, googleProvider);
 			setEmail(auth?.currentUser?.email);
-			// await updateConnectionState("connection");
-			console.log("sign in: " + auth?.currentUser?.email);
-			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
-				email: auth?.currentUser?.email,
-				allias,
-				photoId
-			});
+			console.log("signInWithGoogle sign in: " + auth?.currentUser?.email);
+			updateConnectionState("connection");
 		} catch (error) {
-			console.log(error);
+			console.log("signInWithGoogle " + error.message);
 		}
 	}
 
 	const logout = async () => {
 		try {
-			// await updateConnectionState("connection");
-			await deleteDoc(doc(firestoreDb, "connected", auth?.currentUser?.email));
+			updateConnectionState();
 			console.log(auth?.currentUser?.email);
 			setEmail("");
 			await signOut(auth);
@@ -175,10 +156,6 @@ function App() {
 	}
 
 	useEffect(() => {
-		/* if (currentUser) {
-			setPhotoId(currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
-			setAllias(currentUser.email.substring(0,3))
-		}; */
 		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
 			const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 			setMessages(filterData.reverse());
