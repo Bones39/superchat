@@ -1,8 +1,14 @@
+import { useEffect } from 'react';
 import { auth } from '../firebaseConfig'
 import firebase from 'firebase/compat/app'
 
 const Chatroom = ({props}) => {
 	const {messages, formValue, sendMessage, setFormValue, dummy} = props;
+
+	useEffect(() => {
+		// scroll to the end of the page when the user connects
+		dummy?.current?.scrollIntoView();
+	})
 
 	return(
 		<>
