@@ -151,3 +151,8 @@ input {
 	margin-bottom: 3px;
 	margin-right: 4px;
 }
+
+.icon {
+	font-size: 2em;
+	margin-left: 1em;
+}

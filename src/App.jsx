@@ -13,13 +13,14 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
 // todo
 /* 
-- deconnecterles utilisateurs quand on ferme l'onglet
-- corriger le scrolling quand on se connecte une premiere fois EN COURS
+- ajouter l'animation des points de suspension quand l'utilisateur est en train d'ecrire
+- deconnecterles utilisateurs quand on ferme l'onglet OK
+- corriger le scrolling quand on se connecte une premiere fois OK
 - faire une unique fontion pour set les different state photoId et allias lorsqu'on se connect et se deco (prendre ce qu'il y a entre les lignes 91 et 99) OK
 	- appeler cette fonction dans signIn(try et catch) et dans signInWithGoogle OK
-- créeer un composant qui liste les personnes connectée EN COURS
+- créeer un composant qui liste les personnes connectée OK
 	- commencer par faire marcher la visibilité en fonction de l'état de connexion  OK
-	- travaIller sur le style:
+	- travaIller sur le style: 
 		- ajouter la photo et l'allias avant le nom OK
 		- changer la taille et le family font
 		- redimensionner les photos de profil dans le lobby ok
@@ -130,7 +131,31 @@ function App() {
 			// reset the value in the input field once sent
 			setFormValue("");
 			dummy.current.scrollIntoView();
+			// when the message has been sent, the user is not considered typing anymore
+			/* await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
+				isTyping: false
+			},
+			{ merge: true }); */
 		}
+	}
+	
+	const typing = async (e) => {
+		/* let delayOn = false;
+		const id = setTimeout(async () => {
+			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
+				isTyping: false
+				},
+				{ merge: true }
+			);
+			console.log("setting to false")
+		},
+		2000) */
+		// console.log("typing!");
+		/* await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
+			isTyping: true
+		},
+		{ merge: true }); */
+		setFormValue(e.target.value);
 	}
 
 	const props = {
@@ -138,7 +163,7 @@ function App() {
 		dummy,
 		sendMessage,
 		formValue,
-		setFormValue
+		typing
 	}
 
 	const signInProps = {

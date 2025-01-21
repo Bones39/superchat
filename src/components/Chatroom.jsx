@@ -3,7 +3,7 @@ import { auth } from '../firebaseConfig'
 import firebase from 'firebase/compat/app'
 
 const Chatroom = ({props}) => {
-	const {messages, formValue, sendMessage, setFormValue, dummy} = props;
+	const {messages, formValue, sendMessage, typing, dummy} = props;
 
 	useEffect(() => {
 		// scroll to the end of the page when the user connects
@@ -46,7 +46,7 @@ const Chatroom = ({props}) => {
 			</div>
 			{/** display the form*/}
 			<form className='messageInput' onSubmit={sendMessage}>
-				<input type="text" value={formValue} onChange={(e)=>setFormValue(e.target.value)}/>
+				<input type="text" value={formValue} onChange={(e)=>typing(e)}/>
 				<button type='submit'>SEND</button>
 			</form>
 		</>
