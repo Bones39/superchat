@@ -13,6 +13,7 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
 // todo
 /* 
+- deconnecterles utilisateurs quand on ferme l'onglet
 - corriger le scrolling quand on se connecte une premiere fois EN COURS
 - faire une unique fontion pour set les different state photoId et allias lorsqu'on se connect et se deco (prendre ce qu'il y a entre les lignes 91 et 99) OK
 	- appeler cette fonction dans signIn(try et catch) et dans signInWithGoogle OK
@@ -164,6 +165,11 @@ function App() {
 		const un = onSnapshot(connectedQuery, (querySnapshot) => {
 			const connectedUsers = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 			setConnected(connectedUsers);
+		});
+
+		window.addEventListener('beforeunload', (event) => {
+			// disconnect user if the tab is closed
+			updateConnectionState();
 		});
 
 		// the use effect is called only once, ie when the connection page appears (not called again if the user connect unless some dependencies are put in the dep array)
