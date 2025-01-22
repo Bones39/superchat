@@ -14,7 +14,6 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 // todo
 /* 
 - permettre d'envoyer des gifs
-- redimenionner les photos de profils
 - travaIller sur le style: EN COURS
 	- rendre le site responsive
 	- améliorer l'esthetique globale
