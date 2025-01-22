@@ -13,7 +13,7 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
 // todo
 /* 
-- ajouter l'animation des points de suspension quand l'utilisateur est en train d'ecrire
+- ajouter l'animation des points de suspension quand l'utilisateur est en train d'ecrire OK
 - deconnecterles utilisateurs quand on ferme l'onglet OK
 - corriger le scrolling quand on se connecte une premiere fois OK
 - faire une unique fontion pour set les different state photoId et allias lorsqu'on se connect et se deco (prendre ce qu'il y a entre les lignes 91 et 99) OK
@@ -47,6 +47,8 @@ function App() {
 	const messagesRef = collection(firestoreDb, 'messages');
 	const messageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(25));
 	const [messages, setMessages] = useState([]);
+	const [isTyping, setIsTyping] = useState(false);
+	let timerId = useRef(null);
 	
 	// ------- related to Lobby -------
 	const connectedRef = collection(firestoreDb, 'connected');
@@ -140,22 +142,29 @@ function App() {
 	}
 	
 	const typing = async (e) => {
-		/* let delayOn = false;
-		const id = setTimeout(async () => {
-			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
-				isTyping: false
-				},
-				{ merge: true }
-			);
-			console.log("setting to false")
-		},
-		2000) */
-		// console.log("typing!");
-		/* await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
-			isTyping: true
-		},
-		{ merge: true }); */
+		// set the form value first to avoid latency
 		setFormValue(e.target.value);
+		console.log("isTyping: " + isTyping);
+		if (!isTyping) {
+			if (timerId) clearTimeout(timerId);
+			setIsTyping(true);
+			// set a time out to set typing to false after 3 sec
+			setTimeout(async () => {
+				await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
+					isTyping: false
+					},
+					{ merge: true }
+				);
+				setIsTyping(false);
+			},
+			2500);
+			// Set typing to true 
+			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
+				isTyping: true
+			},
+			{ merge: true });
+			// clearTimeout(id);
+		}
 	}
 
 	const props = {
@@ -176,9 +185,7 @@ function App() {
 	}
 
 	const lobbyProps = {
-		connected,
-		allias,
-		photoId
+		connected
 	}
 
 	useEffect(() => {

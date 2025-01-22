@@ -8,7 +8,7 @@ const Lobby = ({props}) => {
 				<div className="lobbyUser" key={`lobby-${connectedUser.id}`}>
 					<div className="userTagLobby" style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${connectedUser.photoId}.jpg")`}}>{connectedUser.allias}</div>
 					<div>{connectedUser.email}</div>
-					<i className="icon"><TiMessageTyping/></i>
+					{connectedUser.isTyping && <i className="icon"><TiMessageTyping/></i>}
 				</div>
 			)}
 		</div>
