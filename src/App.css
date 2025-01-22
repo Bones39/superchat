@@ -139,6 +139,11 @@ input {
 	align-items: center;
 }
 
+.lobbyHeader {
+	margin-left: 30%;
+	font-weight: 800;
+}
+
 .userTagLobby {
 	display: flex;
 	color: white;
