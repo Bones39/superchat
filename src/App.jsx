@@ -13,6 +13,14 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
 // todo
 /* 
+- permettre d'envoyer des gifs
+- redimenionner les photos de profils
+- travaIller sur le style: EN COURS
+	- rendre le site responsive
+	- améliorer l'esthetique globale
+	- ajouter la photo et l'allias avant le nom OK
+	- changer la taille et le family font
+	- redimensionner les photos de profil dans le lobby OK
 - ajouter l'animation des points de suspension quand l'utilisateur est en train d'ecrire OK
 - deconnecterles utilisateurs quand on ferme l'onglet OK
 - corriger le scrolling quand on se connecte une premiere fois OK
@@ -20,11 +28,8 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 	- appeler cette fonction dans signIn(try et catch) et dans signInWithGoogle OK
 - créeer un composant qui liste les personnes connectée OK
 	- commencer par faire marcher la visibilité en fonction de l'état de connexion  OK
-	- travaIller sur le style: 
-		- ajouter la photo et l'allias avant le nom OK
-		- changer la taille et le family font
-		- redimensionner les photos de profil dans le lobby ok
-	- trouver un moyen de deconnecter l'utilisateur qd l'onglet est fermé
+	- trouver un moyen de deconnecter l'utilisateur qd l'onglet est fermé OK
+		=> fait avec un window.open('/') pour que le code puisse s'executer dans un contexte/fenetre OK
 - corriger le scrolling une fois un nouveau message envoyé OK
 - faire marcher le sign In
     - tester en mettant un <Form> OK
@@ -201,6 +206,7 @@ function App() {
 
 		window.addEventListener('beforeunload', (event) => {
 			// disconnect user if the tab is closed
+			window.open('/');
 			updateConnectionState();
 		});
 
