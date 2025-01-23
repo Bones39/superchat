@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { auth } from '../firebaseConfig'
 import firebase from 'firebase/compat/app'
+import { CiImageOn } from "react-icons/ci";
 
 const Chatroom = ({props}) => {
 	const {messages, formValue, sendMessage, typing, dummy} = props;
@@ -9,6 +10,18 @@ const Chatroom = ({props}) => {
 		// scroll to the end of the page when the user connects
 		dummy?.current?.scrollIntoView();
 	})
+
+	const loadFile = (e) => {
+		console.log("in loadfile");
+		const file = e.target.files[0];
+		const reader = new FileReader();
+
+		reader.addEventListener("load", () => {
+			console.log(reader.result)
+		})
+
+		reader.readAsDataURL(file);
+	}
 
 	return(
 		<>
@@ -48,6 +61,7 @@ const Chatroom = ({props}) => {
 			<form className='messageInput' onSubmit={sendMessage}>
 				<input type="text" value={formValue} onChange={(e)=>typing(e)}/>
 				<button type='submit'>SEND</button>
+				<input type='file' onChange={(e)=>loadFile(e)}/>
 			</form>
 		</>
 	)

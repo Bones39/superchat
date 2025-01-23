@@ -14,6 +14,7 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 // todo
 /* 
 - permettre d'envoyer des gifs
+- permettre d'envoyer des images, encoder en base 64
 - travaIller sur le style: EN COURS
 	- rendre le site responsive
 	- améliorer l'esthetique globale
