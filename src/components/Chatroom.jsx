@@ -4,7 +4,7 @@ import firebase from 'firebase/compat/app'
 import { CiImageOn } from "react-icons/ci";
 
 const Chatroom = ({props}) => {
-	const {messages, formValue, sendMessage, typing, dummy} = props;
+	const {messages, formValue, sendMessage, sendImage, typing, dummy} = props;
 
 	useEffect(() => {
 		// scroll to the end of the page when the user connects
@@ -12,7 +12,6 @@ const Chatroom = ({props}) => {
 	})
 
 	const loadFile = (e) => {
-		console.log("in loadfile");
 		const file = e.target.files[0];
 		const reader = new FileReader();
 
@@ -39,7 +38,8 @@ const Chatroom = ({props}) => {
 							return (
 								<div className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
 									<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${message.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>{message.allias}</div>
-									<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
+									{!message.type && <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>}
+									{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image`} key={message.id}><img src={message.text} alt="Base64 Image" /></div>}
 									<div className='timeStamp'key={message.id + "timeStamp"}>{formatedDate}</div>
 									{/* <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} timeStamp`} key={message.id + "timeStamp"}>{formatedDate}</div> */}
 								</div>
@@ -47,7 +47,8 @@ const Chatroom = ({props}) => {
 						} else {
 							return (
 								<div className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
-									<div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>
+									{!message.type && <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>}
+									{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image`} key={message.id}><img src={message.text} alt="Base64 Image" /></div>}
 									<div className='timeStamp' key={message.id + "timeStamp"}>{formatedDate}</div>
 									{/* <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id + "timeStamp"}>{message.createdAt}</div> */}
 								</div>
@@ -61,7 +62,7 @@ const Chatroom = ({props}) => {
 			<form className='messageInput' onSubmit={sendMessage}>
 				<input type="text" value={formValue} onChange={(e)=>typing(e)}/>
 				<button type='submit'>SEND</button>
-				<input type='file' onChange={(e)=>loadFile(e)}/>
+				<input type='file' onChange={(e)=>sendImage(e)}/>
 			</form>
 		</>
 	)

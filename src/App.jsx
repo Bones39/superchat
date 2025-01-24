@@ -4,10 +4,10 @@ import './App.css'
 
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
-import { addDoc, deleteDoc, setDoc,collection, doc, limit, onSnapshot, orderBy, query } from 'firebase/firestore'
-import LogIn from './components/LogIn'
+import { addDoc, collection, deleteDoc, doc, limit, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore'
 import Chatroom from './components/chatroom'
 import Lobby from './components/Lobby'
+import LogIn from './components/LogIn'
 import { useAuth } from './context'
 import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
@@ -145,6 +145,39 @@ function App() {
 			{ merge: true }); */
 		}
 	}
+
+	const sendImage = async (e) => {
+		e.preventDefault();
+
+		const file = e.target.files[0];
+		if (file) {
+			const {uid} = auth.currentUser;
+			const reader = new FileReader();
+
+			reader.addEventListener("load", async () => {
+				await addDoc(messagesRef, {
+					text: reader.result,
+					uid,
+					allias: allias,// currentUser.email.substring(0,3),
+					// take the first two number in the ui
+					photoId: photoId, //currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''),
+					type: "image",
+					createdAt: firebase.firestore.FieldValue.serverTimestamp()
+				});
+			})
+
+			reader.readAsDataURL(file);
+	
+			// reset the value in the input field once sent
+			setFormValue("");
+			dummy.current.scrollIntoView();
+			// when the message has been sent, the user is not considered typing anymore
+			/* await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
+				isTyping: false
+			},
+			{ merge: true }); */
+		}
+	}
 	
 	const typing = async (e) => {
 		// set the form value first to avoid latency
@@ -176,6 +209,7 @@ function App() {
 		messages,
 		dummy,
 		sendMessage,
+		sendImage,
 		formValue,
 		typing
 	}
