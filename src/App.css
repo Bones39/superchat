@@ -161,3 +161,8 @@ input {
 	font-size: 2em;
 	margin-left: 1em;
 }
+
+.image {
+	width: 320px;
+	height: 200px;
+}
