@@ -60,9 +60,12 @@ const Chatroom = ({props}) => {
 			</div>
 			{/** display the form*/}
 			<form className='messageInput' onSubmit={sendMessage}>
-				<input type="text" value={formValue} onChange={(e)=>typing(e)}/>
+				<input className='textInput' type="text" value={formValue} onChange={(e)=>typing(e)}/>
 				<button type='submit'>SEND</button>
-				<input type='file' onChange={(e)=>sendImage(e)}/>
+				<label className='customFileUpload'>
+					<CiImageOn/>
+					<input className='fileInput' type='file' onChange={(e)=>sendImage(e)}/>
+				</label>
 			</form>
 		</>
 	)

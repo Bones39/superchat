@@ -45,9 +45,33 @@ body {
 	margin-top: 10px;
 }
 
-input {
+.textInput {
 	width: 100%;
 	border-radius: 10px;
+}
+
+.customFileUpload {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	/* border:#646cff solid; */
+	border-radius: 50%;
+	width: 45.8px;
+	/* height: 40.8px; */
+	transition: background-color 0.25s;
+}
+
+.customFileUpload:hover {
+	/* border:#646cff solid; */
+	background-color: #b8bcff;
+	border-radius: 50%;
+}
+
+.fileInput {
+	position: absolute;
+    z-index: -1;
+	opacity: 0;
 }
 
 .signInInput {
@@ -164,5 +188,5 @@ input {
 
 .image {
 	width: 320px;
-	height: 200px;
+	height: 180px; 
 }
