@@ -13,8 +13,10 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 
 // todo
 /* 
+- prendre en compte la date de derniere activité
+- Modifier la page d'accueil pour ne prendre en compte que le nom
 - permettre d'envoyer des gifs
-- permettre d'envoyer des images, encoder en base 64
+- permettre d'envoyer des images, encoder en base 64 OK
 - travaIller sur le style: EN COURS
 	- rendre le site responsive
 	- améliorer l'esthetique globale
@@ -54,6 +56,7 @@ function App() {
 	const [messages, setMessages] = useState([]);
 	const [isTyping, setIsTyping] = useState(false);
 	let timerId = useRef(null);
+	let intervalId = useRef(null);
 	
 	// ------- related to Lobby -------
 	const connectedRef = collection(firestoreDb, 'connected');
@@ -68,7 +71,8 @@ function App() {
 			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
 				email: auth?.currentUser?.email,
 				allias: auth?.currentUser?.email.substring(0,3),
-				photoId: auth?.currentUser?.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, '')
+				photoId: auth?.currentUser?.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''),
+				lastActivityDate: firebase.firestore.FieldValue.serverTimestamp()
 			});
 			if (auth.currentUser) {
 				// set the states to be used in component
@@ -117,7 +121,19 @@ function App() {
 			await signOut(auth);
 		} catch (error) {
 			console.log(error);
+		} 
+	}
+
+	const automaticDisconnect = async (userEmail) => {
+		if (condition) {
+			let query = query(connectedRef, where("lastActivityDate", "==", "CA"));
+			querySnapshot = await getDocs(query);
+			querySnapshot.forEach((doc) => {
+			// doc.data() is never undefined for query doc snapshots
+			console.log(doc.id, " => ", doc.data());
+			});
 		}
+		await deleteDoc(doc(firestoreDb, "connected", userEmail));
 	}
 	
 	const sendMessage = async (e) => {
@@ -198,7 +214,8 @@ function App() {
 			2500);
 			// Set typing to true 
 			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
-				isTyping: true
+				isTyping: true,
+				lastActivityDate: firebase.firestore.FieldValue.serverTimestamp()
 			},
 			{ merge: true });
 			// clearTimeout(id);
@@ -244,8 +261,13 @@ function App() {
 			updateConnectionState();
 		});
 
+		// set up an interval to check for inactive users and disconnect them automatically
+		intervalId.current = setInterval(()=> {
+			console.log("30sec spent");
+		}, 0.5*60*1000)
 		// the use effect is called only once, ie when the connection page appears (not called again if the user connect unless some dependencies are put in the dep array)
 		// scrollHere?.current?.scrollIntoView();
+		return () => clearInterval(intervalId.current);
 	}, [])
 
   return (
