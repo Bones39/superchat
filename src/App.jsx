@@ -4,7 +4,7 @@ import './App.css'
 
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
-import { addDoc, collection, deleteDoc, doc, limit, onSnapshot, orderBy, query, setDoc } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, limit, onSnapshot, orderBy, query, setDoc, where, getDocs } from 'firebase/firestore'
 import Chatroom from './components/chatroom'
 import Lobby from './components/Lobby'
 import LogIn from './components/LogIn'
@@ -125,15 +125,20 @@ function App() {
 	}
 
 	const automaticDisconnect = async (userEmail) => {
-		if (condition) {
-			let query = query(connectedRef, where("lastActivityDate", "==", "CA"));
-			querySnapshot = await getDocs(query);
-			querySnapshot.forEach((doc) => {
-			// doc.data() is never undefined for query doc snapshots
+		console.log("in automaticDisconnect");
+		let thresholdDate = new Date();
+		// set the inactivity time upon deconnexion
+		let inactivityDelayMinutes = 30;
+		thresholdDate.setMinutes(thresholdDate.getMinutes() - inactivityDelayMinutes);
+		let formattedThresholdDate = firebase.firestore.Timestamp.fromDate(thresholdDate);
+		let queryOptions = query(connectedRef, where("lastActivityDate", "<", formattedThresholdDate));
+		let querySnapshot = await getDocs(queryOptions);
+		querySnapshot.forEach((doc) => {
+		// doc.data() is never undefined for query doc snapshots
 			console.log(doc.id, " => ", doc.data());
-			});
-		}
-		await deleteDoc(doc(firestoreDb, "connected", userEmail));
+			// delete every record that fill the time condition
+			// await deleteDoc(doc(firestoreDb, "connected", userEmail));
+		});
 	}
 	
 	const sendMessage = async (e) => {
@@ -260,6 +265,8 @@ function App() {
 			window.open('/');
 			updateConnectionState();
 		});
+
+		automaticDisconnect();
 
 		// set up an interval to check for inactive users and disconnect them automatically
 		intervalId.current = setInterval(()=> {
