@@ -55,8 +55,11 @@ function App() {
 	const messageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(25));
 	const [messages, setMessages] = useState([]);
 	const [isTyping, setIsTyping] = useState(false);
+	const [isInactive, SetIsInactive] = useState(false);
 	let timerId = useRef(null);
 	let intervalId = useRef(null);
+	// set the inactivity time upon deconnexion
+	const inactivityDelayMinutes = 30;
 	
 	// ------- related to Lobby -------
 	const connectedRef = collection(firestoreDb, 'connected');
@@ -124,20 +127,23 @@ function App() {
 		} 
 	}
 
-	const automaticDisconnect = async (userEmail) => {
+	const automaticDisconnect = async () => {
 		console.log("in automaticDisconnect");
 		let thresholdDate = new Date();
-		// set the inactivity time upon deconnexion
-		let inactivityDelayMinutes = 30;
 		thresholdDate.setMinutes(thresholdDate.getMinutes() - inactivityDelayMinutes);
 		let formattedThresholdDate = firebase.firestore.Timestamp.fromDate(thresholdDate);
 		let queryOptions = query(connectedRef, where("lastActivityDate", "<", formattedThresholdDate));
 		let querySnapshot = await getDocs(queryOptions);
-		querySnapshot.forEach((doc) => {
+		querySnapshot.forEach(async (doc) => {
 		// doc.data() is never undefined for query doc snapshots
 			console.log(doc.id, " => ", doc.data());
 			// delete every record that fill the time condition
-			// await deleteDoc(doc(firestoreDb, "connected", userEmail));
+			if (doc.id === auth?.currentUser?.email && doc.data().lastActivityDate < formattedThresholdDate) {
+				// await deleteDoc(doc(firestoreDb, "connected", doc.id));
+				await deleteDoc(doc.ref/* doc(firestoreDb, "connected", auth?.currentUser?.email) */);
+				console.log(`user ${doc.id} should be loged out!`);
+				logout();
+			}
 		});
 	}
 	
@@ -266,12 +272,11 @@ function App() {
 			updateConnectionState();
 		});
 
-		automaticDisconnect();
-
 		// set up an interval to check for inactive users and disconnect them automatically
 		intervalId.current = setInterval(()=> {
 			console.log("30sec spent");
-		}, 0.5*60*1000)
+			automaticDisconnect();
+		}, inactivityDelayMinutes*60*1000)
 		// the use effect is called only once, ie when the connection page appears (not called again if the user connect unless some dependencies are put in the dep array)
 		// scrollHere?.current?.scrollIntoView();
 		return () => clearInterval(intervalId.current);
