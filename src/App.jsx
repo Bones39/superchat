@@ -10,12 +10,22 @@ import Lobby from './components/Lobby'
 import LogIn from './components/LogIn'
 import { useAuth } from './context'
 import { auth, firestoreDb, googleProvider } from './firebaseConfig'
+import Header from './components/Header'
 
 // todo
 /* 
-- prendre en compte la date de derniere activité
-- Modifier la page d'accueil pour ne prendre en compte que le nom
+ ------------- EN COURs --------------------
+- ajouter les whiiiz
+- ajouter les reactions aux messages (smiley)
+- corriger la taille des images
+	- afficher les images dans un contenaire a taille fixe et adapter la taille de l'image a ce contenaire
+- ajouter le scroll pour consulter les anciens messages
 - permettre d'envoyer des gifs
+- Modifier la page d'accueil pour ne prendre en compte que le nom
+ ------------- FAIT --------------------
+ - corriger la place de la date d'envoi de message reçu OK
+- prendre en compte la date de derniere activité OK
+	- deconnecter les utilisateurs inactifs OK
 - permettre d'envoyer des images, encoder en base 64 OK
 - travaIller sur le style: EN COURS
 	- rendre le site responsive

@@ -49,7 +49,7 @@ const Chatroom = ({props}) => {
 								<div className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
 									{!message.type && <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>}
 									{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image`} key={message.id}><img src={message.text} alt="Base64 Image" /></div>}
-									<div className='timeStamp' key={message.id + "timeStamp"}>{formatedDate}</div>
+									<div className={`timeStamp ${message.uid === auth.currentUser.uid ? "alignRight " : ""}`} key={message.id + "timeStamp"}>{formatedDate}</div>
 									{/* <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id + "timeStamp"}>{message.createdAt}</div> */}
 								</div>
 							)
