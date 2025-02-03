@@ -163,6 +163,11 @@ body {
 	background-color: rgb(179, 250, 250);
 }
 
+.header {
+	position: sticky;
+	background-color: #64ff7e;
+}
+
 .lobbyUser {
 	display: flex;
 	align-items: center;
@@ -193,5 +198,10 @@ body {
 
 .image {
 	width: 320px;
-	height: 180px; 
+	height: 180px;
+}
+
+.displayedImage {
+	width: 100%;
+	object-fit: contain;
 }

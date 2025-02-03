@@ -301,6 +301,7 @@ function App() {
 				authentified as {auth?.currentUser?.email}<br />
 				user ID: {auth?.currentUser?.uid}
 				<button onClick={logout}>Disconnect</button>
+				<Header/>
 				{/* Mettre les props dans un objet unique */}
 				<Chatroom props={props} ></Chatroom>
 				<div ref={scrollHere}></div>
