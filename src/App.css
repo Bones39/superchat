@@ -198,7 +198,8 @@ body {
 
 .image {
 	width: 320px;
-	height: 180px;
+	/** Do not put height so that images fit all the div*/
+	/* height: 180px; */ 
 }
 
 .displayedImage {
