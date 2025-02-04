@@ -15,7 +15,7 @@ import Header from './components/Header'
 // todo
 /* 
  ------------- EN COURs --------------------
- - creer une fonction qui deconnecte les utilisateurs inactifs (pas l'utilisateur actuel)
+ - creer une fonction qui deconnecte les utilisateurs inactifs (pas l'utilisateur actuel) -> could function
 - ajouter les whiiiz
 - ajouter les reactions aux messages (smiley)
 - corriger la taille des images
@@ -287,7 +287,7 @@ function App() {
 		});
 
 		// check if any user is to be disconnected and the check every 30 min
-		automaticDisconnect();
+		// automaticDisconnect();
 		// set up an interval to check for inactive users and disconnect them automatically
 		intervalId.current = setInterval(()=> {
 			console.log("30sec spent");

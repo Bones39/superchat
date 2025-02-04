@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { auth } from '../firebaseConfig'
 import firebase from 'firebase/compat/app'
 import { CiImageOn } from "react-icons/ci";
 
 const Chatroom = ({props}) => {
 	const {messages, formValue, sendMessage, sendImage, typing, dummy} = props;
+	// const [ref, hovering] = useHover();
+  	const [hoverTime, setHoverTime] = useState(0);
+	const [hovered, setHovered] = useState(false); // use a ref to avoid rerender
 
 	useEffect(() => {
 		// scroll to the end of the page when the user connects
@@ -20,6 +23,30 @@ const Chatroom = ({props}) => {
 		})
 
 		reader.readAsDataURL(file);
+	}
+
+	const onHover = () => {
+		/* const timeoutId = useTimeout(() => {
+			setHoverTime((prevTime) => prevTime + 1);
+		}, 1000); // Increment the hover time every second
+	
+		return () => {
+		clearTimeout(timeoutId);
+		}; */
+		console.log("Hovered!");
+		setHovered(true);
+	}
+
+	const onLeave = () => {
+		/* const timeoutId = useTimeout(() => {
+			setHoverTime((prevTime) => prevTime + 1);
+		}, 1000); // Increment the hover time every second
+	
+		return () => {
+		clearTimeout(timeoutId);
+		}; */
+		console.log("Leaved!");
+		setHovered(false);
 	}
 
 	return(
@@ -38,7 +65,8 @@ const Chatroom = ({props}) => {
 							return (
 								<div className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
 									<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${message.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>{message.allias}</div>
-									{!message.type && <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>}
+									{!message.type && <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave}>{message.text}</div>}
+									<div>TEST</div>
 									{/* {(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image`} key={message.id}><img src={message.text} alt="Base64 Image" /></div>} */}
 									{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image`} key={message.id}><img className="displayedImage" src={message.text} alt="Base64 Image" /></div>}
 									<div className='timeStamp'key={message.id + "timeStamp"}>{formatedDate}</div>
@@ -51,6 +79,7 @@ const Chatroom = ({props}) => {
 									{!message.type && <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id}>{message.text}</div>}
 									{/* {(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image`} key={message.id}><img src={message.text} alt="Base64 Image" /></div>} */}
 									{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image`} key={message.id}><img className="displayedImage" src={message.text} alt="Base64 Image" /></div>}
+									<div>TEST</div>
 									<div className={`timeStamp ${message.uid === auth.currentUser.uid ? "alignRight " : ""}`} key={message.id + "timeStamp"}>{formatedDate}</div>
 									{/* <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id + "timeStamp"}>{message.createdAt}</div> */}
 								</div>
