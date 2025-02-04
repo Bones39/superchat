@@ -15,6 +15,7 @@ import Header from './components/Header'
 // todo
 /* 
  ------------- EN COURs --------------------
+ - creer une fonction qui deconnecte les utilisateurs inactifs (pas l'utilisateur actuel)
 - ajouter les whiiiz
 - ajouter les reactions aux messages (smiley)
 - corriger la taille des images
@@ -152,7 +153,10 @@ function App() {
 				// await deleteDoc(doc(firestoreDb, "connected", doc.id));
 				await deleteDoc(doc.ref/* doc(firestoreDb, "connected", auth?.currentUser?.email) */);
 				console.log(`user ${doc.id} should be loged out!`);
+				// this logout the current user
 				logout();
+			} else {
+				console.log(`user ${doc.id} should be loged out! but do it server side!`);
 			}
 		});
 	}
@@ -282,6 +286,8 @@ function App() {
 			updateConnectionState();
 		});
 
+		// check if any user is to be disconnected and the check every 30 min
+		automaticDisconnect();
 		// set up an interval to check for inactive users and disconnect them automatically
 		intervalId.current = setInterval(()=> {
 			console.log("30sec spent");
