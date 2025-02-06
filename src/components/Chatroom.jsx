@@ -3,6 +3,7 @@ import { auth } from '../firebaseConfig'
 import firebase from 'firebase/compat/app'
 import { CiImageOn } from "react-icons/ci";
 import { confirmPasswordReset } from 'firebase/auth';
+import { FaLess } from 'react-icons/fa';
 
 const Chatroom = ({props}) => {
 	const {messages, formValue, sendMessage, sendImage, typing, dummy} = props;
@@ -11,18 +12,27 @@ const Chatroom = ({props}) => {
 	// const [hovered, setHovered] = useState(false); // use a ref to avoid rerender
 	const timeoutId = useRef(null);
 	const controllerRef = useRef();
+	const hoveredRef = useRef(false);
 
 	useEffect(() => {
-		const controller = controllerRef.current;
-		const { signal } = controller;
 		// scroll to the end of the page when the user connects
 		dummy?.current?.scrollIntoView();
+	}, [])
+
+	useEffect(() => {
+		const controller = new AbortController();
+		controllerRef.current = controller;
+		hoveredRef.current = false;
+		const { signal } = controller;
 
 		signal.addEventListener("abort", (event) => {
 			console.log("aborted: " + event.target.reason)
 			clearTimeout(timeoutId);
 		})
-	})
+		return (()=>{
+			controller.abort("component unmounted");
+		})
+	}, [hoveredRef])
 
 /* 	const loadFile = (e) => {
 		const file = e.target.files[0];
@@ -38,11 +48,12 @@ const Chatroom = ({props}) => {
 	//Source for the abort controller concept: https://www.youtube.com/shorts/VEdiHbjgIK4
 
 	const onHover = () => {
-		controllerRef.current = new AbortController();
+
+		console.log("hoverd!");
 		const timeoutId = setTimeout(() => {
 			// setHoverTime((prevTime) => prevTime + 1);
 			if (controllerRef.current && !controllerRef.current.aborted) {
-				console.log("timed out!");
+				controllerRef.current.abort("time out completed");
 			}
 		}, 2000); // Increment the hover time every second
 	
@@ -52,11 +63,13 @@ const Chatroom = ({props}) => {
 	}
 
 	const onLeave = () => {
+		console.log("leaved")
 		if (controllerRef.current && !controllerRef.current.aborted) {
 			controllerRef.current.abort("leaved the element");
-			clearTimeout(timeoutId);
+			// clearTimeout(timeoutId);
 		}
-		console.log("Leaved!");
+		hoveredRef.current = false;
+		// console.log("Leaved!");
 		// setHovered(false);
 	}
 
