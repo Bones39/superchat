@@ -13,13 +13,14 @@ const Chatroom = ({props}) => {
 	const timeoutId = useRef(null);
 	const controllerRef = useRef();
 	const hoveredRef = useRef(false);
+	const dummyRef = useRef();
 
 	useEffect(() => {
 		// scroll to the end of the page when the user connects
-		dummy?.current?.scrollIntoView();
-	}, [])
+		dummyRef?.current?.scrollIntoView();
+	}, [messages])
 
-	useEffect(() => {
+	/* useEffect(() => {
 		const controller = new AbortController();
 		controllerRef.current = controller;
 		hoveredRef.current = false;
@@ -32,7 +33,7 @@ const Chatroom = ({props}) => {
 		return (()=>{
 			controller.abort("component unmounted");
 		})
-	}, [hoveredRef])
+	}, [hoveredRef]) */
 
 /* 	const loadFile = (e) => {
 		const file = e.target.files[0];
@@ -63,7 +64,7 @@ const Chatroom = ({props}) => {
 	}
 
 	const onLeave = () => {
-		console.log("leaved")
+		console.log("leaved");
 		if (controllerRef.current && !controllerRef.current.aborted) {
 			controllerRef.current.abort("leaved the element");
 			// clearTimeout(timeoutId);
@@ -111,7 +112,7 @@ const Chatroom = ({props}) => {
 						}
 					}
 				)}
-				<div ref={dummy}></div>
+				<div ref={dummyRef}></div>
 			</div>
 			{/** display the form*/}
 			<form className='messageInput' onSubmit={sendMessage}>

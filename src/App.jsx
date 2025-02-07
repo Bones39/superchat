@@ -57,7 +57,7 @@ function App() {
 	const [formValue, setFormValue] = useState("");
 	const { userIsLoggedIn, currentUser } = useAuth();
 
-	const dummy = useRef();
+	// const dummy = useRef();
 	const scrollHere = useRef();
 
 		// ------- related to chatroom -------
@@ -178,7 +178,7 @@ function App() {
 	
 			// reset the value in the input field once sent
 			setFormValue("");
-			dummy.current.scrollIntoView();
+			// dummy.current.scrollIntoView();
 			// when the message has been sent, the user is not considered typing anymore
 			/* await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
 				isTyping: false
@@ -211,7 +211,7 @@ function App() {
 	
 			// reset the value in the input field once sent
 			setFormValue("");
-			dummy.current.scrollIntoView();
+			// dummy.current.scrollIntoView();
 			// when the message has been sent, the user is not considered typing anymore
 			/* await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
 				isTyping: false
@@ -249,7 +249,7 @@ function App() {
 
 	const props = {
 		messages,
-		dummy,
+		// dummy,
 		sendMessage,
 		sendImage,
 		formValue,
