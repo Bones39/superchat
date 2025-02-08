@@ -17,7 +17,8 @@ import Header from './components/Header'
  ------------- EN COURs --------------------
  - creer une fonction qui deconnecte les utilisateurs inactifs (pas l'utilisateur actuel) -> could function
 - ajouter les whiiiz
-- ajouter les reactions aux messages (smiley)
+- ajouter les reactions aux messages (smiley) EN COURS
+	- voir la vidéo pour faire apparaitre le barre de smiley https://www.youtube.com/watch?v=DNXEORSk4GU&t=616s
 - corriger la taille des images
 	- afficher les images dans un contenaire a taille fixe et adapter la taille de l'image a ce contenaire
 - ajouter le scroll pour consulter les anciens messages
