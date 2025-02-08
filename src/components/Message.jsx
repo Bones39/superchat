@@ -5,7 +5,6 @@ import Reactions from './Reactions';
 const Message = ({props}) => {
 	const {messages, message, index} = props;
 	const [abortController, setAbortController] = useState(new AbortController());
-	const [visible, setVisible] = useState(false);
 	const [messageHovered, setMessageHovered] = useState(false);
 	const [selectingReaction, setSelectingReaction] = useState(false)
 
@@ -20,11 +19,14 @@ const Message = ({props}) => {
 			clearTimeout(timeoutId);
 		})
 		clearTimeout(fadingTimeoutId);
+
+		// return (() => {clearTimeout(fadingTimeoutId)})
 	}, [abortController])
 	
 	//Source for the abort controller concept: https://www.youtube.com/shorts/VEdiHbjgIK4
 
 	const onHover = () => {
+		clearTimeout(fadingTimeoutId);
 		timeoutId = setTimeout(() => {
 			setMessageHovered(true);
 			if (abortController && !abortController.signal.aborted) {
@@ -32,21 +34,19 @@ const Message = ({props}) => {
 				setMessageHovered(true);
 			}
 			setAbortController(new AbortController());
-		}, 500); // Increment the hover time every second
+		}, 500);
 	}
 
 	const onLeave = () => {
-		setMessageHovered(false);
 		if (!selectingReaction) {
 			fadingTimeoutId = setTimeout(() => {
 				// the visibility of the reactions is also manage on the Reaction child component
 				setMessageHovered(false);
-			}, 2000);
+			}, 1000);
 		}
 		if (abortController && !abortController.signal.aborted) {
 			abortController.abort("leaved the element");
 			setAbortController(new AbortController());
-			// setVisible(false);
 		}
 	}
 
@@ -63,7 +63,7 @@ const Message = ({props}) => {
 			{bDisplayUserPicture && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${message.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>{message.allias}</div>}
 			{!message.type && <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave}>{message.text}</div>}
 			{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave}><img className="displayedImage" src={message.text} alt="Base64 Image" /></div>}
-			<div className={`${message.uid === auth.currentUser.uid ? "right " : "left"}`}><Reactions props={{messageHovered, setMessageHovered, visible, setVisible, selectingReaction, setSelectingReaction}}/></div>
+			<div className={`${message.uid === auth.currentUser.uid ? "right " : "left"}`}><Reactions props={{messageHovered, selectingReaction, setSelectingReaction}}/></div>
 			{/* <div className={`${visible? "visible" : "hidden"} ${message.uid === auth.currentUser.uid ? "right " : "left"}`}>{'😄 😥 🤬'}</div> */}
 			<div className={`timeStamp ${message.uid === auth.currentUser.uid ? "alignRight " : ""}`} key={message.id + "timeStamp"}>{formatedDate}</div>
 		</div>
