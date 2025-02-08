@@ -6,45 +6,28 @@ import { confirmPasswordReset } from 'firebase/auth';
 import { FaLess } from 'react-icons/fa';
 
 const Chatroom = ({props}) => {
-	const {messages, formValue, sendMessage, sendImage, typing, dummy} = props;
-	// const [ref, hovering] = useHover();
-  	// const [hoverTime, setHoverTime] = useState(0);
-	// const [hovered, setHovered] = useState(false); // use a ref to avoid rerender
+	const {messages, formValue, sendMessage, sendImage, typing} = props;
 	const timeoutId = useRef(null);
 	const controllerRef = useRef();
-	const hoveredRef = useRef(false);
 	const dummyRef = useRef();
+	const [abortController, setAbortController] = useState(new AbortController());
+	const [visible, setVisible] = useState(false);
 
 	useEffect(() => {
 		// scroll to the end of the page when the user connects
 		dummyRef?.current?.scrollIntoView();
 	}, [messages])
 
-	/* useEffect(() => {
-		const controller = new AbortController();
-		controllerRef.current = controller;
-		hoveredRef.current = false;
-		const { signal } = controller;
+	useEffect(() => {
+		/* const controller = new AbortController();
+		controllerRef.current = controller; */
+		const { signal } = abortController;
 
 		signal.addEventListener("abort", (event) => {
 			console.log("aborted: " + event.target.reason)
 			clearTimeout(timeoutId);
 		})
-		return (()=>{
-			controller.abort("component unmounted");
-		})
-	}, [hoveredRef]) */
-
-/* 	const loadFile = (e) => {
-		const file = e.target.files[0];
-		const reader = new FileReader();
-
-		reader.addEventListener("load", () => {
-			console.log(reader.result)
-		})
-
-		reader.readAsDataURL(file);
-	} */
+	}, [abortController])
 
 	//Source for the abort controller concept: https://www.youtube.com/shorts/VEdiHbjgIK4
 
@@ -52,26 +35,21 @@ const Chatroom = ({props}) => {
 
 		console.log("hoverd!");
 		const timeoutId = setTimeout(() => {
-			// setHoverTime((prevTime) => prevTime + 1);
-			if (controllerRef.current && !controllerRef.current.aborted) {
-				controllerRef.current.abort("time out completed");
+			if (abortController && !abortController.signal.aborted) {
+				abortController.abort("time out completed");
+				setVisible(true);
 			}
-		}, 2000); // Increment the hover time every second
-	
-		return () => {
-			clearTimeout(timeoutId);
-		};
+			setAbortController(new AbortController());
+		}, 800); // Increment the hover time every second
 	}
 
 	const onLeave = () => {
 		console.log("leaved");
-		if (controllerRef.current && !controllerRef.current.aborted) {
-			controllerRef.current.abort("leaved the element");
-			// clearTimeout(timeoutId);
+		if (abortController && !abortController.signal.aborted) {
+			abortController.abort("leaved the element");
+			setAbortController(new AbortController());
+			setVisible(false);
 		}
-		hoveredRef.current = false;
-		// console.log("Leaved!");
-		// setHovered(false);
 	}
 
 	return(
@@ -91,7 +69,7 @@ const Chatroom = ({props}) => {
 								<div className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
 									<div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${message.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>{message.allias}</div>
 									{!message.type && <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave}>{message.text}</div>}
-									<div>TEST</div>
+									<div className={visible? "visible" : "hidden"}>TEST</div>
 									{/* {(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image`} key={message.id}><img src={message.text} alt="Base64 Image" /></div>} */}
 									{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image`} key={message.id}><img className="displayedImage" src={message.text} alt="Base64 Image" /></div>}
 									<div className='timeStamp'key={message.id + "timeStamp"}>{formatedDate}</div>
@@ -104,7 +82,7 @@ const Chatroom = ({props}) => {
 									{!message.type && <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave}>{message.text}</div>}
 									{/* {(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image`} key={message.id}><img src={message.text} alt="Base64 Image" /></div>} */}
 									{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image`} key={message.id}><img className="displayedImage" src={message.text} alt="Base64 Image" /></div>}
-									<div>TEST</div>
+									<div className={visible? "visible" : "hidden"}>TEST</div>
 									<div className={`timeStamp ${message.uid === auth.currentUser.uid ? "alignRight " : ""}`} key={message.id + "timeStamp"}>{formatedDate}</div>
 									{/* <div className={message.uid === auth.currentUser.uid ? "sent" : "received"} key={message.id + "timeStamp"}>{message.createdAt}</div> */}
 								</div>

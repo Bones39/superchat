@@ -206,3 +206,11 @@ body {
 	width: 100%;
 	object-fit: contain;
 }
+
+.visible {
+	color: red;
+}
+
+.hidden {
+	display: none;
+}
