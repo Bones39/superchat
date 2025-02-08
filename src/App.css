@@ -207,10 +207,19 @@ body {
 	object-fit: contain;
 }
 
-.visible {
-	color: red;
+.horizontalLayout {
+	display: flex;
+	flex-direction: row;
+}
+
+.setVisibleOnSelection {
+	opacity: 1;
 }
 
 .hidden {
-	display: none;
+	/* display: none; */
+	height: 0;
+	opacity: 0;
+	transition: opacity 0.5s ease, height 0.5s ease;
+	/* visibility: hidden; */
 }
