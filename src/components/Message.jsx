@@ -16,34 +16,36 @@ const Message = ({props}) => {
 		})
 	}, [abortController])
 	
-		//Source for the abort controller concept: https://www.youtube.com/shorts/VEdiHbjgIK4
-	
-		const onHover = () => {
-	
-			console.log("hoverd!");
-			const timeoutId = setTimeout(() => {
-				if (abortController && !abortController.signal.aborted) {
-					abortController.abort("time out completed");
-					setVisible(true);
-				}
-				setAbortController(new AbortController());
-			}, 800); // Increment the hover time every second
-		}
-	
-		const onLeave = () => {
-			console.log("leaved");
-			if (abortController && !abortController.signal.aborted) {
-				abortController.abort("leaved the element");
-				setAbortController(new AbortController());
-				setVisible(false);
-			}
-		}
+	//Source for the abort controller concept: https://www.youtube.com/shorts/VEdiHbjgIK4
 
-	if(!message || !auth.currentUser) return(<></>);
+	const onHover = () => {
+
+		console.log("hoverd!");
+		const timeoutId = setTimeout(() => {
+			if (abortController && !abortController.signal.aborted) {
+				abortController.abort("time out completed");
+				setVisible(true);
+			}
+			setAbortController(new AbortController());
+		}, 800); // Increment the hover time every second
+	}
+
+	const onLeave = () => {
+		console.log("leaved");
+		if (abortController && !abortController.signal.aborted) {
+			abortController.abort("leaved the element");
+			setAbortController(new AbortController());
+			setVisible(false);
+		}
+	}
+
 	let bDisplayUserPicture = (index !== 0 && messages[index-1].uid !== message.uid && message.uid !== auth.currentUser.uid)
 		|| (index === 0 && message.uid !== auth.currentUser.uid);
 	const date = new Date((message.createdAt?.seconds ? message.createdAt.seconds : firebase.firestore.FieldValue.serverTimestamp()) * 1000);
 	const formatedDate = `${date.toLocaleString()}`
+	
+	if (!message || !auth.currentUser) return(<></>);
+
 	return (
 		<div className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
 			{/* display the picture above the message if the first message is not from the current user or if a message comes after a message which is not his */}
