@@ -210,6 +210,7 @@ body {
 .horizontalLayout {
 	display: flex;
 	flex-direction: row;
+	cursor: pointer;
 }
 
 .setVisibleOnSelection {
@@ -217,9 +218,17 @@ body {
 }
 
 .hidden {
-	/* display: none; */
+	display: none;
 	height: 0;
 	opacity: 0;
 	transition: opacity 0.5s ease, height 0.5s ease;
 	/* visibility: hidden; */
+}
+
+.smiley {
+	transition: transform 0.5s ease;
+}
+
+.smiley:hover {
+	transform: translate(0, -5px);
 }

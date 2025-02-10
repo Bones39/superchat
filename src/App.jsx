@@ -15,16 +15,19 @@ import Header from './components/Header'
 // todo
 /* 
  ------------- EN COURs --------------------
+  - ajouter les reactions aux messages (smiley)
+	- permettre d'ajouter des smileys OK
+	- stocker les infos du smiley en base EN COURS
  - creer une fonction qui deconnecte les utilisateurs inactifs (pas l'utilisateur actuel) -> could function
+	- corriger la deconnexion quand on refresh
 - ajouter les whiiiz
-- ajouter les reactions aux messages (smiley) EN COURS
-	- voir la vidéo pour faire apparaitre la barre de smiley https://www.youtube.com/watch?v=DNXEORSk4GU&t=616s
-- corriger la taille des images
-	- afficher les images dans un contenaire a taille fixe et adapter la taille de l'image a ce contenaire
+- voir la vidéo pour faire apparaitre la barre de smiley https://www.youtube.com/watch?v=DNXEORSk4GU&t=616s
 - ajouter le scroll pour consulter les anciens messages
 - permettre d'envoyer des gifs
 - Modifier la page d'accueil pour ne prendre en compte que le nom
  ------------- FAIT --------------------
+ - corriger la taille des images OK
+	- afficher les images dans un contenaire a taille fixe et adapter la taille de l'image a ce contenaire OK
  - corriger la place de la date d'envoi de message reçu OK
 - prendre en compte la date de derniere activité OK
 	- deconnecter les utilisateurs inactifs OK
