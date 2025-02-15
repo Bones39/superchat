@@ -16,8 +16,9 @@ import Header from './components/Header'
 /* 
  ------------- EN COURs --------------------
   - ajouter les reactions aux messages (smiley)
-	- faire apparaitre les smileys lorsqu'on clique sur le message, non plus quand on le survole
-	- permettre d'ajouter des smileys OK
+	- gérer le cas où on quitte et on revient sur le message en hover, le timout doiut etre reset pour que les reactions restent affichées
+	- faire apparaitre les smileys lorsqu'on clique sur le message, non plus quand on le survole OK
+	- permettre d'ajouter des smileys
 	- stocker les infos du smiley en base EN COURS
  - creer une fonction qui deconnecte les utilisateurs inactifs (pas l'utilisateur actuel) -> could function
 	- corriger la deconnexion quand on refresh
@@ -235,7 +236,7 @@ function App() {
 			// set a time out to set typing to false after 3 sec
 			setTimeout(async () => {
 				await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
-					isTyping: false
+						isTyping: false
 					},
 					{ merge: true }
 				);
