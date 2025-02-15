@@ -217,6 +217,15 @@ body {
 	opacity: 1;
 }
 
+.message {
+	transition: transform 0.5s linear;
+}
+
+.message:hover {
+	box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+	transform: translate(0, -2px);
+}
+ 
 .hidden {
 	display: none;
 	height: 0;

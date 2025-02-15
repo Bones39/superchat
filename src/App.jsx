@@ -16,6 +16,7 @@ import Header from './components/Header'
 /* 
  ------------- EN COURs --------------------
   - ajouter les reactions aux messages (smiley)
+	- faire apparaitre les smileys lorsqu'on clique sur le message, non plus quand on le survole
 	- permettre d'ajouter des smileys OK
 	- stocker les infos du smiley en base EN COURS
  - creer une fonction qui deconnecte les utilisateurs inactifs (pas l'utilisateur actuel) -> could function
