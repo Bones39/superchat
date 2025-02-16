@@ -16,10 +16,11 @@ import Header from './components/Header'
 /* 
  ------------- EN COURs --------------------
   - ajouter les reactions aux messages (smiley)
-	- gérer le cas où on quitte et on revient sur le message en hover, le timout doiut etre reset pour que les reactions restent affichées
+	- gérer le cas où on quitte et on revient sur le message en hover, le timout doit etre reset pour que les reactions restent affichées
 	- faire apparaitre les smileys lorsqu'on clique sur le message, non plus quand on le survole OK
-	- permettre d'ajouter des smileys
-	- stocker les infos du smiley en base EN COURS
+	- permettre d'ajouter des smileys OK
+	- permettre de supprimer des smileys (les siens)
+	- stocker les infos du smiley en base OK
  - creer une fonction qui deconnecte les utilisateurs inactifs (pas l'utilisateur actuel) -> could function
 	- corriger la deconnexion quand on refresh
 - ajouter les whiiiz

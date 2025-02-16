@@ -15,15 +15,15 @@ const Message = ({props}) => {
 	const messagesRef = collection(firestoreDb, 'messages');
 	const messageQuery = query(messagesRef, where("id", "==", message.id));
 
-	let timeoutId = useRef();
+	// let timeoutId = useRef();
 	let fadingTimeoutId = useRef();
 
 	useEffect(() => {
 		const { signal } = abortController;
 
 		signal.addEventListener("abort", (event) => {
-			console.log("aborted: " + event.target.reason)
-			clearTimeout(timeoutId);
+			console.log("aborted: " + event.target.reason + " id: " + fadingTimeoutId)
+			clearTimeout(fadingTimeoutId);
 		})
 		clearTimeout(fadingTimeoutId);
 
@@ -33,8 +33,11 @@ const Message = ({props}) => {
 	//Source for the abort controller concept: https://www.youtube.com/shorts/VEdiHbjgIK4
 
 	const onHover = () => {
-		console.log("hovered!")
+		console.log("hovered!");
+		abortController.abort("entered the element");
+		clearTimeout(fadingTimeoutId);
 		setMessageHovered(true);
+		setAbortController(new AbortController())
 	}
 			
 	const onMessageClick = () => {
@@ -50,6 +53,7 @@ const Message = ({props}) => {
 				// the visibility of the reactions is also manage on the Reaction child component
 				// setMessageHovered(false);
 				setDisplayReaction(false);
+				console.log("time out completed!")
 			}, 1000);
 		}
 		if (abortController && !abortController.signal.aborted) {
