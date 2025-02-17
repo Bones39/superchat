@@ -210,7 +210,15 @@ body {
 .horizontalLayout {
 	display: flex;
 	flex-direction: row;
+}
+
+.selectable {
 	cursor: pointer;
+}
+
+.selectable:hover {
+	transform: translate(0, -2px);
+	/* box-shadow: 3px 3px 8px 1px rgba(27, 27, 27, 0.2); */
 }
 
 .setVisibleOnSelection {

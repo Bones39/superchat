@@ -2,6 +2,7 @@ import { collection, doc, getDocs, setDoc, query, where, updateDoc, arrayUnion, 
 import { useEffect, useRef, useState } from 'react';
 import { auth, firestoreDb } from '../firebaseConfig';
 import Reactions from './Reactions';
+import firebase from 'firebase/compat/app'
 
 const Message = ({props}) => {
 	const {messages, message, index} = props;
@@ -67,10 +68,27 @@ const Message = ({props}) => {
 		// const querySnapshot = await getDocs(messageQuery);
 		const messageDocRef = doc(firestoreDb, "messages", message.id);
 		await setDoc(messageDocRef, {
-				reactions: arrayUnion(smiley)
+				reactions: arrayUnion(`${smiley},${auth.currentUser.uid}`)
 			},
 			{merge: true}
 		)
+	}
+
+	// remove the reaction from the database
+	const removeReaction = async (message, clickedSmiley) => {
+		// const querySnapshot = await getDocs(messageQuery);
+		/* const messageDocRef = doc(firestoreDb, "messages", message.id);
+		await setDoc(messageDocRef, {
+				reactions: arrayUnion(`${smiley},${auth.currentUser.uid}`)
+			},
+			{merge: true}
+		) */
+	// carefull, it is not really a smiley, it is an array
+		let updatedReactionsArray = message.reactions.filter((smiley) => clickedSmiley !== smiley);
+		const messageDocRef = doc(firestoreDb, "messages", message.id);
+		await updateDoc(messageDocRef, {
+			reactions: updatedReactionsArray
+		});
 	}
 
 	let bDisplayUserPicture = (index !== 0 && messages[index-1].uid !== message.uid && message.uid !== auth.currentUser.uid)
@@ -86,8 +104,10 @@ const Message = ({props}) => {
 			{bDisplayUserPicture && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${message.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>{message.allias}</div>}
 			{!message.type && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}>{message.text}</div>}
 			{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}><img className="displayedImage" src={message.text} alt="Base64 Image"/></div>}
-			{message.reactions && <div className='horizontalLayout'>{message.reactions.map((smiley) => <div>{smiley}</div>)}</div>}
-			<div className={`${message.uid === auth.currentUser.uid ? "right " : "left"}`}><Reactions props={{displayReaction, selectingReaction, setSelectingReaction, selectedReaction, saveReaction}}/></div>
+			{/* display selected reactions */}
+			{message.reactions && <div className='horizontalLayout'>{message.reactions.map((smiley) => <div key={`reaction-${smiley}`} className={`${smiley.split(",")[1] === auth.currentUser.uid ? "selectable" : ""}`} onClick={smiley.split(",")[1] === auth.currentUser.uid? () => removeReaction(message, smiley) : null}>{smiley.split(",")[0]}</div>)}</div>}
+			{/* display the avalaible reactions */}
+			<div className={`${message.uid === auth.currentUser.uid ? "right " : "left"} selectable`}><Reactions props={{displayReaction, selectingReaction, setSelectingReaction, selectedReaction, saveReaction}}/></div>
 			<div className={`timeStamp ${message.uid === auth.currentUser.uid ? "alignRight " : ""}`} key={message.id + "timeStamp"}>{formatedDate}</div>
 		</div>
 	)
