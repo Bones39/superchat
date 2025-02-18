@@ -5,7 +5,7 @@ import Reactions from './Reactions';
 import firebase from 'firebase/compat/app'
 
 const Message = ({props}) => {
-	const {messages, message, index} = props;
+	const {messages, message, index, setScrollIntoView} = props;
 	const [abortController, setAbortController] = useState(new AbortController());
 	const [messageHovered, setMessageHovered] = useState(false);
 	const [displayReaction, setDisplayReaction] = useState(false);
@@ -66,6 +66,7 @@ const Message = ({props}) => {
 	// save the reaction in the database
 	const saveReaction = async (smiley) => {
 		// const querySnapshot = await getDocs(messageQuery);
+		setScrollIntoView(false);
 		const messageDocRef = doc(firestoreDb, "messages", message.id);
 		await setDoc(messageDocRef, {
 				reactions: arrayUnion(`${smiley},${auth.currentUser.uid}`)

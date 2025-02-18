@@ -74,6 +74,7 @@ function App() {
 	const [messages, setMessages] = useState([]);
 	const [isTyping, setIsTyping] = useState(false);
 	const [isInactive, SetIsInactive] = useState(false);
+	const [scrollIntoView, setScrollIntoView] = useState(true);
 	let timerId = useRef(null);
 	let intervalId = useRef(null);
 	// set the inactivity time upon deconnexion
@@ -185,6 +186,7 @@ function App() {
 	
 			// reset the value in the input field once sent
 			setFormValue("");
+			setScrollIntoView(true);
 			// dummy.current.scrollIntoView();
 			// when the message has been sent, the user is not considered typing anymore
 			/* await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
@@ -260,7 +262,9 @@ function App() {
 		sendMessage,
 		sendImage,
 		formValue,
-		typing
+		typing,
+		setScrollIntoView,
+		scrollIntoView
 	}
 
 	const signInProps = {

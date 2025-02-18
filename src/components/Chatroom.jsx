@@ -1,14 +1,16 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CiImageOn } from "react-icons/ci";
 import Message from "./Message";
 
 const Chatroom = ({props}) => {
-	const {messages, formValue, sendMessage, sendImage, typing} = props;
+	const {messages, formValue, sendMessage, sendImage, typing, setScrollIntoView, scrollIntoView} = props;
 	const dummyRef = useRef();
 
 	useEffect(() => {
-		// scroll to the end of the page when the user connects
-		dummyRef?.current?.scrollIntoView();
+		// scroll to the end of the page when the user connects only when needed
+		if (scrollIntoView) {
+			dummyRef?.current?.scrollIntoView();
+		}
 	}, [messages])
 
 	return(
@@ -17,7 +19,7 @@ const Chatroom = ({props}) => {
 				{/* // chat room */}
 				{messages && messages.map((message, index) =>
 					{
-						return <Message props={{messages, message, index}} key={message.id}></Message>
+						return <Message props={{messages, message, index, setScrollIntoView, scrollIntoView}} key={message.id}></Message>
 					}
 				)}
 				<div ref={dummyRef}></div>
