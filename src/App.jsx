@@ -15,6 +15,8 @@ import Header from './components/Header'
 // todo
 /* 
  ------------- EN COURs --------------------
+ - ajouter les whiiiz EN COURS
+	- envoyer les users wizzed via le serveur
   - ajouter les reactions aux messages (smiley)
 	- gérer le cas où on quitte et on revient sur le message en hover, le timout doit etre reset pour que les reactions restent affichées
 	- faire apparaitre les smileys lorsqu'on clique sur le message, non plus quand on le survole OK
@@ -23,12 +25,11 @@ import Header from './components/Header'
 	- stocker les infos du smiley en base OK
  - creer une fonction qui deconnecte les utilisateurs inactifs (pas l'utilisateur actuel) -> could function
 	- corriger la deconnexion quand on refresh
-- ajouter les whiiiz
 - voir la vidéo pour faire apparaitre la barre de smiley https://www.youtube.com/watch?v=DNXEORSk4GU&t=616s
 - ajouter le scroll pour consulter les anciens messages
-- permettre d'envoyer des gifs
 - Modifier la page d'accueil pour ne prendre en compte que le nom
- ------------- FAIT --------------------
+------------- FAIT --------------------
+- permettre d'envoyer des gifs OK
  - corriger la taille des images OK
 	- afficher les images dans un contenaire a taille fixe et adapter la taille de l'image a ce contenaire OK
  - corriger la place de la date d'envoi de message reçu OK
@@ -75,10 +76,11 @@ function App() {
 	const [isTyping, setIsTyping] = useState(false);
 	const [isInactive, SetIsInactive] = useState(false);
 	const [scrollIntoView, setScrollIntoView] = useState(true);
+	const [wizzedUser, setWizzedUser] = useState("");
 	let timerId = useRef(null);
 	let intervalId = useRef(null);
 	// set the inactivity time upon deconnexion
-	const inactivityDelayMinutes = 30;
+	const inactivityDelayMinutes = 60;
 	
 	// ------- related to Lobby -------
 	const connectedRef = collection(firestoreDb, 'connected');
@@ -277,7 +279,8 @@ function App() {
 	}
 
 	const lobbyProps = {
-		connected
+		connected,
+		setWizzedUser
 	}
 
 	useEffect(() => {
@@ -306,6 +309,8 @@ function App() {
 		}, inactivityDelayMinutes*60*1000)
 		// the use effect is called only once, ie when the connection page appears (not called again if the user connect unless some dependencies are put in the dep array)
 		// scrollHere?.current?.scrollIntoView();
+
+		// if (auth?.currentUser?.email === wizzedUser) 
 		return () => clearInterval(intervalId.current);
 	}, [])
 
@@ -315,6 +320,7 @@ function App() {
 			// component chat room
 			userIsLoggedIn?
 			<div>
+				{auth?.currentUser?.email === wizzedUser && <div className='wizzNotification'>You Have been wizzed!</div>}
 				authentified as {auth?.currentUser?.email}<br />
 				user ID: {auth?.currentUser?.uid}
 				<button onClick={logout}>Disconnect</button>
