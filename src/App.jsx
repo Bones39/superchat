@@ -76,7 +76,6 @@ function App() {
 	const [isTyping, setIsTyping] = useState(false);
 	const [isInactive, SetIsInactive] = useState(false);
 	const [scrollIntoView, setScrollIntoView] = useState(true);
-	const [wizzedUser, setWizzedUser] = useState("");
 	let timerId = useRef(null);
 	let intervalId = useRef(null);
 	// set the inactivity time upon deconnexion
@@ -279,8 +278,7 @@ function App() {
 	}
 
 	const lobbyProps = {
-		connected,
-		setWizzedUser
+		connected
 	}
 
 	useEffect(() => {
@@ -320,7 +318,6 @@ function App() {
 			// component chat room
 			userIsLoggedIn?
 			<div>
-				{auth?.currentUser?.email === wizzedUser && <div className='wizzNotification'>You Have been wizzed!</div>}
 				authentified as {auth?.currentUser?.email}<br />
 				user ID: {auth?.currentUser?.uid}
 				<button onClick={logout}>Disconnect</button>
