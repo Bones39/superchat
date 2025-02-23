@@ -35,7 +35,6 @@ const Lobby = ({props}) => {
 	const hideWiizNotification = () => {
 		setTimeout(() => {
 			setDisplayNotif(false);
-			console.log("hide!");
 		}, notificationDisplayTimeSeconde*1000)
 	}
 
