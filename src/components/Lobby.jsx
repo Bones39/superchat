@@ -3,6 +3,7 @@ import { auth, firestoreDb } from '../firebaseConfig'
 import { addDoc, collection, query, onSnapshot, where } from 'firebase/firestore'
 import { useEffect, useState } from "react";
 import firebase from 'firebase/compat/app'
+import Wiiz from './Wiiz';
 
 const Lobby = ({props}) => {
 	const {connected} = props;
@@ -17,6 +18,11 @@ const Lobby = ({props}) => {
 	let thresholdDate = new Date();
 	thresholdDate.setSeconds(thresholdDate.getSeconds() - delaySinceWiizSentSeconde);
 	let formattedThresholdDate = firebase.firestore.Timestamp.fromDate(thresholdDate);
+
+	const wiizProps = {
+		listOfWiizedUsers,
+		displayNotif
+	}
 
 	const sendWiiz = async (clickedUser) => {
 		await addDoc(wizzActionRef, {
@@ -46,9 +52,7 @@ const Lobby = ({props}) => {
 
 	return (
 		<>
-			{listOfWiizedUsers.map((wiiz) => {
-				if (auth?.currentUser?.email === wiiz.recepient && displayNotif) return <div className='wizzNotification' key={wiiz.id}>{`Wizzed by ${wiiz.sender}`}</div>
-			})}
+			<Wiiz wiizProps={wiizProps}></Wiiz>
 			<div className="lobby">
 				<div className="lobbyHeader">Connecté(s)</div>
 				{connected && connected.map((connectedUser) =>
