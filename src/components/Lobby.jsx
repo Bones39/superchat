@@ -14,10 +14,6 @@ const Lobby = ({props}) => {
 	const [listOfWiizedUsers, setListOfWizzedUsers] = useState([]);
 
 	let notificationDisplayTimeSeconde = 4;
-	let delaySinceWiizSentSeconde = 15;
-	let thresholdDate = new Date();
-	thresholdDate.setSeconds(thresholdDate.getSeconds() - delaySinceWiizSentSeconde);
-	let formattedThresholdDate = firebase.firestore.Timestamp.fromDate(thresholdDate);
 
 	const wiizProps = {
 		listOfWiizedUsers,

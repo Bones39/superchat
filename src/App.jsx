@@ -15,9 +15,14 @@ import Header from './components/Header'
 // todo
 /* 
  ------------- EN COURs --------------------
+ - corriger la connexion
+	- des fois l'utilisateur se deconnecte sans raison
  - ajouter les whiiiz EN COURS
-	- envoyer les users wizzed via le serveur
-  - ajouter les reactions aux messages (smiley)
+	- envoyer les users wizzed via le serveur OK
+	- corriger l'erreur de boucle infinie
+	- corriger le fait que des fois l'audio de la notif ne se lance pas de suite https://stackoverflow.com/questions/55026293/google-chrome-javascript-issue-in-getting-user-audio-the-audiocontext-was-not
+  	- pour l'animation du wiiz: https://www.youtube.com/watch?v=ZqLWNxsFz_o 
+  ajouter les reactions aux messages (smiley)
 	- gérer le cas où on quitte et on revient sur le message en hover, le timout doit etre reset pour que les reactions restent affichées
 	- faire apparaitre les smileys lorsqu'on clique sur le message, non plus quand on le survole OK
 	- permettre d'ajouter des smileys OK
