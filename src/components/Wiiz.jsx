@@ -9,7 +9,7 @@ import firebase from 'firebase/compat/app'
 
 const Wiiz = ({wiizProps}) => {
 	// --- PROPS ---
-	const {listOfWiizedUsers: wiizActions, displayNotif} = wiizProps;
+	const {listOfWiizedUsers: wiizActions, displayNotif, setDisplayNotif} = wiizProps;
 
 	const [play] = useSound(wiizSound, { volume: 0.08 });
 
@@ -24,18 +24,19 @@ const Wiiz = ({wiizProps}) => {
 	const cleanWiiz = (wiizId) => {
 		wizzCleanTimeOutId = setTimeout( async () => {
 			await deleteDoc(doc(firestoreDb, "wizzActions", wiizId));
+			setDisplayNotif(false);
 		}, 5000);
 	}
 
-	useEffect(() => {return () => clearTimeout(wizzCleanTimeOutId) },[])
+	// useEffect(() => {return () => clearTimeout(wizzCleanTimeOutId) },[])
 
 	return (
 		<div>
 			{wiizActions?.map((wiiz) => {
 				if (auth?.currentUser?.email === wiiz.recepient && wiiz.date < formattedThresholdDate && displayNotif) {
-					play();
-					cleanWiiz(wiiz.id);
-					return <div className='wizzNotification' key={wiiz.id}>{`Wizzed by ${wiiz.sender}`}</div>
+					// play();
+					// cleanWiiz(wiiz.id);
+					// return <div className='wizzNotification' key={wiiz.id}>{`Wizzed by ${wiiz.sender}`}</div>
 				}
 			})}
 		</div>

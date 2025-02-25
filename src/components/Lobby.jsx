@@ -17,7 +17,8 @@ const Lobby = ({props}) => {
 
 	const wiizProps = {
 		listOfWiizedUsers,
-		displayNotif
+		displayNotif,
+		setDisplayNotif
 	}
 
 	const sendWiiz = async (clickedUser) => {
@@ -40,7 +41,7 @@ const Lobby = ({props}) => {
 			console.log("display!");
 			setListOfWizzedUsers(wiizedUsers);
 			setDisplayNotif(true);
-			hideWiizNotification();
+			// hideWiizNotification();
 		});
 		return () => un();
 	}, [])
