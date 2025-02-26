@@ -10,7 +10,7 @@ const Lobby = ({props}) => {
 	const wizzActionRef = collection(firestoreDb, 'wizzActions');
 	const wizzActionQuery = query(wizzActionRef);
 
-	const [displayNotif, setDisplayNotif] = useState(false)
+	const [displayNotif, setDisplayNotif] = useState()
 	const [listOfWiizedUsers, setListOfWizzedUsers] = useState([]);
 
 	let notificationDisplayTimeSeconde = 4;

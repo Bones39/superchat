@@ -19,7 +19,8 @@ import Header from './components/Header'
 	- des fois l'utilisateur se deconnecte sans raison
  - ajouter les whiiiz EN COURS
  	- gerer le cas où la notif reste 1/2 sec
-		- tester de mettre un snapshot sur une queryr qui récupère la donnée filtrée par utilisateur et par date (utiliser le threshold)
+		- tester de mettre un snapshot sur une query qui récupère la donnée filtrée par utilisateur et par date (utiliser le threshold)
+	- mettre un boolean quand la ligne est lu et utiliser ce boolean pour dire si on affiche ou non le wiiz EN COURS 
 	- envoyer les users wizzed via le serveur OK
 	- corriger l'erreur de boucle infinie
 	- corriger le fait que des fois l'audio de la notif ne se lance pas de suite https://stackoverflow.com/questions/55026293/google-chrome-javascript-issue-in-getting-user-audio-the-audiocontext-was-not
