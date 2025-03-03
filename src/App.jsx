@@ -99,6 +99,7 @@ function App() {
 
 	const updateConnectionState = async (action) => {
 		if (action === "connection") {
+			// add the entry to the connected users table
 			await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
 				email: auth?.currentUser?.email,
 				allias: auth?.currentUser?.email.substring(0,3),
@@ -110,8 +111,13 @@ function App() {
 				setPhotoId(auth.currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
 				setAllias(auth.currentUser.email.substring(0,3))
 			};
+			// initialize the wizz entry table for the current user
+			await setDoc(doc(firestoreDb, "wizzActions", auth?.currentUser?.email), {
+				date: firebase.firestore.FieldValue.serverTimestamp()
+			});
 		} else {
 			await deleteDoc(doc(firestoreDb, "connected", auth?.currentUser?.email));
+			// await deleteDoc(doc(firestoreDb, "wizzActions", auth?.currentUser?.email));
 		}
 	}
 

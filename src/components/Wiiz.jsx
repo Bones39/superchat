@@ -6,14 +6,18 @@ import { useSound } from 'use-sound';
 import wiizSound from '../assets/MSN_WIZZ_SOUND.mp3';
 import { useRef } from 'react';
 import firebase from 'firebase/compat/app'
+import { useFormState } from 'react-dom';
 
 const Wiiz = ({wiizProps}) => {
 	// --- PROPS ---
 	const {listOfWiizedUsers: wiizActions, displayNotif, setDisplayNotif} = wiizProps;
 
+	const [wiiz, setWizz] = useState();
+
 	const [play] = useSound(wiizSound, { volume: 0.08 });
 
 	let wizzCleanTimeOutId = useRef();
+	let alreadyWiiz = useRef(false);
 	//
 	let delaySinceWiizSentSeconde = 6;
 	let thresholdDate = new Date();
@@ -21,19 +25,28 @@ const Wiiz = ({wiizProps}) => {
 	// this will define the waiting time before 2 consecutive wiiz
 	let formattedThresholdDate = firebase.firestore.Timestamp.fromDate(thresholdDate);
 
+	/**
+	 * Called to delete the wizz action about 5 sec after displaying the notification
+	 * @param {string} wiizId 
+	 */
 	const cleanWiiz = (wiizId) => {
 		wizzCleanTimeOutId = setTimeout( async () => {
-			// await deleteDoc(doc(firestoreDb, "wizzActions", wiizId));
-			setDisplayNotif(false);
+			await deleteDoc(doc(firestoreDb, "wizzActions", wiizId));
+			alreadyWiiz.current = false;
+			// setDisplayNotif(false);
 		}, 5000);
 	}
 
-	// useEffect(() => {return () => clearTimeout(wizzCleanTimeOutId) },[])
+	useEffect(() => {
+		console.log("in use effect!")
+		return () => clearTimeout(wizzCleanTimeOutId);
+	},[wiizActions])
 
 	return (
 		<div>
 			{wiizActions?.map((wiiz) => {
-				if (auth?.currentUser?.email === wiiz.recepient && wiiz.date < formattedThresholdDate && displayNotif) {
+				if (auth?.currentUser?.email === wiiz.recepient && !alreadyWiiz.current /*  && wiiz.date < formattedThresholdDate && displayNotif */) {
+					alreadyWiiz.current = true;
 					// play();
 					// cleanWiiz(wiiz.id);
 					return <div className='wizzNotification' key={wiiz.id}>{`Wizzed by ${wiiz.sender}`}</div>
