@@ -13,9 +13,11 @@ const ReadWiiz = ({readWiizProps}) => {
 	const {setWiizedRecepient} = readWiizProps;
 
 	const wizzActionOnCurrentUserRef = doc(firestoreDb, "wizzActions", auth?.currentUser?.email);
+	const [play] = useSound(wiizSound, { volume: 0.08 });
 	const [sender, setSender] = useState();
 
 	let wizzCleanTimeOutId = useRef();
+	const unsub = useRef();
 
 	/**
 	 * Called to delete the wizz action about 5 sec after displaying the notification
@@ -35,19 +37,22 @@ const ReadWiiz = ({readWiizProps}) => {
 
 	useEffect(()=>{
 		// put a listener on the wiizActions table to listen to wiizes that involve the current user
-		const unsub = onSnapshot(wizzActionOnCurrentUserRef, (wiizSnapshot) => {
+		unsub.current = onSnapshot(wizzActionOnCurrentUserRef, (wiizSnapshot) => {
 			if (wiizSnapshot.data()) {
 				const currentSender = wiizSnapshot.data().sender;
 				// set the sender so that the cleanWiiz function is triggerd by the rerender
 				setSender(currentSender);
+				// only play the sound if the query is triggerd, not at initialization
+				if (currentSender) play();
 			}
 		});
-		return () => unsub();
+		return () => unsub.current();
 	})
 
 	/** Trigger a useEffect to delete the just read wiiz action */
 	useEffect(() => {
 		cleanWiiz();
+		unsub.current();
 		return () => clearTimeout(wizzCleanTimeOutId);
 	},[sender])
 
