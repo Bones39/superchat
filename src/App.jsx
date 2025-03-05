@@ -15,28 +15,29 @@ import Header from './components/Header'
 // todo
 /* 
  ------------- EN COURs --------------------
- - corriger la connexion
-	- des fois l'utilisateur se deconnecte sans raison
+ - corriger la connexion EN COURS
+	- des fois l'utilisateur se deconnecte sans raison, notemment quand on refresh - cloud fonction pour gérer le autodisconnect
  - ajouter les whiiiz EN COURS
- 	- gerer le cas où la notif reste 1/2 sec
-		- tester de mettre un snapshot sur une query qui récupère la donnée filtrée par utilisateur et par date (utiliser le threshold)
-	- mettre un boolean quand la ligne est lu et utiliser ce boolean pour dire si on affiche ou non le wiiz EN COURS 
-	- envoyer les users wizzed via le serveur OK
-	- corriger l'erreur de boucle infinie
-	- corriger le fait que des fois l'audio de la notif ne se lance pas de suite https://stackoverflow.com/questions/55026293/google-chrome-javascript-issue-in-getting-user-audio-the-audiocontext-was-not
-  	- pour l'animation du wiiz: https://www.youtube.com/watch?v=ZqLWNxsFz_o 
-  ajouter les reactions aux messages (smiley)
-	- gérer le cas où on quitte et on revient sur le message en hover, le timout doit etre reset pour que les reactions restent affichées
-	- faire apparaitre les smileys lorsqu'on clique sur le message, non plus quand on le survole OK
-	- permettre d'ajouter des smileys OK
-	- permettre de supprimer des smileys (les siens)
-	- stocker les infos du smiley en base OK
+  	- pour l'animation du wiiz: https://www.youtube.com/watch?v=ZqLWNxsFz_o
  - creer une fonction qui deconnecte les utilisateurs inactifs (pas l'utilisateur actuel) -> could function
 	- corriger la deconnexion quand on refresh
 - voir la vidéo pour faire apparaitre la barre de smiley https://www.youtube.com/watch?v=DNXEORSk4GU&t=616s
 - ajouter le scroll pour consulter les anciens messages
 - Modifier la page d'accueil pour ne prendre en compte que le nom
 ------------- FAIT --------------------
+- ajouter les whiiiz OK
+ 	- gerer le cas où la notif reste 1/2 sec OK
+		- tester de mettre un snapshot sur une query qui récupère la donnée filtrée par utilisateur et par date (utiliser le threshold)
+		- finalement 2 composants indépendant ont été créés, un pour envoyer et un autre pour lire les wiiz OK
+	- mettre un boolean quand la ligne est lu et utiliser ce boolean pour dire si on affiche ou non le wiiz EN COURS 
+	- envoyer les users wizzed via le serveur OK
+	- corriger le fait que des fois l'audio de la notif ne se lance pas de suite https://stackoverflow.com/questions/55026293/google-chrome-javascript-issue-in-getting-user-audio-the-audiocontext-was-not
+-ajouter les reactions aux messages (smiley) OK
+	- gérer le cas où on quitte et on revient sur le message en hover, le timout doit etre reset pour que les reactions restent affichées
+	- faire apparaitre les smileys lorsqu'on clique sur le message, non plus quand on le survole OK
+	- permettre d'ajouter des smileys OK
+	- permettre de supprimer des smileys (les siens) OK
+	- stocker les infos du smiley en base OK
 - permettre d'envoyer des gifs OK
  - corriger la taille des images OK
 	- afficher les images dans un contenaire a taille fixe et adapter la taille de l'image a ce contenaire OK
@@ -117,7 +118,6 @@ function App() {
 			});
 		} else {
 			await deleteDoc(doc(firestoreDb, "connected", auth?.currentUser?.email));
-			// await deleteDoc(doc(firestoreDb, "wizzActions", auth?.currentUser?.email));
 		}
 	}
 
@@ -306,18 +306,17 @@ function App() {
 			setConnected(connectedUsers);
 		});
 
-		window.addEventListener('beforeunload', (event) => {
+		/* window.addEventListener('beforeunload', (event) => {
 			// disconnect user if the tab is closed
 			window.open('/');
 			updateConnectionState();
-		});
+		}); */
 
 		// check if any user is to be disconnected and the check every 30 min
 		// automaticDisconnect();
 		// set up an interval to check for inactive users and disconnect them automatically
 		intervalId.current = setInterval(()=> {
-			console.log("30sec spent");
-			automaticDisconnect();
+			// automaticDisconnect();
 		}, inactivityDelayMinutes*60*1000)
 		// the use effect is called only once, ie when the connection page appears (not called again if the user connect unless some dependencies are put in the dep array)
 		// scrollHere?.current?.scrollIntoView();
@@ -332,10 +331,16 @@ function App() {
 			// component chat room
 			userIsLoggedIn?
 			<div>
-				authentified as {auth?.currentUser?.email}<br />
-				user ID: {auth?.currentUser?.uid}
-				<button onClick={logout}>Disconnect</button>
-				<Header/>
+				<div className='header'>
+					<div className='authInfos'>
+						authentified as {auth?.currentUser?.email}<br />
+						user ID: {auth?.currentUser?.uid}
+					</div>
+					<div className='disonnectButton'>
+						<button onClick={logout}>Disconnect</button>
+					</div>
+				</div>
+				{/* <Header/> */}
 				{/* Mettre les props dans un objet unique */}
 				<Chatroom props={props} ></Chatroom>
 				<div ref={scrollHere}></div>

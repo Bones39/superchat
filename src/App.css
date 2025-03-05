@@ -32,6 +32,7 @@ body {
   }
 
 .chatroom {
+	margin-top: 40px;
 	width: 500px;
 	display: flex;
 	flex-direction: column;
@@ -181,8 +182,23 @@ body {
 }
 
 .header {
-	position: sticky;
+	position: fixed;
+	display: flex;
+	width: 100%;
+	left: 0px;
+	top: 0px;
 	background-color: #64ff7e;
+	padding-left: 1em;
+	padding-bottom: 1em;
+	padding-top: 1em;
+}
+
+.authInfos {
+	/* flex Parent is header */
+	flex-grow: 1;
+}
+.disonnectButton {
+	padding-right: 3em;
 }
 
 .lobbyUser {
