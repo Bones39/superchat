@@ -4,12 +4,13 @@ import './App.css'
 
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
-import { addDoc, collection, deleteDoc, doc, limit, onSnapshot, orderBy, query, setDoc, where, getDocs } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, limit, onSnapshot, orderBy, query, setDoc, where, getDocs, startAfter } from 'firebase/firestore'
 import Chatroom from './components/Chatroom'
 import Lobby from './components/Lobby'
 import LogIn from './components/LogIn'
 import { useAuth } from './context'
 import { auth, firestoreDb, googleProvider } from './firebaseConfig'
+import { RiArrowUpDoubleLine } from "react-icons/ri"
 import Header from './components/Header'
 
 // todo
@@ -78,9 +79,12 @@ function App() {
 	const scrollHere = useRef();
 
 		// ------- related to chatroom -------
+	const batchQueryParam = 25;
+	let lastQueriedMessageTimeStamp = useRef(null);
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
-	const messageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(25));
+	const messageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(batchQueryParam));
+	const olderMessageQuery = query(messagesRef, orderBy("createdAt", "desc"), startAfter(lastQueriedMessageTimeStamp.current), limit(batchQueryParam));
 	const [messages, setMessages] = useState([]);
 	const [isTyping, setIsTyping] = useState(false);
 	const [isInactive, SetIsInactive] = useState(false);
@@ -271,6 +275,15 @@ function App() {
 		}
 	}
 
+	const getNextMessagesBatch = async () => {
+		console.log(`lastQueriedMessageTimeStamp.current: ${lastQueriedMessageTimeStamp.current}`);
+		const olderMessagesSnap = await getDocs(olderMessageQuery);
+		const olderMessages = olderMessagesSnap.docs.map(doc => ({...doc.data(), id: doc.id}));
+		setMessages(messages => [...olderMessages.reverse(), ...messages]);
+		// take the last element as the begining of the next query (reverse is destructive, the last element is in the first index of the array)
+		lastQueriedMessageTimeStamp.current = olderMessages[0].createdAt
+	}
+
 	const props = {
 		messages,
 		// dummy,
@@ -299,6 +312,8 @@ function App() {
 		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
 			const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 			setMessages(filterData.reverse());
+			// take the last element as the begining of the next query (initialization)
+			if (!lastQueriedMessageTimeStamp.current) lastQueriedMessageTimeStamp.current = filterData[0].createdAt
 		});
 
 		const un = onSnapshot(connectedQuery, (querySnapshot) => {
@@ -340,6 +355,7 @@ function App() {
 						<button onClick={logout}>Disconnect</button>
 					</div>
 				</div>
+				<button id='previousMessagesButton' onClick={getNextMessagesBatch}><RiArrowUpDoubleLine /></button>
 				{/* <Header/> */}
 				{/* Mettre les props dans un objet unique */}
 				<Chatroom props={props} ></Chatroom>

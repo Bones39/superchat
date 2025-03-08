@@ -286,3 +286,13 @@ body {
 .smiley:hover {
 	transform: translate(0, -5px);
 }
+
+#previousMessagesButton {
+	position: fixed;
+	top: 80px;
+	z-index: 1000;
+}
+
+#previousMessagesButton:hover {
+	scale: 1.2;
+}

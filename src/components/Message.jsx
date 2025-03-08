@@ -23,7 +23,6 @@ const Message = ({props}) => {
 		const { signal } = abortController;
 
 		signal.addEventListener("abort", (event) => {
-			console.log("aborted: " + event.target.reason + " id: " + fadingTimeoutId)
 			clearTimeout(fadingTimeoutId);
 		})
 		clearTimeout(fadingTimeoutId);
@@ -34,7 +33,6 @@ const Message = ({props}) => {
 	//Source for the abort controller concept: https://www.youtube.com/shorts/VEdiHbjgIK4
 
 	const onHover = () => {
-		console.log("hovered!");
 		abortController.abort("entered the element");
 		clearTimeout(fadingTimeoutId);
 		setMessageHovered(true);
