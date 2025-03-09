@@ -3,7 +3,7 @@ import { CiImageOn } from "react-icons/ci";
 import Message from "./Message";
 
 const Chatroom = ({props}) => {
-	const {messages, formValue, sendMessage, sendImage, typing, setScrollIntoView, scrollIntoView, firstOlderMessageTimeStamp} = props;
+	const {messages, formValue, sendMessage, sendImage, typing, setScrollIntoView, scrollIntoView} = props;
 	const dummyRef = useRef();
 	const genericRef = useRef();
 	const messagesReferencesArray = useRef(Array(messages.length).fill(null));
@@ -22,7 +22,7 @@ const Chatroom = ({props}) => {
 				{/* // chat room */}
 				{messages && messages.map((message, index) =>
 					{
-						return <Message props={{messages, message, index, setScrollIntoView, scrollIntoView, firstOlderMessageTimeStamp, messagesReferencesArray}} key={message.id}></Message>
+						return <Message props={{messages, message, index, setScrollIntoView, scrollIntoView, messagesReferencesArray}} key={message.id}></Message>
 					}
 				)}
 				<div ref={dummyRef}></div>

@@ -252,6 +252,8 @@ body {
 
 .selectable {
 	cursor: pointer;
+	border-radius: 50%;
+	background-color: rgb(119, 173, 243);
 }
 
 .selectable:hover {

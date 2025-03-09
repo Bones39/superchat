@@ -15,7 +15,7 @@ import Header from './components/Header'
 
 // todo
 /* 
- ------------- EN COURs --------------------
+ ------------- EN COURS --------------------
  - corriger la connexion EN COURS
 	- des fois l'utilisateur se deconnecte sans raison, notemment quand on refresh - cloud fonction pour gérer le autodisconnect
  - ajouter les whiiiz EN COURS
@@ -23,7 +23,8 @@ import Header from './components/Header'
  - creer une fonction qui deconnecte les utilisateurs inactifs (pas l'utilisateur actuel) -> could function
 	- corriger la deconnexion quand on refresh
 - voir la vidéo pour faire apparaitre la barre de smiley https://www.youtube.com/watch?v=DNXEORSk4GU&t=616s
-- ajouter le scroll pour consulter les anciens messages
+- ajouter le scroll pour consulter les anciens messages EN COURS
+	- utiliser reactStately et useAsyncList https://www.youtube.com/watch?v=nR85ayDEVBc&t=132s
 - Modifier la page d'accueil pour ne prendre en compte que le nom
 ------------- FAIT --------------------
 - ajouter les whiiiz OK
@@ -81,7 +82,6 @@ function App() {
 		// ------- related to chatroom -------
 	const batchQueryParam = 25;
 	let lastQueriedMessageTimeStamp = useRef(null);
-	let firstOlderMessageTimeStamp = useRef(null);
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
 	const messageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(batchQueryParam));
@@ -283,8 +283,6 @@ function App() {
 		setMessages(messages => [...olderMessages.reverse(), ...messages]);
 		// take the last element as the begining of the next query (reverse is destructive, the last element is in the first index of the array)
 		lastQueriedMessageTimeStamp.current = olderMessages[0].createdAt;
-		// take the first element as an achor to scroll the view when rerender (reverse is destructive, the first element is in the last index of the array)
-		firstOlderMessageTimeStamp.current = olderMessages[batchQueryParam - 1].createdAt;
 	}
 
 	const props = {
@@ -295,8 +293,7 @@ function App() {
 		formValue,
 		typing,
 		setScrollIntoView,
-		scrollIntoView,
-		firstOlderMessageTimeStamp
+		scrollIntoView
 	}
 
 	const signInProps = {

@@ -5,7 +5,7 @@ import Reactions from './Reactions';
 import firebase from 'firebase/compat/app'
 
 const Message = ({props}) => {
-	const {messages, message, index, setScrollIntoView, firstOlderMessageTimeStamp, messagesReferencesArray} = props;
+	const {messages, message, index, setScrollIntoView, messagesReferencesArray} = props;
 	const [abortController, setAbortController] = useState(new AbortController());
 	const [messageHovered, setMessageHovered] = useState(false);
 	const [displayReaction, setDisplayReaction] = useState(false);
