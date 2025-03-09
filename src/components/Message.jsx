@@ -5,7 +5,7 @@ import Reactions from './Reactions';
 import firebase from 'firebase/compat/app'
 
 const Message = ({props}) => {
-	const {messages, message, index, setScrollIntoView} = props;
+	const {messages, message, index, setScrollIntoView, firstOlderMessageTimeStamp, messagesReferencesArray} = props;
 	const [abortController, setAbortController] = useState(new AbortController());
 	const [messageHovered, setMessageHovered] = useState(false);
 	const [displayReaction, setDisplayReaction] = useState(false);
@@ -98,7 +98,7 @@ const Message = ({props}) => {
 	if (!message || !auth.currentUser) return(<></>);
 
 	return (
-		<div className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
+		<div ref={ref => messagesReferencesArray.current[index] = ref}  className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
 			{/* display the picture above the message if the first message is not from the current user or if a message comes after a message which is not his */}
 			{bDisplayUserPicture && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${message.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>{message.allias}</div>}
 			{!message.type && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}>{message.text}</div>}

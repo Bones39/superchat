@@ -76,11 +76,12 @@ function App() {
 	const { userIsLoggedIn, currentUser } = useAuth();
 
 	// const dummy = useRef();
-	const scrollHere = useRef();
+	// const scrollHere = useRef();
 
 		// ------- related to chatroom -------
 	const batchQueryParam = 25;
 	let lastQueriedMessageTimeStamp = useRef(null);
+	let firstOlderMessageTimeStamp = useRef(null);
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
 	const messageQuery = query(messagesRef, orderBy("createdAt", "desc"), limit(batchQueryParam));
@@ -276,12 +277,14 @@ function App() {
 	}
 
 	const getNextMessagesBatch = async () => {
-		console.log(`lastQueriedMessageTimeStamp.current: ${lastQueriedMessageTimeStamp.current}`);
 		const olderMessagesSnap = await getDocs(olderMessageQuery);
 		const olderMessages = olderMessagesSnap.docs.map(doc => ({...doc.data(), id: doc.id}));
+		// update messages array
 		setMessages(messages => [...olderMessages.reverse(), ...messages]);
 		// take the last element as the begining of the next query (reverse is destructive, the last element is in the first index of the array)
-		lastQueriedMessageTimeStamp.current = olderMessages[0].createdAt
+		lastQueriedMessageTimeStamp.current = olderMessages[0].createdAt;
+		// take the first element as an achor to scroll the view when rerender (reverse is destructive, the first element is in the last index of the array)
+		firstOlderMessageTimeStamp.current = olderMessages[batchQueryParam - 1].createdAt;
 	}
 
 	const props = {
@@ -292,7 +295,8 @@ function App() {
 		formValue,
 		typing,
 		setScrollIntoView,
-		scrollIntoView
+		scrollIntoView,
+		firstOlderMessageTimeStamp
 	}
 
 	const signInProps = {
@@ -337,7 +341,11 @@ function App() {
 		// scrollHere?.current?.scrollIntoView();
 
 		// if (auth?.currentUser?.email === wizzedUser) 
-		return () => clearInterval(intervalId.current);
+		return () => {
+			unsubscribe();
+			un();
+			clearInterval(intervalId.current);
+		};
 	}, [])
 
   return (
@@ -359,7 +367,7 @@ function App() {
 				{/* <Header/> */}
 				{/* Mettre les props dans un objet unique */}
 				<Chatroom props={props} ></Chatroom>
-				<div ref={scrollHere}></div>
+				{/* <div ref={scrollHere}></div> */}
 				<Lobby props={lobbyProps}></Lobby>
 			</div>
 			:

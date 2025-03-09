@@ -3,13 +3,16 @@ import { CiImageOn } from "react-icons/ci";
 import Message from "./Message";
 
 const Chatroom = ({props}) => {
-	const {messages, formValue, sendMessage, sendImage, typing, setScrollIntoView, scrollIntoView} = props;
+	const {messages, formValue, sendMessage, sendImage, typing, setScrollIntoView, scrollIntoView, firstOlderMessageTimeStamp} = props;
 	const dummyRef = useRef();
+	const genericRef = useRef();
+	const messagesReferencesArray = useRef(Array(messages.length).fill(null));
 
 	useEffect(() => {
 		// scroll to the end of the page when the user connects only when needed
 		if (scrollIntoView) {
-			dummyRef?.current?.scrollIntoView();
+			// dummyRef?.current?.scrollIntoView();
+			messagesReferencesArray?.current[24]?.scrollIntoView({ behavior: 'smooth' });
 		}
 	}, [messages])
 
@@ -19,7 +22,7 @@ const Chatroom = ({props}) => {
 				{/* // chat room */}
 				{messages && messages.map((message, index) =>
 					{
-						return <Message props={{messages, message, index, setScrollIntoView, scrollIntoView}} key={message.id}></Message>
+						return <Message props={{messages, message, index, setScrollIntoView, scrollIntoView, firstOlderMessageTimeStamp, messagesReferencesArray}} key={message.id}></Message>
 					}
 				)}
 				<div ref={dummyRef}></div>
