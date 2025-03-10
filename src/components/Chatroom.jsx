@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { CiImageOn } from "react-icons/ci";
 import Message from "./Message";
+import { RiArrowUpDoubleLine } from "react-icons/ri"
 
 const Chatroom = ({props}) => {
-	const {messages, formValue, sendMessage, sendImage, typing, setScrollIntoView, scrollIntoView} = props;
+	const {messages, formValue, sendMessage, sendImage, typing, setScrollIntoView, scrollIntoView, getNextMessagesBatch} = props;
 	const dummyRef = useRef();
 	const genericRef = useRef();
 	const messagesReferencesArray = useRef(Array(messages.length).fill(null));
+	const [displayPreviousButton, setDisplayPreviousButton ] = useState(false);
+
 
 	useEffect(() => {
 		// scroll to the end of the page when the user connects only when needed
@@ -18,11 +21,12 @@ const Chatroom = ({props}) => {
 
 	return(
 		<>
+			<button id='previousMessagesButton' onClick={getNextMessagesBatch}><RiArrowUpDoubleLine /></button>
 			<div className="chatroom">
 				{/* // chat room */}
 				{messages && messages.map((message, index) =>
 					{
-						return <Message props={{messages, message, index, setScrollIntoView, scrollIntoView, messagesReferencesArray}} key={message.id}></Message>
+						return <Message props={{messages, message, index, setScrollIntoView, scrollIntoView, messagesReferencesArray, setDisplayPreviousButton}} key={message.id}></Message>
 					}
 				)}
 				<div ref={dummyRef}></div>

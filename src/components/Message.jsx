@@ -3,14 +3,16 @@ import { useEffect, useRef, useState } from 'react';
 import { auth, firestoreDb } from '../firebaseConfig';
 import Reactions from './Reactions';
 import firebase from 'firebase/compat/app'
+import { useInView } from 'react-intersection-observer';
 
 const Message = ({props}) => {
-	const {messages, message, index, setScrollIntoView, messagesReferencesArray} = props;
+	const {messages, message, index, setScrollIntoView, messagesReferencesArray, setDisplayPreviousButton} = props;
 	const [abortController, setAbortController] = useState(new AbortController());
 	const [messageHovered, setMessageHovered] = useState(false);
 	const [displayReaction, setDisplayReaction] = useState(false);
 	const [selectingReaction, setSelectingReaction] = useState(false);   // true when the reaction array is hovered
 	const [selectedReaction, setSelectedReaction] = useState();
+	const {refView, inView} = useInView();
 
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
@@ -29,6 +31,10 @@ const Message = ({props}) => {
 
 		// return (() => {clearTimeout(fadingTimeoutId)})
 	}, [abortController])
+
+	useEffect(() => {
+		console.log({ inView });
+	}, [inView])
 	
 	//Source for the abort controller concept: https://www.youtube.com/shorts/VEdiHbjgIK4
 
@@ -98,7 +104,7 @@ const Message = ({props}) => {
 	if (!message || !auth.currentUser) return(<></>);
 
 	return (
-		<div ref={ref => messagesReferencesArray.current[index] = ref}  className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
+		<div ref={ref => {messagesReferencesArray.current[index] = ref; if (index === 27) return refView}} className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
 			{/* display the picture above the message if the first message is not from the current user or if a message comes after a message which is not his */}
 			{bDisplayUserPicture && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${message.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>{message.allias}</div>}
 			{!message.type && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}>{message.text}</div>}

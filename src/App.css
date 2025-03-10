@@ -299,3 +299,16 @@ body {
 #previousMessagesButton:hover {
 	scale: 1.2;
 }
+
+.fadeIn {
+	animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}

@@ -10,12 +10,12 @@ import Lobby from './components/Lobby'
 import LogIn from './components/LogIn'
 import { useAuth } from './context'
 import { auth, firestoreDb, googleProvider } from './firebaseConfig'
-import { RiArrowUpDoubleLine } from "react-icons/ri"
 import Header from './components/Header'
 
 // todo
 /* 
  ------------- EN COURS --------------------
+ - ajouter la possibilité de supprimer ou de modifier son message
  - corriger la connexion EN COURS
 	- des fois l'utilisateur se deconnecte sans raison, notemment quand on refresh - cloud fonction pour gérer le autodisconnect
  - ajouter les whiiiz EN COURS
@@ -24,6 +24,7 @@ import Header from './components/Header'
 	- corriger la deconnexion quand on refresh
 - voir la vidéo pour faire apparaitre la barre de smiley https://www.youtube.com/watch?v=DNXEORSk4GU&t=616s
 - ajouter le scroll pour consulter les anciens messages EN COURS
+	- utiliser tanstack query, mettre les éléments chargés dans un cache
 	- utiliser reactStately et useAsyncList https://www.youtube.com/watch?v=nR85ayDEVBc&t=132s
 - Modifier la page d'accueil pour ne prendre en compte que le nom
 ------------- FAIT --------------------
@@ -293,7 +294,8 @@ function App() {
 		formValue,
 		typing,
 		setScrollIntoView,
-		scrollIntoView
+		scrollIntoView,
+		getNextMessagesBatch
 	}
 
 	const signInProps = {
@@ -360,7 +362,6 @@ function App() {
 						<button onClick={logout}>Disconnect</button>
 					</div>
 				</div>
-				<button id='previousMessagesButton' onClick={getNextMessagesBatch}><RiArrowUpDoubleLine /></button>
 				{/* <Header/> */}
 				{/* Mettre les props dans un objet unique */}
 				<Chatroom props={props} ></Chatroom>
