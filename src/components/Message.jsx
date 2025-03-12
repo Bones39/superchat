@@ -1,5 +1,5 @@
 import { collection, doc, getDocs, setDoc, query, where, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { auth, firestoreDb } from '../firebaseConfig';
 import Reactions from './Reactions';
 import firebase from 'firebase/compat/app'
@@ -13,6 +13,11 @@ const Message = ({props}) => {
 	const [selectingReaction, setSelectingReaction] = useState(false);   // true when the reaction array is hovered
 	const [selectedReaction, setSelectedReaction] = useState();
 	const {refView, inView} = useInView();
+	const [isIntersecting, setIsIntersecting] = useState(false);
+	const observer = useMemo(
+		() => new IntersectionObserver(([entry]) => {setIsIntersecting(entry.isIntersecting), setDisplayPreviousButton(entry.isIntersecting)}),
+		[]
+	);
 
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
@@ -20,6 +25,15 @@ const Message = ({props}) => {
 
 	// let timeoutId = useRef();
 	let fadingTimeoutId = useRef();
+
+	useEffect(() => {
+		if (messagesReferencesArray.current[2]) {
+		  observer.observe(messagesReferencesArray.current[2]);
+		  return () => {
+			observer.disconnect();
+		  };
+		}
+	  }, [messagesReferencesArray.current[2], observer]);
 
 	useEffect(() => {
 		const { signal } = abortController;
@@ -33,7 +47,7 @@ const Message = ({props}) => {
 	}, [abortController])
 
 	useEffect(() => {
-		console.log({ inView });
+		console.log(inView);
 	}, [inView])
 	
 	//Source for the abort controller concept: https://www.youtube.com/shorts/VEdiHbjgIK4
@@ -103,10 +117,13 @@ const Message = ({props}) => {
 	
 	if (!message || !auth.currentUser) return(<></>);
 
+	if (index === 2 ) console.log(`isIntersecting ${isIntersecting}`);
+
 	return (
-		<div ref={ref => {messagesReferencesArray.current[index] = ref; if (index === 27) return refView}} className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
+		<div ref={ref => messagesReferencesArray.current[index] = ref} className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
 			{/* display the picture above the message if the first message is not from the current user or if a message comes after a message which is not his */}
 			{bDisplayUserPicture && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${message.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>{message.allias}</div>}
+			{/* display the message text or the image */}
 			{!message.type && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}>{message.text}</div>}
 			{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}><img className="displayedImage" src={message.text} alt="Base64 Image"/></div>}
 			{/* display selected reactions */}
