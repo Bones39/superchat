@@ -307,7 +307,7 @@ body {
 
 .fadeOut {
 	animation: fadeOut 1s;
-	display: none;
+	display: none;  /*display none fucking cancel any running animation...*/
 }
 
 @keyframes fadeIn {
