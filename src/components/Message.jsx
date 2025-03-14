@@ -22,18 +22,20 @@ const Message = ({props}) => {
 	// get the messages collection
 	const messagesRef = collection(firestoreDb, 'messages');
 	const messageQuery = query(messagesRef, where("id", "==", message.id));
+	const indexOfIntersectedMessage = 0;
 
 	// let timeoutId = useRef();
 	let fadingTimeoutId = useRef();
 
+	// UseEffect 
 	useEffect(() => {
-		if (messagesReferencesArray.current[2]) {
-		  observer.observe(messagesReferencesArray.current[2]);
+		if (messagesReferencesArray.current[indexOfIntersectedMessage]) {
+		  observer.observe(messagesReferencesArray.current[indexOfIntersectedMessage]);
 		  return () => {
 			observer.disconnect();
 		  };
 		}
-	  }, [messagesReferencesArray.current[2], observer]);
+	  }, [messagesReferencesArray.current[indexOfIntersectedMessage], observer]);
 
 	useEffect(() => {
 		const { signal } = abortController;
@@ -117,7 +119,7 @@ const Message = ({props}) => {
 	
 	if (!message || !auth.currentUser) return(<></>);
 
-	if (index === 2 ) console.log(`isIntersecting ${isIntersecting}`);
+	if (index === 0 ) console.log(`message ${JSON.stringify(message)}`);
 
 	return (
 		<div ref={ref => messagesReferencesArray.current[index] = ref} className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
