@@ -253,12 +253,15 @@ body {
 .selectable {
 	cursor: pointer;
 	border-radius: 50%;
-	background-color: rgb(119, 173, 243);
 }
 
 .selectable:hover {
 	transform: translate(0, -2px);
 	/* box-shadow: 3px 3px 8px 1px rgba(27, 27, 27, 0.2); */
+}
+
+.userReaction {
+	background-color: rgb(119, 173, 243);
 }
 
 .setVisibleOnSelection {

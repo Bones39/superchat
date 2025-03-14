@@ -129,7 +129,7 @@ const Message = ({props}) => {
 			{!message.type && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}>{message.text}</div>}
 			{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}><img className="displayedImage" src={message.text} alt="Base64 Image"/></div>}
 			{/* display selected reactions */}
-			{message.reactions && <div className='horizontalLayout'>{message.reactions.map((smiley) => <div key={`reaction-${smiley}`} className={`${smiley.split(",")[1] === auth.currentUser.uid ? "selectable" : ""}`} onClick={smiley.split(",")[1] === auth.currentUser.uid? () => removeReaction(message, smiley) : null}>{smiley.split(",")[0]}</div>)}</div>}
+			{message.reactions && <div className='horizontalLayout'>{message.reactions.map((smiley) => <div key={`reaction-${smiley}`} className={`${smiley.split(",")[1] === auth.currentUser.uid ? "selectable userReaction" : ""}`} onClick={smiley.split(",")[1] === auth.currentUser.uid? () => removeReaction(message, smiley) : null}>{smiley.split(",")[0]}</div>)}</div>}
 			{/* display the avalaible reactions */}
 			<div className={`${message.uid === auth.currentUser.uid ? "right " : "left"} selectable`}><Reactions props={{displayReaction, selectingReaction, setSelectingReaction, selectedReaction, saveReaction}}/></div>
 			<div className={`timeStamp ${message.uid === auth.currentUser.uid ? "alignRight " : ""}`} key={message.id + "timeStamp"}>{formatedDate}</div>

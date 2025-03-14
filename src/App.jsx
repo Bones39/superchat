@@ -16,6 +16,8 @@ import Header from './components/Header'
 /* 
  ------------- EN COURS --------------------
  - ajouter la possibilité de supprimer ou de modifier son message
+ - prendre en compte les liens hypertext
+ - utiliser tanstackquery pour sauvegarder les cookies
  - corriger la connexion EN COURS
 	- des fois l'utilisateur se deconnecte sans raison, notemment quand on refresh - cloud fonction pour gérer le autodisconnect
  - ajouter les whiiiz EN COURS
