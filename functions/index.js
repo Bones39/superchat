@@ -13,33 +13,33 @@ const {logger} = require("firebase-functions");
 
 // The Firebase Admin SDK to delete inactive users.
 const admin = require("firebase-admin");
+const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+const Firestore = require('@google-cloud/firestore');
+const firestore = new Firestore();
+
 admin.initializeApp();
+// const db = getFirestore();
 
-// The es6-promise-pool to limit the concurrency of promises.
-// const PromisePool = require("es6-promise-pool").default;
-// Maximum concurrent account deletions.
-const MAX_CONCURRENT = 3
 
-// Run once a day at midnight, to clean up the users
+// Run once a day at midnight (23 on fr time), to clean up the users
 // Manually run the task here https://console.cloud.google.com/cloudscheduler
-exports.accountcleanup = onSchedule("every day 00:00", async (event) => {
-	// // Fetch all user details.
-	// const inactiveUsers = await getInactiveUsers();
-  
-	// // Use a pool so that we delete maximum `MAX_CONCURRENT` users in parallel.
-	// const promisePool = new PromisePool(
-	// 	() => deleteInactiveUser(inactiveUsers),
-	// 	MAX_CONCURRENT,
-	// );
-	// await promisePool.start();
+// use cron scheduler: "00 */6 * * *"  => every 6h
+exports.accountcleanup = onSchedule("every day 23:00", async (event) => { /** time here is on UTC+0 */
+	logger.log("NGN Before trying to disconnecet inactive users");
 
-	const snapshot = await admin
-	.database()
-	.ref("/messages")
-	.push({
-		text: "------ TEST: Automatic messeage created by scheduled cloud function at midnight ------",
-		createdAt: firebase.firestore.FieldValue.serverTimestamp()
+	const inactivityDelayMinutes = 60;
+	let thresholdDate = new Date();
+	thresholdDate.setMinutes(thresholdDate.getMinutes() - inactivityDelayMinutes);
+	let formattedThresholdDate = Timestamp.fromDate(thresholdDate);
+	let query = firestore.collection('connected').where("lastActivityDate", "<", formattedThresholdDate);
+
+	query.get().then(querySnapshot => {
+	  querySnapshot.forEach(async (documentSnapshot) => {
+		await documentSnapshot.ref.delete().then(() => {
+			logger.log(`User ${documentSnapshot.ref.path} successfully deleted.`);
+		  })
+	  });
 	});
-  
-	logger.log("User cleanup finished");
-  });
+
+	logger.log("NGN 'User cleanup finished'");
+});
