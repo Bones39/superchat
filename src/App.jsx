@@ -354,7 +354,7 @@ function App() {
 		{
 			// component chat room
 			userIsLoggedIn?
-			<div>
+			<div className='mainContainer'>
 				<div className='header'>
 					<div className='authInfos'>
 						authentified as {auth?.currentUser?.email}<br />
@@ -364,11 +364,10 @@ function App() {
 						<button onClick={logout}>Disconnect</button>
 					</div>
 				</div>
-				{/* <Header/> */}
-				{/* Mettre les props dans un objet unique */}
-				<Chatroom props={props} ></Chatroom>
-				{/* <div ref={scrollHere}></div> */}
-				<Lobby props={lobbyProps}></Lobby>
+				<div className='appBodyContainer'>
+					<Lobby props={lobbyProps}></Lobby>
+					<Chatroom props={props} ></Chatroom>
+				</div>
 			</div>
 			:
 			// component authentification page

@@ -20,7 +20,7 @@ const Chatroom = ({props}) => {
 	}, [messages])
 
 	return(
-		<>
+		<div className='chatZone'>
 			<button className={displayPreviousButton? 'fadeIn' : 'fadeOut'} id='previousMessagesButton' onClick={getNextMessagesBatch}><RiArrowUpDoubleLine /></button>
 			<div className="chatroom">
 				{/* // chat room */}
@@ -40,7 +40,7 @@ const Chatroom = ({props}) => {
 					<input className='fileInput' type='file' onChange={(e)=>sendImage(e)}/>
 				</label>
 			</form>
-		</>
+		</div>
 	)
 }
 
