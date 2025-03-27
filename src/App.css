@@ -14,6 +14,7 @@ Calle to action bis: 				YELLOW			#424549
 /* Global variable */
 :root {
 	--headerHeight: 75px;
+	--lobbyWidth: 25em;
 }
 
 body {
@@ -31,11 +32,20 @@ body {
 	/* Parent: .mainContainer */
 	background-color: #64ff7e;
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
 	padding: 0em 1em;  /*horizontal padding, vertical padding*/
 	height: var(--headerHeight);
 	z-index: 1000;
+}
+
+.logo {
+	/* Parent: .header */
+	width: var(--lobbyWidth);
+}
+
+.authInfos {
+	/* Parent: .header */
+	flex-grow: 1;
 }
 
 .appBodyContainer {
@@ -47,7 +57,7 @@ body {
 .lobby {
 	/* Parent: .appBodyContainer */
 	background-color: rgb(179, 250, 250);
-	width: 22em; /**23% of a screen of 1520px*/
+	width: var(--lobbyWidth); /**23% of a screen of 1520px*/
 	overflow-y: auto;
 	height: calc(100vh - var(--headerHeight));
 }

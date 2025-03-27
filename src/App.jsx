@@ -356,6 +356,9 @@ function App() {
 			userIsLoggedIn?
 			<div className='mainContainer'>
 				<div className='header'>
+					<div className='logo'>
+						LOGO
+					</div>
 					<div className='authInfos'>
 						authentified as {auth?.currentUser?.email}<br />
 						user ID: {auth?.currentUser?.uid}
