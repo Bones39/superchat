@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { CiImageOn } from "react-icons/ci";
 import Message from "./Message";
-import { RiArrowUpDoubleLine } from "react-icons/ri"
+import { RiArrowUpDoubleLine } from "react-icons/ri";
+import { GrSend } from "react-icons/gr";
+import { RiSendPlaneFill } from "react-icons/ri";
+import { LuImagePlus } from "react-icons/lu";
 
 const Chatroom = ({props}) => {
 	const {messages, formValue, sendMessage, sendImage, typing, setScrollIntoView, scrollIntoView, getNextMessagesBatch} = props;
@@ -32,11 +35,13 @@ const Chatroom = ({props}) => {
 				<div ref={dummyRef}></div>
 			</div>
 			{/** display the form*/}
-			<form className='messageInput' onSubmit={sendMessage}>
-				<input className='textInput' type="text" value={formValue} onChange={(e)=>typing(e)}/>
-				<button type='submit'>SEND</button>
+			<form className='messageInputForm' onSubmit={sendMessage}>
+				<div class="inputContainer">
+					<textarea className='messageInputArea' wrap='hard' cols='40' autoFocus='true' placeholder='  Miaou...' value={formValue} onChange={(e)=>typing(e)}/>
+					<button type='submit' className='sendButton'><RiSendPlaneFill/></button>
+				</div>
 				<label className='customFileUpload'>
-					<CiImageOn/>
+					<LuImagePlus/>
 					<input className='fileInput' type='file' onChange={(e)=>sendImage(e)}/>
 				</label>
 			</form>

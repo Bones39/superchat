@@ -2,7 +2,7 @@
 neutral color (bg) 60%: 			GREY 			#282b30 
 Primary color (main colopr)	40%		SMOKEDWHITE		#f5f5f5
 Call to action (blue) 10%  			BLUE			#7289da
-Calle to action bis: 				YELLOW			#424549
+Calle to action bis: 				YELLOW			#ffde59 (de la maquette sur canvas)
 */
 /*--------------- LAYOUT ------------- */
 /* #root {
@@ -73,6 +73,7 @@ body {
 	display: flex;
 	flex-grow: 1; /* parent element flex-direction is row, so it grows horizontaly with this property*/ 
 	flex-direction: column;
+	height: calc(100vh - var(--headerHeight));
 }
 
 #previousMessagesButton {
@@ -85,13 +86,82 @@ body {
 	flex-direction: column;
 	background-color: #b700ff;
 	overflow-y: scroll;
-	height: calc(92vh - var(--headerHeight));
 	/* Use flex-shrink (main axis is vertical so it is applied on messages): 1 combined with overflow: scroll to have a div with a scrolling bar */
+	flex-shrink: 1;
 }
 
-.messageInput {
+.messageInputForm {
 	/* Parent: .appBodyContainer>chatZone */
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
 	align-self: center;
+	height: 4.5em;
+}
+
+.inputContainer{
+	/* Parent: .messageInputForm */
+	position: relative;
+	display: flex;
+}
+
+.messageInputArea {
+	/* Parent: .inputContainer */
+	width: 36em;
+	resize: none;
+	border-radius: 5px;
+	border: solid;
+	border-color: #ffde59;
+}
+
+.sendButton {
+	/* Parent: .inputContainer */
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 30%;
+	height: 38.4px;
+	width: 38.4px;
+	font-size: 35px;
+	cursor: pointer;
+	color: #ffde59;
+	background-color: transparent;
+	border: none;
+}
+
+.sendButton:hover {
+	scale: 1.2;
+}
+
+.customFileUpload {
+	/* Parent: .messageInputForm */
+	margin-left: 2px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	color: #ffde59;
+	border-radius: 50%;
+	height: 36.4px;
+	width: 36.4px;
+	transition: background-color 0.25s;
+}
+
+.fileInput {
+	/* Parent: customFileUpload */
+	position: absolute;
+    z-index: -1;
+	opacity: 0;
+}
+
+.customFileUpload:hover {
+	/* border:#646cff solid; */
+	background-color: #ffde59;
+	color: black;
+	border-radius: 30%;
 }
 
 /*--------------- BEHAVIOUR ------------- */
