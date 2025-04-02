@@ -164,4 +164,81 @@ body {
 	border-radius: 30%;
 }
 
+.left {
+	white-space: pre;     /*preserve the line breaks defined in textarea*/
+	display: flex;
+	flex-direction: column;
+	align-self:flex-start;
+	margin-left: 2em;
+}
+
+.right {
+	white-space: pre;     /*preserve the line breaks defined in textarea*/
+	display: flex;
+	flex-direction: column;
+	align-self: flex-end;
+	margin-right: 2em;
+}
+
+.sent {
+	display: flex;
+	flex-direction: column;
+	background-color: rgb(119, 173, 243);
+	/* align-self: end; */
+	/* text-align: right; */
+	border-radius: 15px;
+	padding: 1rem;
+	width: fit-content;
+	/* margin: 2px; */
+}
+
+.received {
+	background-color: rgb(206, 203, 203);
+	padding: 1rem;
+	border-radius: 15px;
+	width: fit-content;
+	/* margin: 2px; */
+}
+
+.userTag {
+	display: flex;
+	color: white;
+	justify-content: center;
+	align-items: center;
+	width: 13px;
+	height: 13px;
+	border-radius: 50%;
+	border: solid #646cff 2px;
+	margin-bottom: 2px;
+}
+
+.image {
+	width: 320px;
+	/** Do not put height so that images fit all the div*/
+}
+
+.horizontalLayout {
+	display: flex;
+	flex-direction: row;
+}
+
+.selectable {
+	cursor: pointer;
+	border-radius: 50%;
+}
+
+.userReaction {
+	background-color: rgb(119, 173, 243);
+}
+
+.timeStamp {
+	margin-top: 2px;
+	margin-bottom: 5px;
+	font-size: 0.55em;
+}
+
+.alignRight {
+	align-self: end;	
+}
+
 /*--------------- BEHAVIOUR ------------- */
