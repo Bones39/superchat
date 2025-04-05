@@ -122,7 +122,7 @@ const Message = ({props}) => {
 	
 	if (!message || !auth.currentUser) return(<></>);
 
-	if (index === 0 ) console.log(`message ${JSON.stringify(message)}`);
+	// if (index === 0 ) console.log(`message ${JSON.stringify(message)}`);
 
 	return (
 		<div ref={ref => messagesReferencesArray.current[index] = ref} className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>

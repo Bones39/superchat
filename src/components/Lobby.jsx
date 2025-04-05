@@ -51,7 +51,7 @@ const Lobby = ({props}) => {
 			const wiizedUsers = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 			setListOfWizzedUsers(wiizedUsers);
 			setDisplayNotif(true);
-			console.log(`display! ${JSON.stringify(listOfWiizedUsers)}`);
+			// console.log(`display! ${JSON.stringify(listOfWiizedUsers)}`);
 			// hideWiizNotification();
 		});
 		return () => un();

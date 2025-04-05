@@ -12,6 +12,10 @@ const Chatroom = ({props}) => {
 	const genericRef = useRef();
 	const messagesReferencesArray = useRef(Array(messages.length).fill(null));
 	const [displayPreviousButton, setDisplayPreviousButton ] = useState(false);
+	const [controlPressed, setControlPressed] = useState();
+	const [enterPressed, setEnterPressed] = useState();
+	const keyPressed = {};
+	const inputRef = useRef()
 
 
 	useEffect(() => {
@@ -21,6 +25,35 @@ const Chatroom = ({props}) => {
 			messagesReferencesArray?.current[24]?.scrollIntoView({ behavior: 'smooth' });
 		}
 	}, [messages])
+
+	useEffect(() => {
+		if (controlPressed && enterPressed) {
+			// sendMessage();
+			// document.getElementById('messageInputValue').value = formValue;
+			// document.getElementById('messageForm').submit();
+			document.getElementById('sendButton').click();
+			// inputRef.current.submit();
+
+		}
+	}, [controlPressed, enterPressed])
+
+	const handleKeyDown = (event) => {
+		if (event.key === 'Control') {
+			setControlPressed(true);
+		}
+		if (event.key === 'Enter') {
+			setEnterPressed(true);
+		}
+	};
+
+	const handleKeyUp = (event) => {
+		if (event.key === 'Control') {
+			setControlPressed(false);
+		}
+		if (event.key === 'Enter') {
+			setEnterPressed(false);
+		}
+	};
 
 	return(
 		<div className='chatZone'>
@@ -35,10 +68,10 @@ const Chatroom = ({props}) => {
 				<div ref={dummyRef}></div>
 			</div>
 			{/** display the form*/}
-			<form className='messageInputForm' onSubmit={sendMessage}>
-				<div class="inputContainer">
-					<textarea className='messageInputArea' wrap='hard' cols='40' autoFocus='true' placeholder='  Miaou...' value={formValue} onChange={(e)=>typing(e)}/>
-					<button type='submit' className='sendButton'><RiSendPlaneFill/></button>
+			<form className='messageInputForm' id='messageForm' ref={inputRef} onSubmit={sendMessage}>
+				<div className="inputContainer">
+					<textarea className='messageInputArea' id='messageInputValue' wrap='hard' cols='40' autoFocus={true} placeholder='  Miaou...' value={formValue} onChange={(e)=>typing(e)} onKeyDown={(e)=>{handleKeyDown(e)}} onKeyUp={handleKeyUp}/>
+					<button type='submit' id='sendButton' className='sendButton'><RiSendPlaneFill/></button>
 				</div>
 				<label className='customFileUpload'>
 					<LuImagePlus/>
