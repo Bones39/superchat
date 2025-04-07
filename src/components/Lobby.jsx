@@ -1,4 +1,5 @@
 import { TiMessageTyping } from "react-icons/ti";
+import { FaBell } from "react-icons/fa";
 import { auth, firestoreDb } from '../firebaseConfig'
 import { addDoc, collection, query, onSnapshot, where } from 'firebase/firestore'
 import { useEffect, useState } from "react";
@@ -63,12 +64,13 @@ const Lobby = ({props}) => {
 			{wiizedRecepient && <SendWiizComponent sendWiizComponentProps={sendWiizComponentProps}></SendWiizComponent>}
 			<ReadWiiz readWiizProps={readWiizProps}></ReadWiiz>
 			<div className="lobby">
-				<div className="lobbyHeader">Connecté(s)</div>
+				<div className="lobbyHeader">Utilisateurs connectés</div>
 				{connected && connected.map((connectedUser) =>
 					<div className="lobbyUser" key={`lobby-${connectedUser.id}`} onClick={() => {setWiizedRecepient(connectedUser.id)}}>
-						<div className="userTagLobby" style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${connectedUser.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>{connectedUser.allias}</div>
-						<div>{connectedUser.email}</div>
+						<div className="userTagLobby" style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${connectedUser.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}></div>
+						<div className="userName">{connectedUser.email}</div>
 						{connectedUser.isTyping && <i className="icon"><TiMessageTyping/></i>}
+						<div className="wizzButton"><FaBell size="1.4em"/></div>
 					</div>
 				)}
 			</div>
