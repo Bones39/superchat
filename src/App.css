@@ -12,15 +12,20 @@ Calle to action bis: 				YELLOW			#ffde59 (de la maquette sur canvas)
 }
 	
 /* Global variable */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+
 :root {
 	--headerHeight: 75px;
-	--lobbyWidth: 25em;
+	--lobbyWidth: 25rem;
 	--profilPicureRadius: 3em;
 }
 
 body {
 	margin: 0;
 	background-color: rgb(40, 43, 48);
+	font-family: "Roboto", sans-serif;
+	font-optical-sizing: auto;
 }
 
 .mainContainer {
@@ -41,7 +46,14 @@ body {
 
 .logo {
 	/* Parent: .header */
+	display: flex;
 	width: var(--lobbyWidth);
+	height: var(--headerHeight);
+	font-family: "Dancing Script", cursive;
+  	/* font-optical-sizing: auto; */
+	font-weight: 900;
+	font-size: 2.35em;
+	align-items: center;
 }
 
 .authInfos {
@@ -115,6 +127,9 @@ body {
 	width: 36em;
 	resize: none;
 	border-radius: 5px;
+}
+.messageInputArea:focus {
+	outline: none;
 	border: solid;
 	border-color: #ffde59;
 }

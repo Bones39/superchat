@@ -358,7 +358,7 @@ function App() {
 			<div className='mainContainer'>
 				<div className='header'>
 					<div className='logo'>
-						LOGO
+						<p>Super</p><img src='src\assets\LogoSuperChatCroped.png'/><p>Chat</p>
 					</div>
 					<div className='authInfos'>
 						authentified as {auth?.currentUser?.email}<br />
