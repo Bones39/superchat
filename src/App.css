@@ -18,7 +18,7 @@ Calle to action bis: 				YELLOW			#ffde59 (de la maquette sur canvas)
 :root {
 	--headerHeight: 75px;
 	--lobbyWidth: 25rem;
-	--profilPicureRadius: 3em;
+	--profilPicureRadius: 3rem;
 }
 
 body {
@@ -287,9 +287,7 @@ body {
 	width: var(--profilPicureRadius);
 	height: var(--profilPicureRadius);
 	border-radius: 50%;
-	/* margin-bottom: 3px; */
-	/* margin-right: 4px;
-	padding-left: 0.1em; */
+	position: relative;  /* to position the typing icon element absolutly */
 }
 
 .userName {
@@ -309,6 +307,14 @@ body {
 	scale: 1.2;
 	rotate: 15deg;
 	/* color: #ffde59; */
+}
+
+#svgTypingIcon {
+	/* Parent: .userTagLobby */
+	position: relative;
+	top: calc(-0.53*var(--profilPicureRadius));
+	left: calc(0.69*var(--profilPicureRadius));
+	scale: 0.68;
 }
 
 /*--------------- BEHAVIOUR ------------- */

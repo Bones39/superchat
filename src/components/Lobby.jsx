@@ -66,11 +66,23 @@ const Lobby = ({props}) => {
 			<div className="lobby">
 				<div className="lobbyHeader">Utilisateurs connectés</div>
 				{connected && connected.map((connectedUser) =>
-					<div className="lobbyUser" key={`lobby-${connectedUser.id}`} onClick={() => {setWiizedRecepient(connectedUser.id)}}>
-						<div className="userTagLobby" style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${connectedUser.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}></div>
+					<div className="lobbyUser" key={`lobby-${connectedUser.id}`}>
+						<div className="userTagLobby" style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${connectedUser.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>
+							{connectedUser.isTyping &&
+								<svg id="svgTypingIcon" width="112" height="107" viewBox="0 0 112 107" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="58.5" cy="53.5" r="50.5" stroke="#ffde59" stroke-width="6"/>
+									<circle cx="34" cy="52" r="6" fill="#ffde59"/>
+									<circle cx="59" cy="52" r="6" fill="#ffde59"/>
+									<circle cx="84" cy="52" r="6" fill="#ffde59"/>
+									<path d="M8.21755 98.1799L14.2181 78.2804L28.4514 93.4268L8.21755 98.1799Z" fill="#ffde59"/>
+								</svg>
+							}
+							{/* {connectedUser.isTyping && <img className="typingIcon" src='src\assets\TypingIconSvg.svg'/>} */}
+							{/* {connectedUser.isTyping && <img className="typingIcon" src='src\assets\TypingIcon.png'/>} */}
+							{/* {connectedUser.isTyping && <i className="typingIcon"><TiMessageTyping/></i>} */}
+						</div>
 						<div className="userName">{connectedUser.email}</div>
-						{connectedUser.isTyping && <i className="icon"><TiMessageTyping/></i>}
-						<div className="wizzButton"><FaBell size="1.4em"/></div>
+						<div className="wizzButton" onClick={() => {setWiizedRecepient(connectedUser.id)}}><FaBell size="1.4em"/></div>
 					</div>
 				)}
 			</div>
