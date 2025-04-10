@@ -10,12 +10,12 @@ const Reactions = ({props}) => {
 	const onHover = (currentSmiley) => {
 		clearTimeout(fadingTimeoutId);
 		setHoverd(currentSmiley);
-		console.log(currentSmiley);
+		// console.log(currentSmiley);
 		setSelectingReaction(true);
 	}
 
 	const onLeave = () => {
-		console.log("reaction leaved!");
+		// console.log("reaction leaved!");
 		fadingTimeoutId = setTimeout(() => {
 			// the visibility of the reactions is also manage on the Message parent component
 			setSelectingReaction(false);

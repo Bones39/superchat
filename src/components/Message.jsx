@@ -115,11 +115,14 @@ const Message = ({props}) => {
 	let bDisplayUserPicture = (index !== 0 && messages[index-1].uid !== message.uid && message.uid !== auth.currentUser.uid)
 		|| (index === 0 && message.uid !== auth.currentUser.uid);
 	const date = new Date((message.createdAt?.seconds ? message.createdAt.seconds : firebase.firestore.FieldValue.serverTimestamp()) * 1000);
-	const formatedDate = `${date.toLocaleString()}`
+	const options = {
+		weekday: 'short', month: 'short', day: "numeric", hour: 'numeric', minute: "2-digit"
+	}
+	const formatedDate = `${date.toLocaleString("fr-FR", options)}`
 	
 	if (!message || !auth.currentUser) return(<></>);
 
-	if (index === 0 ) console.log(`message ${JSON.stringify(message)}`);
+	// if (index === 0 ) console.log(`message ${JSON.stringify(message)}`);
 
 	return (
 		<div ref={ref => messagesReferencesArray.current[index] = ref} className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>

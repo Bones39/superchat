@@ -8,6 +8,7 @@ import { addDoc, collection, deleteDoc, doc, limit, onSnapshot, orderBy, query, 
 import Chatroom from './components/Chatroom'
 import Lobby from './components/Lobby'
 import LogIn from './components/LogIn'
+import UserDetails from './components/UserDetails'
 import { useAuth } from './context'
 import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 import Header from './components/Header'
@@ -15,6 +16,7 @@ import Header from './components/Header'
 // todo
 /* 
  ------------- EN COURS --------------------
+ - changer les photos de profil en photo de chat: https://cataas.com/doc.html
  - ajouter la possibilité de supprimer ou de modifier son message
  - prendre en compte les liens hypertext
  - utiliser tanstackquery pour sauvegarder les cookies
@@ -313,6 +315,10 @@ function App() {
 		connected
 	}
 
+	const headerProps = {
+		currentUser : connected.filter(user => user.email === auth?.currentUser?.email)[0]
+	}
+
 	useEffect(() => {
 		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
 			const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
@@ -354,21 +360,24 @@ function App() {
 		{
 			// component chat room
 			userIsLoggedIn?
-			<div>
+			<div className='mainContainer'>
 				<div className='header'>
+					<div className='logo'>
+						<p>Super</p><img src='src\assets\LogoSuperChatCroped.png'/><p>Chat</p>
+					</div>
 					<div className='authInfos'>
-						authentified as {auth?.currentUser?.email}<br />
-						user ID: {auth?.currentUser?.uid}
+						{/* authentified as {auth?.currentUser?.email}<br />
+						user ID: {auth?.currentUser?.uid} */}
+						<UserDetails headerProps={headerProps}></UserDetails>
 					</div>
 					<div className='disonnectButton'>
-						<button onClick={logout}>Disconnect</button>
+						<button className="button" onClick={logout}>Disconnect</button>
 					</div>
 				</div>
-				{/* <Header/> */}
-				{/* Mettre les props dans un objet unique */}
-				<Chatroom props={props} ></Chatroom>
-				{/* <div ref={scrollHere}></div> */}
-				<Lobby props={lobbyProps}></Lobby>
+				<div className='appBodyContainer'>
+					<Lobby props={lobbyProps}></Lobby>
+					<Chatroom props={props} ></Chatroom>
+				</div>
 			</div>
 			:
 			// component authentification page

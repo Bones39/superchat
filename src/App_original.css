@@ -1,0 +1,352 @@
+/* ------ USE GRAY SCALE HERE: https://www.color-hex.com/color-palette/28549
+neutral color (bg) 60%: 			GREY 			#282b30 
+Primary color (main colopr)	40%		SMOKEDWHITE		#f5f5f5
+Call to action (blue) 10%  			BLUE			#7289da
+Calle to action bis: 				YELLOW			#424549
+*/
+
+/* #root {
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 2rem;
+}
+ */
+body {
+	margin: 0;
+	/* display: flex; */
+	/* place-items: center; */
+	/* min-width: 320px; */
+	background-color: rgb(40, 43, 48);
+	/* min-height: 100vh; */
+}
+
+.mainContainer {
+	display: flex;
+	flex-direction: column;
+}
+
+  button {
+	border-radius: 8px;
+	border: 1px solid transparent;
+	padding: 0.6em 1.2em;
+	font-size: 1em;
+	font-weight: 500;
+	font-family: inherit;
+	margin: 0 5px;
+	cursor: pointer;
+	transition: border-color 0.25s;
+  }
+  button:hover {
+	border-color: #646cff;
+  }
+  button:focus,
+  button:focus-visible {
+	outline: 4px auto -webkit-focus-ring-color;
+  }
+
+.chatroom {
+	/* margin-top: 40px; */
+	/* width: 1100px; */
+	display: flex;
+	flex-direction: column;
+	/* row-gap: 2px; */
+	/* background-color: #36393e; */
+	background-color: #b700ff;
+}
+
+.content {
+	display: flex;
+}
+
+.messageInput {
+	/** display flex bind the height of the input to the height of the button */
+	display: flex;
+	width: 500px;
+	margin-top: 10px;
+}
+
+.textInput {
+	width: 100%;
+	border-radius: 10px;
+}
+
+.customFileUpload {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	/* border:#646cff solid; */
+	border-radius: 50%;
+	width: 45.8px;
+	/* height: 40.8px; */
+	transition: background-color 0.25s;
+}
+
+.customFileUpload:hover {
+	/* border:#646cff solid; */
+	background-color: #b8bcff;
+	border-radius: 50%;
+}
+
+.fileInput {
+	position: absolute;
+    z-index: -1;
+	opacity: 0;
+}
+
+.signInInput {
+	width: 80%;
+	height: 38px;
+}
+
+.signInInput:hover {
+	border-color: #e4e4e4;
+}
+
+.sent {
+	display: flex;
+	flex-direction: column;
+	background-color: rgb(119, 173, 243);
+	/* align-self: end; */
+	/* text-align: right; */
+	border-radius: 15px;
+	padding: 1rem;
+	width: fit-content;
+	/* margin: 2px; */
+}
+
+.received {
+	background-color: rgb(206, 203, 203);
+	padding: 1rem;
+	border-radius: 15px;
+	width: fit-content;
+	/* margin: 2px; */
+}
+
+.userTag {
+	display: flex;
+	color: white;
+	justify-content: center;
+	align-items: center;
+	width: 13px;
+	height: 13px;
+	border-radius: 50%;
+	border: solid #646cff 2px;
+	margin-bottom: 2px;
+}
+
+.signIn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	border-radius: 10px;
+	row-gap: 20px;
+	width: 480px;
+	height: 540px;
+	/* background-size: cover; */
+	background-image: url("./assets/signIn_cat_image.jpeg");
+}
+
+.timeStamp {
+	margin-top: 2px;
+	margin-bottom: 5px;
+	/* align-self: end; */
+	/* justify-self: end; */
+	font-size: 0.55em;
+	/* align-self: end;	 */
+}
+
+
+.alignRight {
+	align-self: end;	
+}
+
+.left {
+	display: flex;
+	flex-direction: column;
+	align-self:flex-start;
+}
+
+.right {
+	display: flex;
+	flex-direction: column;
+	align-self: flex-end;
+}
+
+.lobby {
+	/* position: fixed; */
+/* 	top: 100px;
+	left: 25px;
+	width: 350px;
+	height: 430px; */
+	background-color: rgb(179, 250, 250);
+}
+
+.wizzNotification {
+	position: fixed;
+	display: flex;
+	flex-direction: column;
+	justify-self: center;
+	align-items: center;
+	top: 10px;
+	left: 45%;
+	width: 220px;
+	height: 44px;
+	border-radius: 5px;
+	background-color: rgb(25, 86, 255);
+	color: antiquewhite;
+	z-index: 1000;
+	font-size: larger;
+}
+
+.header {
+	/* position: fixed; */
+	display: flex;
+	/* width: 100%;
+	left: 0px;
+	top: 0px; */
+	/* background-color: #282b30; */
+	background-color: #64ff7e;
+	padding-left: 1em;
+	padding-bottom: 1em;
+	padding-top: 1em;
+	z-index: 1000;
+}
+
+.authInfos {
+	/* flex Parent is header */
+	flex-grow: 1;
+}
+.disonnectButton {
+	padding-right: 3em;
+}
+
+.lobbyUser {
+	display: flex;
+	align-items: center;
+}
+
+.lobbyUser:hover {
+	background-color: aqua;
+}
+
+.lobbyHeader {
+	margin-left: 30%;
+	font-weight: 800;
+}
+
+.userTagLobby {
+	display: flex;
+	color: white;
+	justify-content: center;
+	align-items: center;
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	border: solid #64ff7e 4px;
+	margin-bottom: 3px;
+	margin-right: 4px;
+}
+
+.icon {
+	font-size: 2em;
+	margin-left: 1em;
+}
+
+.image {
+	width: 320px;
+	/** Do not put height so that images fit all the div*/
+	/* height: 180px; */ 
+}
+
+.displayedImage {
+	width: 100%;
+	object-fit: contain;
+}
+
+.horizontalLayout {
+	display: flex;
+	flex-direction: row;
+}
+
+.selectable {
+	cursor: pointer;
+	border-radius: 50%;
+}
+
+.selectable:hover {
+	transform: translate(0, -2px);
+	/* box-shadow: 3px 3px 8px 1px rgba(27, 27, 27, 0.2); */
+}
+
+.userReaction {
+	background-color: rgb(119, 173, 243);
+}
+
+.setVisibleOnSelection {
+	opacity: 1;
+}
+
+.message {
+	transition: transform 0.3s linear;
+}
+
+.message:hover {
+	box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+	transform: translate(0, -2px);
+}
+ 
+.hidden {
+	display: none;
+	height: 0;
+	opacity: 0;
+	transition: opacity 0.5s ease, height 0.5s ease;
+	/* visibility: hidden; */
+}
+
+.smiley {
+	transition: transform 0.5s ease;
+}
+
+.smiley:hover {
+	transform: translate(0, -5px);
+}
+
+#previousMessagesButton {
+	position: fixed;
+	top: 80px;
+	z-index: 1000;
+	background-color: red;
+}
+
+#previousMessagesButton:hover {
+	scale: 1.2;
+}
+
+.fadeIn {
+	animation: fadeIn 1s;
+}
+
+.fadeOut {
+	animation: fadeOut 1s;
+	display: none;  /*display none fucking cancel any running animation...*/
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}

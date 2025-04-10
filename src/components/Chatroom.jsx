@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { CiImageOn } from "react-icons/ci";
 import Message from "./Message";
-import { RiArrowUpDoubleLine } from "react-icons/ri"
+import { RiArrowUpDoubleLine } from "react-icons/ri";
+import { GrSend } from "react-icons/gr";
+import { RiSendPlaneFill } from "react-icons/ri";
+import { LuImagePlus } from "react-icons/lu";
 
 const Chatroom = ({props}) => {
 	const {messages, formValue, sendMessage, sendImage, typing, setScrollIntoView, scrollIntoView, getNextMessagesBatch} = props;
@@ -9,6 +12,10 @@ const Chatroom = ({props}) => {
 	const genericRef = useRef();
 	const messagesReferencesArray = useRef(Array(messages.length).fill(null));
 	const [displayPreviousButton, setDisplayPreviousButton ] = useState(false);
+	const [controlPressed, setControlPressed] = useState();
+	const [enterPressed, setEnterPressed] = useState();
+	const keyPressed = {};
+	const inputRef = useRef()
 
 
 	useEffect(() => {
@@ -19,9 +26,38 @@ const Chatroom = ({props}) => {
 		}
 	}, [messages])
 
+	useEffect(() => {
+		if (controlPressed && enterPressed) {
+			// sendMessage();
+			// document.getElementById('messageInputValue').value = formValue;
+			// document.getElementById('messageForm').submit();
+			document.getElementById('sendButton').click();
+			// inputRef.current.submit();
+
+		}
+	}, [controlPressed, enterPressed])
+
+	const handleKeyDown = (event) => {
+		if (event.key === 'Control') {
+			setControlPressed(true);
+		}
+		if (event.key === 'Enter') {
+			setEnterPressed(true);
+		}
+	};
+
+	const handleKeyUp = (event) => {
+		if (event.key === 'Control') {
+			setControlPressed(false);
+		}
+		if (event.key === 'Enter') {
+			setEnterPressed(false);
+		}
+	};
+
 	return(
-		<>
-			<button className={displayPreviousButton? 'fadeIn' : 'fadeOut'} id='previousMessagesButton' onClick={getNextMessagesBatch}><RiArrowUpDoubleLine /></button>
+		<div className='chatZone'>
+			<button className={`${displayPreviousButton? 'fadeIn' : 'fadeOut'} button`} id='previousMessagesButton' onClick={getNextMessagesBatch}><RiArrowUpDoubleLine /></button>
 			<div className="chatroom">
 				{/* // chat room */}
 				{messages && messages.map((message, index) =>
@@ -32,15 +68,17 @@ const Chatroom = ({props}) => {
 				<div ref={dummyRef}></div>
 			</div>
 			{/** display the form*/}
-			<form className='messageInput' onSubmit={sendMessage}>
-				<input className='textInput' type="text" value={formValue} onChange={(e)=>typing(e)}/>
-				<button type='submit'>SEND</button>
+			<form className='messageInputForm' id='messageForm' ref={inputRef} onSubmit={sendMessage}>
+				<div className="inputContainer">
+					<textarea className='messageInputArea' id='messageInputValue' wrap='hard' cols='40' autoFocus={true} placeholder='  Miaou...' value={formValue} onChange={(e)=>typing(e)} onKeyDown={(e)=>{handleKeyDown(e)}} onKeyUp={handleKeyUp}/>
+					<button type='submit' id='sendButton' className='sendButton'><RiSendPlaneFill/></button>
+				</div>
 				<label className='customFileUpload'>
-					<CiImageOn/>
+					<LuImagePlus/>
 					<input className='fileInput' type='file' onChange={(e)=>sendImage(e)}/>
 				</label>
 			</form>
-		</>
+		</div>
 	)
 }
 
