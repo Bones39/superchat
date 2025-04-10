@@ -371,7 +371,7 @@ function App() {
 						<UserDetails headerProps={headerProps}></UserDetails>
 					</div>
 					<div className='disonnectButton'>
-						<button onClick={logout}>Disconnect</button>
+						<button className="button" onClick={logout}>Disconnect</button>
 					</div>
 				</div>
 				<div className='appBodyContainer'>

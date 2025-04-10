@@ -57,7 +57,7 @@ const Chatroom = ({props}) => {
 
 	return(
 		<div className='chatZone'>
-			<button className={displayPreviousButton? 'fadeIn' : 'fadeOut'} id='previousMessagesButton' onClick={getNextMessagesBatch}><RiArrowUpDoubleLine /></button>
+			<button className={`${displayPreviousButton? 'fadeIn' : 'fadeOut'} button`} id='previousMessagesButton' onClick={getNextMessagesBatch}><RiArrowUpDoubleLine /></button>
 			<div className="chatroom">
 				{/* // chat room */}
 				{messages && messages.map((message, index) =>

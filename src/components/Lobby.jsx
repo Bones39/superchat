@@ -82,7 +82,7 @@ const Lobby = ({props}) => {
 							{/* {connectedUser.isTyping && <i className="typingIcon"><TiMessageTyping/></i>} */}
 						</div>
 						<div className="userName">{connectedUser.email}</div>
-						<div className="wizzButton" onClick={() => {setWiizedRecepient(connectedUser.id)}}><FaBell size="1.4em"/></div>
+						<div className="wizzButton" onClick={() => {setWiizedRecepient(connectedUser.id)}}><FaBell id="bellIcon" size="1.4em"/></div>
 					</div>
 				)}
 			</div>
