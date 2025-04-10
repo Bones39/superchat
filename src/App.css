@@ -317,4 +317,24 @@ body {
 	scale: 0.68;
 }
 
+.userDetails {
+	/* Parent: .authInfos */
+	display: flex;
+	align-items: center;
+}
+
+.userDetailHeader {
+	/* Parent: .userDetails */
+	width: calc(1.2*var(--profilPicureRadius));
+	height: calc(1.2*var(--profilPicureRadius));
+	border-radius: 50%;
+}
+
+.userNameHeader {
+	/* Parent: .userDetails */
+	font-size: 1.3em;
+	font-weight: 700;
+	padding-left: 0.5em;
+}
+
 /*--------------- BEHAVIOUR ------------- */

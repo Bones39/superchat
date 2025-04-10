@@ -8,6 +8,7 @@ import { addDoc, collection, deleteDoc, doc, limit, onSnapshot, orderBy, query, 
 import Chatroom from './components/Chatroom'
 import Lobby from './components/Lobby'
 import LogIn from './components/LogIn'
+import UserDetails from './components/UserDetails'
 import { useAuth } from './context'
 import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 import Header from './components/Header'
@@ -314,6 +315,10 @@ function App() {
 		connected
 	}
 
+	const headerProps = {
+		currentUser : connected.filter(user => user.email === auth?.currentUser?.email)[0]
+	}
+
 	useEffect(() => {
 		const unsubscribe = onSnapshot(messageQuery, (querySnapshot) => {
 			const filterData = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
@@ -361,8 +366,9 @@ function App() {
 						<p>Super</p><img src='src\assets\LogoSuperChatCroped.png'/><p>Chat</p>
 					</div>
 					<div className='authInfos'>
-						authentified as {auth?.currentUser?.email}<br />
-						user ID: {auth?.currentUser?.uid}
+						{/* authentified as {auth?.currentUser?.email}<br />
+						user ID: {auth?.currentUser?.uid} */}
+						<UserDetails headerProps={headerProps}></UserDetails>
 					</div>
 					<div className='disonnectButton'>
 						<button onClick={logout}>Disconnect</button>

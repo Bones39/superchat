@@ -1,11 +1,14 @@
 
-import { auth } from './firebaseConfig'
+import { auth } from '../firebaseConfig'
 
-const UserDetails = () => {
+const UserDetails = ({headerProps}) => {
+	const {currentUser} = headerProps;
 	return (
-		<div>
-			<div className="userTagLobby" style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${connectedUser.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}></div>
-			<div className="userName">{auth?.currentUser?.email}</div>
+		<div className='userDetails'>
+			<div className="userDetailHeader" style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${currentUser?.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}></div>
+			<div className="userNameHeader">{auth?.currentUser?.email}</div>
 		</div>
 	)
 }
+
+export default UserDetails;
