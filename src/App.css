@@ -196,6 +196,13 @@ body {
 .message {
 	color: #1e2124;
 	font-weight: 450;
+	z-index: 2;  /* put a z-index so that the message is above the user reactions*/
+}
+
+.message:hover {
+	/* box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2); */
+	cursor: pointer;
+	transform: translate(0, -2px);
 }
 
 .left {
@@ -253,16 +260,24 @@ body {
 
 .horizontalLayout {
 	display: flex;
-	flex-direction: row;
+	/* flex-direction: row; */
 }
 
 .selectable {
 	cursor: pointer;
-	border-radius: 50%;
 }
 
 .userReaction {
 	background-color: rgb(119, 173, 243);
+	padding-top: 20px;
+	padding-bottom: 2px;
+	border-radius: 30%;
+	transform: translate(0, -18px);
+}
+
+.userReaction:hover {
+	transform: translate(0, -20px);
+	/* box-shadow: 3px 3px 8px 1px rgba(27, 27, 27, 0.2); */
 }
 
 .timeStamp {
@@ -363,5 +378,14 @@ body {
 	transition: border-color 0.25s;
 	background-color: #ffde59;
   }
+
+  .hidden {
+	/* hide avalaible reactions */
+	display: none;
+	height: 0;
+	opacity: 0;
+	transition: opacity 0.5s ease, height 0.5s ease;
+	/* visibility: hidden; */
+}
 
 /*--------------- BEHAVIOUR ------------- */
