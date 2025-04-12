@@ -8,10 +8,10 @@ import { addDoc, collection, deleteDoc, doc, limit, onSnapshot, orderBy, query, 
 import Chatroom from './components/Chatroom'
 import Lobby from './components/Lobby'
 import LogIn from './components/LogIn'
+import logoImage from './assets/LogoSuperChatCroped.png'
 import UserDetails from './components/UserDetails'
 import { useAuth } from './context'
 import { auth, firestoreDb, googleProvider } from './firebaseConfig'
-import Header from './components/Header'
 
 // todo
 /* 
@@ -363,7 +363,7 @@ function App() {
 			<div className='mainContainer'>
 				<div className='header'>
 					<div className='logo'>
-						<p>Super</p><img src='src\assets\LogoSuperChatCroped.png'/><p>Chat</p>
+						<p>Super</p><img id="imageLogo" src={logoImage} alt=''/><p>Chat</p>
 					</div>
 					<div className='authInfos'>
 						{/* authentified as {auth?.currentUser?.email}<br />
