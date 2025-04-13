@@ -260,6 +260,7 @@ body {
 
 .horizontalLayout {
 	display: flex;
+	position: relative;
 	/* flex-direction: row; */
 }
 
@@ -267,16 +268,30 @@ body {
 	cursor: pointer;
 }
 
+#messageContainer {
+	position: relative;
+}
+
+#selectedReactionsContainer {
+	/*Parent: #messageContainer*/
+	background-color: #36393e;
+	position: absolute;
+	bottom: -10px;
+	border-radius: 1em;
+}
+
 .userReaction {
+	/*Parent: horizontalLayout*/
+	/* position: absolute; */
 	background-color: rgb(119, 173, 243);
-	padding-top: 20px;
+	/* padding-top: 20px; */
 	padding-bottom: 2px;
-	border-radius: 30%;
-	transform: translate(0, -18px);
+	border-radius: 1em;
+	/* transform: translate(0, -18px); */ /*replace with a relative/absolute positionning*/
 }
 
 .userReaction:hover {
-	transform: translate(0, -20px);
+	transform: translate(0, -2px);
 	/* box-shadow: 3px 3px 8px 1px rgba(27, 27, 27, 0.2); */
 }
 
