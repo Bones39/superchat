@@ -34,11 +34,10 @@ const Wiiz = ({wiizProps}) => {
 			await deleteDoc(doc(firestoreDb, "wizzActions", wiizId));
 			alreadyWiiz.current = false;
 			// setDisplayNotif(false);
-		}, 5000);
+		}, 4000);
 	}
 
 	useEffect(() => {
-		console.log("in use effect!")
 		return () => clearTimeout(wizzCleanTimeOutId);
 	},[wiizActions])
 

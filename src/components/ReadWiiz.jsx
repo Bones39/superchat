@@ -32,7 +32,7 @@ const ReadWiiz = ({readWiizProps}) => {
 			setSender(null);
 			// reset the wiiz sender so that the wiiz can be triggered again
 			setWiizedRecepient(null);
-		}, 5000);
+		}, 1500);
 	}
 
 	useEffect(()=>{

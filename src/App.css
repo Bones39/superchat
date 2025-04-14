@@ -388,4 +388,32 @@ body {
 	/* visibility: hidden; */
 }
 
+.wizzNotification {
+	position: fixed;
+	display: flex;
+	/* flex-direction: column; */
+	justify-self: center;
+	align-items: center;
+	top: 3.4rem;
+	left: 45%;
+	width: auto;
+	height: 3rem;
+	padding: 0 1em;
+	border-radius: 3em;
+	background-color: #ffde59;
+	color: #282b30;
+	z-index: 1000;
+	font-size: larger;
+	font-weight: 900;
+	animation: jiggle 0.15s infinite;
+}
+
+@keyframes jiggle {
+	0% { transform: translate(2px, 0); }
+	25% { transform: translate(5px, 2px); }
+	50% { transform: translate(0, 0); }
+	75% { transform: translate(-5px, 5px); }
+	100% { transform: translate(2, 0); }
+  }
+
 /*--------------- BEHAVIOUR ------------- */
