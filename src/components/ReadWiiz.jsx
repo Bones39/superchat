@@ -3,6 +3,8 @@ import { setDoc, collection, deleteDoc, doc, onSnapshot, updateDoc, where, delet
 import { useEffect, useState } from 'react';
 import { useSound } from 'use-sound';
 import wiizSound from '../assets/MSN_WIZZ_SOUND.mp3';
+import meowSound from '../assets/WIZZ_SOUND_MEOW_1.Mp3';
+import wakeUpSound from '../assets/WIZZ_SOUND_WAKEUP.mp3';
 import { useRef } from 'react';
 import firebase from 'firebase/compat/app'
 import { useFormState } from 'react-dom';
@@ -14,8 +16,11 @@ const ReadWiiz = ({readWiizProps}) => {
 
 	const wizzActionOnCurrentUserRef = doc(firestoreDb, "wizzActions", auth?.currentUser?.email);
 	const [play] = useSound(wiizSound, { volume: 0.08 });
+	const [playMeow] = useSound(meowSound, { volume: 0.95 });
+	const [playWakeUp] = useSound(wakeUpSound, { volume: 0.08 });
 	const [sender, setSender] = useState();
 
+	const soundArray = [play, playMeow, playWakeUp]
 	let wizzCleanTimeOutId = useRef();
 	const unsub = useRef();
 
@@ -43,7 +48,9 @@ const ReadWiiz = ({readWiizProps}) => {
 				// set the sender so that the cleanWiiz function is triggerd by the rerender
 				setSender(currentSender);
 				// only play the sound if the query is triggerd, not at initialization
-				if (currentSender) play();
+				let randomIndex = Math.floor(Math.random() * (soundArray.length)) || 0;
+				console.log(randomIndex);
+				if (currentSender) soundArray[randomIndex]();
 			}
 		});
 		return () => unsub.current();
