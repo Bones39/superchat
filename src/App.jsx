@@ -4,7 +4,7 @@ import './App.css'
 
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
-import { addDoc, collection, deleteDoc, doc, limit, onSnapshot, orderBy, query, setDoc, where, getDocs, startAfter } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, doc, limit, onSnapshot, orderBy, query, setDoc, where, or, getDocs, startAfter } from 'firebase/firestore'
 import Chatroom from './components/Chatroom'
 import Lobby from './components/Lobby'
 import LogIn from './components/LogIn'
@@ -105,8 +105,8 @@ function App() {
 	// const userRef = collection(firestoreDb, 'Users')
 	const connectedQuery = query(connectedRef);
 	const [connected, setConnected] = useState([]);
-	const [photoId, setPhotoId] = useState("");
-	const [allias, setAllias] = useState("");
+	const [photoId, setPhotoId] = useState(auth?.currentUser?.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
+	const [allias, setAllias] = useState(auth?.currentUser?.email.substring(0,3));
 
 	const updateConnectionState = async (action) => {
 		if (action === "connection") {
@@ -173,23 +173,21 @@ function App() {
 
 	const automaticDisconnect = async () => {
 		console.log("in automaticDisconnect");
-		let thresholdDate = new Date();
-		thresholdDate.setMinutes(thresholdDate.getMinutes() - inactivityDelayMinutes);
-		let formattedThresholdDate = firebase.firestore.Timestamp.fromDate(thresholdDate);
-		let queryOptions = query(connectedRef, where("lastActivityDate", "<", formattedThresholdDate));
+		// search for user that should be disconnected (due to reapplied cached data they are not)
+		let queryOptions = query(connectedRef/* , or(where("email", "==", null), where("email", "==", "")) */);
 		let querySnapshot = await getDocs(queryOptions);
 		querySnapshot.forEach(async (doc) => {
 		// doc.data() is never undefined for query doc snapshots
 			console.log(doc.id, " => ", doc.data());
-			// delete every record that fill the time condition
-			if (doc.id === auth?.currentUser?.email && doc.data().lastActivityDate < formattedThresholdDate) {
+			// delete the record of the current user
+			if (doc.id === auth?.currentUser?.email && !doc.data().hasOwnProperty("email")) {
 				// await deleteDoc(doc(firestoreDb, "connected", doc.id));
 				await deleteDoc(doc.ref/* doc(firestoreDb, "connected", auth?.currentUser?.email) */);
 				console.log(`user ${doc.id} should be loged out!`);
 				// this logout the current user
 				logout();
-			} else {
-				console.log(`user ${doc.id} should be loged out! but do it server side!`);
+			} else if (!doc.data().hasOwnProperty("email")) {
+				console.log(`user ${doc.id} should be loged out! but do it will be done server side automatically!`);
 			}
 		});
 	}
@@ -327,6 +325,9 @@ function App() {
 			if (!lastQueriedMessageTimeStamp.current) lastQueriedMessageTimeStamp.current = filterData[0].createdAt
 		});
 
+		// check if the current user is to be disconnected
+		automaticDisconnect();
+
 		const un = onSnapshot(connectedQuery, (querySnapshot) => {
 			const connectedUsers = querySnapshot.docs.map(doc => ({...doc.data(), id: doc.id}));
 			setConnected(connectedUsers);
@@ -338,12 +339,10 @@ function App() {
 			updateConnectionState();
 		}); */
 
-		// check if any user is to be disconnected and the check every 30 min
-		// automaticDisconnect();
 		// set up an interval to check for inactive users and disconnect them automatically
-		intervalId.current = setInterval(()=> {
+		/* intervalId.current = setInterval(()=> {
 			// automaticDisconnect();
-		}, inactivityDelayMinutes*60*1000)
+		}, inactivityDelayMinutes*60*1000) */
 		// the use effect is called only once, ie when the connection page appears (not called again if the user connect unless some dependencies are put in the dep array)
 		// scrollHere?.current?.scrollIntoView();
 

@@ -69,6 +69,7 @@ const Lobby = ({props}) => {
 					<div className="lobbyUser" key={`lobby-${connectedUser.id}`}>
 						<div className="userTagLobby" style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${connectedUser.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>
 							{connectedUser.isTyping &&
+							/* Typing icon in svg */
 								<svg id="svgTypingIcon" width="112" height="107" viewBox="0 0 112 107" fill="none" xmlns="http://www.w3.org/2000/svg">
 									<circle cx="58.5" cy="53.5" r="50.5" stroke="#ffde59" stroke-width="6"/>
 									<circle cx="34" cy="52" r="6" fill="#ffde59"/>
