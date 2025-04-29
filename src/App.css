@@ -466,4 +466,10 @@ body {
 	font-size: 2.35em;
 	align-items: center;
 }
+
+#logInCatImages {
+	height: 4rem;
+	width: 4rem;
+	border-radius: 50%;
+}
 /*--------------- BEHAVIOUR ------------- */
