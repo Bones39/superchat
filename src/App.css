@@ -472,4 +472,8 @@ body {
 	width: 4rem;
 	border-radius: 50%;
 }
+
+#chooseYourAvatar:hover {
+	scale: 1.15;
+}
 /*--------------- BEHAVIOUR ------------- */

@@ -31,21 +31,26 @@ const LogIn = ({props}) => {
 		signInWithGoogle
 	} = props;
 
+	// const avatar
+
 	return (
 		<div className="signInContainer">
 			<form className="signInFormContainer" onSubmit={signIn}>
+			<header>Create an account</header>
 				<input className="signInInput" type="text" placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)}/>
+				<input className="signInInput" type="text" placeholder='Username'/>
 				<input className="signInInput" type="password" placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
 				<button className="button" onClick={signIn}>Sign In</button>
 				<button className="button" onClick={signInWithGoogle}>Sign In with Google</button>
 				<div className='logoSignIn'>
-					<p>Super</p><img id="imageLogo" src={logoImage} alt=''/><p>Chat</p>
+					<p>Super</p><img id="chooseYourAvatar" src={logoImage} alt=''/><p>Chat</p>
 				</div>
-				{/* <div>
+				{/* the component rerender when clicked... see how to cache data to prevent unecessary rendering */}
+				{<div>
 					{data && data.map(element =>
 						<img id="logInCatImages" src={element.url} alt="" key={element.url}/>
 					)}
-				</div> */}
+				</div>}
 			</form>
 		</div>
 	)
