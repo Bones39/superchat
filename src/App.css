@@ -21,6 +21,7 @@ Calle to action bis: 				YELLOW			#ffde59 (de la maquette sur canvas)
 	--headerHeight: 75px;
 	--lobbyWidth: 25rem;
 	--profilPicureRadius: 3rem;
+	--signInFormWidth: 480px;
 }
 
 body {
@@ -433,7 +434,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	row-gap: 20px;
-	width: 480px;
+	width: var(--signInFormWidth);
 	height: 540px;
 	border-radius: 10px;
 	background-size: cover;
@@ -468,12 +469,39 @@ body {
 }
 
 #logInCatImages {
+	position: relative;
 	height: 4rem;
 	width: 4rem;
+	object-fit:cover;
 	border-radius: 50%;
+}
+
+#logInCatImages:hover {
+	scale: 1.25;
+	transform: translate(0, -2px);
+}
+
+
+#chooseYourAvatar {
+	/* position: absolute; */
+	cursor: pointer;
 }
 
 #chooseYourAvatar:hover {
 	scale: 1.15;
+}
+
+
+.carouselContainer {
+	width: var(--signInFormWidth);
+}
+
+.catPictureContainer {
+	/* parent: carouselContainer */
+	display: flex;
+	column-gap: 10px;
+	height: 100px;
+	overflow-x: scroll;
+	align-items: center;
 }
 /*--------------- BEHAVIOUR ------------- */

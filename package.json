@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "4.28",
+    "@tanstack/react-query-devtools": "4.28",
     "firebase": "^11.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
