@@ -67,11 +67,11 @@ const Lobby = ({props}) => {
 				<div className="lobbyHeader">Utilisateurs connectés</div>
 				{connected && connected.map((connectedUser) =>
 					<div className="lobbyUser" key={`lobby-${connectedUser.id}`}>
-						<div className="userTagLobby" style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${connectedUser.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>
+						<div className="userTagLobby" style={{backgroundImage: `url(${connectedUser.catAvatarImageUrl ? connectedUser.catAvatarImageUrl : `"https://randomuser.me/api/portraits/men/${connectedUser.photoId}.jpg"`})`, backgroundPosition: "center", backgroundSize: "110%"}}>
 							{connectedUser.isTyping &&
 							/* Typing icon in svg */
 								<svg id="svgTypingIcon" width="112" height="107" viewBox="0 0 112 107" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<circle cx="58.5" cy="53.5" r="50.5" stroke="#ffde59" stroke-width="6"/>
+									<circle cx="58.5" cy="53.5" r="50.5" stroke="#ffde59" strokeWidth="6"/>
 									<circle cx="34" cy="52" r="6" fill="#ffde59"/>
 									<circle cx="59" cy="52" r="6" fill="#ffde59"/>
 									<circle cx="84" cy="52" r="6" fill="#ffde59"/>
@@ -82,7 +82,7 @@ const Lobby = ({props}) => {
 							{/* {connectedUser.isTyping && <img className="typingIcon" src='src\assets\TypingIcon.png'/>} */}
 							{/* {connectedUser.isTyping && <i className="typingIcon"><TiMessageTyping/></i>} */}
 						</div>
-						<div className="userName">{connectedUser.email}</div>
+						<div className="userName">{connectedUser.userName}</div>
 						<div className="wizzButton" onClick={() => {setWiizedRecepient(connectedUser.id)}}><FaBell id="bellIcon" size="1.4em"/></div>
 					</div>
 				)}

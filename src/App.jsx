@@ -80,6 +80,8 @@ function App() {
 	const [password, setPassword] = useState("");
 	const [formValue, setFormValue] = useState("");
 	const { userIsLoggedIn, currentUser } = useAuth();
+	const [catAvatarPicture, setCatAvatarPicture] = useState();
+	const [userName, setUserName] = useState();
 
 	// const dummy = useRef();
 	// const scrollHere = useRef();
@@ -115,6 +117,8 @@ function App() {
 				email: auth?.currentUser?.email,
 				allias: auth?.currentUser?.email.substring(0,3),
 				photoId: auth?.currentUser?.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''),
+				catAvatarImageUrl: catAvatarPicture,
+				userName: userName,
 				lastActivityDate: firebase.firestore.FieldValue.serverTimestamp()
 			});
 			if (auth.currentUser) {
@@ -204,6 +208,7 @@ function App() {
 				allias: allias,// currentUser.email.substring(0,3),
 				// take the first two number in the ui
 				photoId: photoId, //currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''),
+				catAvatarImageUrl: connected?.filter(user => user.email === auth?.currentUser?.email)[0].catAvatarImageUrl || "", // catAvatarPicture || "",
 				createdAt: firebase.firestore.FieldValue.serverTimestamp()
 			});
 	
@@ -306,7 +311,11 @@ function App() {
 		password,
 		setPassword,
 		signIn,
-		signInWithGoogle
+		signInWithGoogle,
+		catAvatarPicture,
+		setCatAvatarPicture,
+		userName,
+		setUserName
 	}
 
 	const lobbyProps = {

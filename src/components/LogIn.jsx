@@ -19,6 +19,7 @@ const LogIn = ({props}) => {
 			// using then statement leads to the following error: "Query data cannot be undefined. Please make sure to return a value other than undefined from your query function"
 			const response = await fetch("https://api.thecatapi.com/v1/images/search?limit=7");
 			const data = await response.json();
+			setCatAvatarPicture(data[0].url)
 			console.log(data);
 			return data;
 		},
@@ -27,7 +28,7 @@ const LogIn = ({props}) => {
 		refetchOnReconnect: false
 	})
 
-	const [catAvatarPicture, setCatAvatarPicture] = useState();
+	// const [catAvatarPicture, setCatAvatarPicture] = useState();
 
 	const {
 		email,
@@ -35,7 +36,11 @@ const LogIn = ({props}) => {
 		password,
 		setPassword,
 		signIn,
-		signInWithGoogle
+		signInWithGoogle,
+		catAvatarPicture,
+		setCatAvatarPicture,
+		userName,
+		setUserName
 	} = props;
 
 	const catCarouselProps = {
@@ -47,21 +52,17 @@ const LogIn = ({props}) => {
 	return (
 		<div className="signInContainer">
 			<form className="signInFormContainer" onSubmit={signIn}>
+				<span></span>
 				<header>Create an account</header>
-				<input className="signInInput" type="text" placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)}/>
-				<input className="signInInput" type="text" placeholder='Username'/>
-				<input className="signInInput" type="password" placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
+				<input className="signInInput" type="text" placeholder='Emeowl' value={email} onChange={(e) => setEmail(e.target.value)}/>
+				<input className="signInInput" type="text" placeholder='Usernamiaou' value={userName} onChange={(e) => setUserName(e.target.value)}/>
+				<input className="signInInput" type="password" placeholder='miassword' value={password} onChange={(e) => setPassword(e.target.value)}/>
 				<button className="button" onClick={signIn}>Sign In</button>
+				-------------- or --------------
 				<button className="button" onClick={signInWithGoogle}>Sign In with Google</button>
 				<div className='logoSignIn'>
 					<p>Super</p><img id="logInCatImages" src={catAvatarPicture? catAvatarPicture : logoImage} alt=''/><p>Chat</p>
 				</div>
-				{/* the component rerender when clicked... see how to cache data to prevent unecessary rendering */}
-				{/* {<div>
-					{data && data.map(element =>
-						<img id="logInCatImages" src={element.url} alt="" key={element.url}/>
-					)}
-				</div>} */}
 				<div className='carouselContainer'>
 					<CatCarousel props={catCarouselProps}/>
 				</div>

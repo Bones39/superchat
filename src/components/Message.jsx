@@ -127,7 +127,7 @@ const Message = ({props}) => {
 	return (
 		<div ref={ref => messagesReferencesArray.current[index] = ref} className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
 			{/* display the picture above the message if the first message is not from the current user or if a message comes after a message which is not his */}
-			{bDisplayUserPicture && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("https://randomuser.me/api/portraits/men/${message.photoId}.jpg")`, backgroundPosition: "center", backgroundSize: "110%"}}>{message.allias}</div>}
+			{bDisplayUserPicture && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("${message.catAvatarImageUrl ? message.catAvatarImageUrl : `https://randomuser.me/api/portraits/men/${message.photoId}.jpg`}")`, backgroundPosition: "center", backgroundSize: "110%"}}>{message.allias}</div>}
 			{/* display the message text or the image */}
 			{!message.type && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}>{message.text}</div>}
 			{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}><img className="displayedImage" src={message.text} alt="Base64 Image"/></div>}

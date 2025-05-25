@@ -435,7 +435,7 @@ body {
 	align-items: center;
 	row-gap: 20px;
 	width: var(--signInFormWidth);
-	height: 540px;
+	height: 590px;
 	border-radius: 10px;
 	background-size: cover;
 	/* background-image: url("./assets/signIn_cat_image.jpeg"); */
@@ -499,7 +499,7 @@ body {
 .catPictureContainer {
 	/* parent: carouselContainer */
 	display: flex;
-	column-gap: 10px;
+	column-gap: 12px;
 	height: 100px;
 	overflow-x: scroll;
 	align-items: center;
