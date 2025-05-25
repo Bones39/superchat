@@ -102,6 +102,18 @@ tried to use keyframes and animation but it didn't worked...*/
 	color: #ff5959;
 }
 
+.activeBellIcon {
+	color: #59ff99;
+	animation: wiggle 1.3s ease-out;
+}
+
+@keyframes wiggle {
+	25% {transform: rotate(-15deg);}
+	50% {transform: rotate(15deg);}
+	75% {transform: rotate(-15deg);}
+	100% {transform: rotate(15deg);}
+}
+
 .chatZone {
 	/* Parent: .appBodyContainer */
 	display: flex;

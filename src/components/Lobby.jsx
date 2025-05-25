@@ -2,7 +2,7 @@ import { TiMessageTyping } from "react-icons/ti";
 import { FaBell } from "react-icons/fa";
 import { auth, firestoreDb } from '../firebaseConfig'
 import { addDoc, collection, query, onSnapshot, where } from 'firebase/firestore'
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import firebase from 'firebase/compat/app'
 import Wiiz from './Wiiz';
 import SendWiizComponent from './SendWiizComponent';
@@ -16,6 +16,9 @@ const Lobby = ({props}) => {
 	const [displayNotif, setDisplayNotif] = useState()
 	const [listOfWiizedUsers, setListOfWizzedUsers] = useState([]);
 	const [wiizedRecepient, setWiizedRecepient] = useState("");
+
+	const [isBellActive, setIsBellActive] = useState(false);
+	let intervalId = useRef(null);
 
 	let notificationDisplayTimeSeconde = 5;
 
@@ -41,6 +44,17 @@ const Lobby = ({props}) => {
 		});
 	}
 
+	const handleBellClick = (currentUser) => {
+		clearInterval(intervalId.current);
+		// send the wizz notification
+		setWiizedRecepient(currentUser);
+		// handle classname to trigger the bell animation
+		setIsBellActive(true);
+		intervalId.current = setInterval(() => {
+			setIsBellActive(false);
+		}, 1300);
+	}
+
 	const deleteWiiz = () => {
 		setTimeout(async () => {
 			await deleteDoc(doc(firestoreDb, "wizzActions", wiizId));
@@ -55,7 +69,10 @@ const Lobby = ({props}) => {
 			// console.log(`display! ${JSON.stringify(listOfWiizedUsers)}`);
 			// hideWiizNotification();
 		});
-		return () => un();
+		return () => {
+			un();
+			clearInterval(intervalId.current);
+		}
 	}, [])
 
 	return (
@@ -83,7 +100,7 @@ const Lobby = ({props}) => {
 							{/* {connectedUser.isTyping && <i className="typingIcon"><TiMessageTyping/></i>} */}
 						</div>
 						<div className="userName">{connectedUser.userName}</div>
-						<div className="wizzButton" onClick={() => {setWiizedRecepient(connectedUser.id)}}><FaBell id="bellIcon" size="1.4em"/></div>
+						<div className="wizzButton" onClick={() => {handleBellClick(connectedUser.id)}}><FaBell id="bellIcon" size="1.4em" className={isBellActive? "activeBellIcon" : ""}/></div>
 					</div>
 				)}
 			</div>
