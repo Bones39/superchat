@@ -13,6 +13,7 @@ const Chatroom = ({props}) => {
 	const messagesReferencesArray = useRef(Array(messages.length).fill(null));
 	const [displayPreviousButton, setDisplayPreviousButton ] = useState(false);
 	const [controlPressed, setControlPressed] = useState();
+	const [shiftPressed, setShiftPressed] = useState();
 	const [enterPressed, setEnterPressed] = useState();
 	const keyPressed = {};
 	const inputRef = useRef()
@@ -27,13 +28,9 @@ const Chatroom = ({props}) => {
 	}, [messages])
 
 	useEffect(() => {
-		if (controlPressed && enterPressed) {
-			// sendMessage();
-			// document.getElementById('messageInputValue').value = formValue;
-			// document.getElementById('messageForm').submit();
+		if (enterPressed && !shiftPressed) {
+			// send the message if enter is pressed without shift
 			document.getElementById('sendButton').click();
-			// inputRef.current.submit();
-
 		}
 	}, [controlPressed, enterPressed])
 
@@ -44,6 +41,9 @@ const Chatroom = ({props}) => {
 		if (event.key === 'Enter') {
 			setEnterPressed(true);
 		}
+		if (event.key === 'Shift') {
+			setShiftPressed(true);
+		}
 	};
 
 	const handleKeyUp = (event) => {
@@ -52,6 +52,9 @@ const Chatroom = ({props}) => {
 		}
 		if (event.key === 'Enter') {
 			setEnterPressed(false);
+		}
+		if (event.key === 'Shift') {
+			setShiftPressed(false);
 		}
 	};
 
