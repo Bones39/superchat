@@ -110,6 +110,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	background-color: #36393e;
+	height: 100%;
 	overflow-y: scroll;
 	/* Use flex-shrink (main axis is vertical so it is applied on messages): 1 combined with overflow: scroll to have a div with a scrolling bar */
 	flex-shrink: 1;
