@@ -89,8 +89,17 @@ body {
 	font-size: x-large;
 }
 
-#bellIcon {
+/* Use not pseudo class so that the effect lasts for the transition time (red for 1 s here)
+tried to use keyframes and animation but it didn't worked...*/
+#bellIcon:not(:active) {
+	/* parent: wizzButton */
 	color: #ffde59;
+	transition: all 1.3s step-end;
+}
+
+#bellIcon:active {
+	/* parent: wizzButton */
+	color: #ff5959;
 }
 
 .chatZone {
@@ -337,7 +346,7 @@ body {
 	/* Parent: .lobbyUser */
 	scale: 1.2;
 	rotate: 15deg;
-	/* color: #ffde59; */
+	color: #ffde59;
 }
 
 #svgTypingIcon {
