@@ -21,7 +21,7 @@ const Lobby = ({props}) => {
 	let intervalId = useRef(null);
 
 	let notificationDisplayTimeSeconde = 5;
-
+	const bellActiveDurationMs = 1500;
 	const wiizProps = {
 		listOfWiizedUsers,
 		displayNotif,
@@ -44,15 +44,17 @@ const Lobby = ({props}) => {
 		});
 	}
 
-	const handleBellClick = (currentUser) => {
-		clearInterval(intervalId.current);
+	const handleBellClick = (userToWizz) => {
 		// send the wizz notification
-		setWiizedRecepient(currentUser);
+		setWiizedRecepient(userToWizz);
 		// handle classname to trigger the bell animation
+		if (!!userToWizz.id) return
+		// prevent the user to wiz himself
+		clearInterval(intervalId.current);
 		setIsBellActive(true);
 		intervalId.current = setInterval(() => {
 			setIsBellActive(false);
-		}, 1300);
+		}, bellActiveDurationMs);
 	}
 
 	const deleteWiiz = () => {
@@ -83,25 +85,23 @@ const Lobby = ({props}) => {
 			<div className="lobby">
 				<div className="lobbyHeader">Utilisateurs connectés</div>
 				{connected && connected.map((connectedUser) =>
-					<div className="lobbyUser" key={`lobby-${connectedUser.id}`}>
-						<div className="userTagLobby" style={{backgroundImage: `url(${connectedUser.catAvatarImageUrl ? connectedUser.catAvatarImageUrl : `"https://randomuser.me/api/portraits/men/${connectedUser.photoId}.jpg"`})`, backgroundPosition: "center", backgroundSize: "110%"}}>
-							{connectedUser.isTyping &&
-							/* Typing icon in svg */
-								<svg id="svgTypingIcon" width="112" height="107" viewBox="0 0 112 107" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<circle cx="58.5" cy="53.5" r="50.5" stroke="#ffde59" strokeWidth="6"/>
-									<circle cx="34" cy="52" r="6" fill="#ffde59"/>
-									<circle cx="59" cy="52" r="6" fill="#ffde59"/>
-									<circle cx="84" cy="52" r="6" fill="#ffde59"/>
-									<path d="M8.21755 98.1799L14.2181 78.2804L28.4514 93.4268L8.21755 98.1799Z" fill="#ffde59"/>
-								</svg>
-							}
-							{/* {connectedUser.isTyping && <img className="typingIcon" src='src\assets\TypingIconSvg.svg'/>} */}
-							{/* {connectedUser.isTyping && <img className="typingIcon" src='src\assets\TypingIcon.png'/>} */}
-							{/* {connectedUser.isTyping && <i className="typingIcon"><TiMessageTyping/></i>} */}
+					connectedUser.id !== auth.currentUser.email &&
+						<div className="lobbyUser" key={`lobby-${connectedUser.id}`}>
+							<div className="userTagLobby" style={{backgroundImage: `url(${connectedUser.catAvatarImageUrl ? connectedUser.catAvatarImageUrl : `"https://randomuser.me/api/portraits/men/${connectedUser.photoId}.jpg"`})`, backgroundPosition: "center", backgroundSize: "110%"}}>
+								{connectedUser.isTyping &&
+								/* Typing icon in svg */
+									<svg id="svgTypingIcon" width="112" height="107" viewBox="0 0 112 107" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<circle cx="58.5" cy="53.5" r="50.5" stroke="#ffde59" strokeWidth="6"/>
+										<circle cx="34" cy="52" r="6" fill="#ffde59"/>
+										<circle cx="59" cy="52" r="6" fill="#ffde59"/>
+										<circle cx="84" cy="52" r="6" fill="#ffde59"/>
+										<path d="M8.21755 98.1799L14.2181 78.2804L28.4514 93.4268L8.21755 98.1799Z" fill="#ffde59"/>
+									</svg>
+								}
+							</div>
+							<div className="userName">{connectedUser.userName}</div>
+							<div className="wizzButton" onClick={() => {handleBellClick(connectedUser.id)}}><FaBell id="bellIcon" size="1.4em" className={isBellActive && connectedUser.id === wiizedRecepient ? "activeBellIcon" : ""}/></div>
 						</div>
-						<div className="userName">{connectedUser.userName}</div>
-						<div className="wizzButton" onClick={() => {handleBellClick(connectedUser.id)}}><FaBell id="bellIcon" size="1.4em" className={isBellActive? "activeBellIcon" : ""}/></div>
-					</div>
 				)}
 			</div>
 		</>

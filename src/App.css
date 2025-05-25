@@ -104,7 +104,7 @@ tried to use keyframes and animation but it didn't worked...*/
 
 .activeBellIcon {
 	color: #59ff99;
-	animation: wiggle 1.3s ease-out;
+	animation: wiggle 1.5s infinite; /*put the same value as the value bellActiveDurationMs variable in lobby.js*/
 }
 
 @keyframes wiggle {
