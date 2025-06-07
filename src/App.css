@@ -442,6 +442,7 @@ tried to use keyframes and animation but it didn't worked...*/
 }
 
 .signInContainer {
+	/* parent: signInContainer */
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -525,5 +526,9 @@ tried to use keyframes and animation but it didn't worked...*/
 	height: 100px;
 	overflow-x: scroll;
 	align-items: center;
+}
+
+#loginErrorMessage{
+	color: #cf7474;
 }
 /*--------------- BEHAVIOUR ------------- */

@@ -40,7 +40,8 @@ const LogIn = ({props}) => {
 		catAvatarPicture,
 		setCatAvatarPicture,
 		userName,
-		setUserName
+		setUserName,
+		logInError
 	} = props;
 
 	const catCarouselProps = {
@@ -53,7 +54,7 @@ const LogIn = ({props}) => {
 		<div className="signInContainer">
 			<form className="signInFormContainer" onSubmit={signIn}>
 				<span></span>
-				<header>Create an account</header>
+				<header>Are you mew here?</header>
 				<input className="signInInput" type="text" placeholder='Emeowl' value={email} onChange={(e) => setEmail(e.target.value)}/>
 				<input className="signInInput" type="text" placeholder='Usernamiaou' value={userName} onChange={(e) => setUserName(e.target.value)}/>
 				<input className="signInInput" type="password" placeholder='miassword' value={password} onChange={(e) => setPassword(e.target.value)}/>
@@ -67,6 +68,7 @@ const LogIn = ({props}) => {
 					<CatCarousel props={catCarouselProps}/>
 				</div>
 			</form>
+			<div id='loginErrorMessage'>{logInError}</div>
 		</div>
 	)
 }

@@ -15,7 +15,9 @@ const CatCarousel = ({props}) => {
 	return(
 		<div className="catPictureContainer">
 			{data && data.map(element =>
-				<img id="logInCatImages" src={element.url} alt="" key={element.url} onClick={() => setCatAvatarPicture(element.url)}/>
+				<div key={element.url.split("/")[4]}>
+					<img id="logInCatImages" src={element.url} alt="" key={element.url} onClick={() => setCatAvatarPicture(element.url)}/>
+				</div>
 				// <div className="userTagLobby" style={{backgroundImage: `url("${element.url}")`, backgroundPosition: "center", backgroundSize: "110%"}}/>
 			)}
 		</div>

@@ -85,7 +85,7 @@ const Lobby = ({props}) => {
 			<div className="lobby">
 				<div className="lobbyHeader">Utilisateurs connectés</div>
 				{connected && connected.map((connectedUser) =>
-					connectedUser.id !== auth.currentUser.email &&
+					connectedUser.id !== auth?.currentUser?.email &&
 						<div className="lobbyUser" key={`lobby-${connectedUser.id}`}>
 							<div className="userTagLobby" style={{backgroundImage: `url(${connectedUser.catAvatarImageUrl ? connectedUser.catAvatarImageUrl : `"https://randomuser.me/api/portraits/men/${connectedUser.photoId}.jpg"`})`, backgroundPosition: "center", backgroundSize: "110%"}}>
 								{connectedUser.isTyping &&

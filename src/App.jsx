@@ -109,6 +109,7 @@ function App() {
 	const [connected, setConnected] = useState([]);
 	const [photoId, setPhotoId] = useState(auth?.currentUser?.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
 	const [allias, setAllias] = useState(auth?.currentUser?.email.substring(0,3));
+	const [logInError, setLogInError] = useState('');
 
 	const updateConnectionState = async (action) => {
 		if (action === "connection") {
@@ -144,7 +145,8 @@ function App() {
 			updateConnectionState("connection");
 		} catch (error) {
 			console.log(`${error}`);
-			// check if the error is beacaus the account already exists
+			setLogInError(error.message);
+			// check if the error is beacause the account already exists
 			if (error.message.includes("email-already-in-use")) {
 				await signInWithEmailAndPassword(auth, email, password);
 				setEmail(auth?.currentUser?.email);
@@ -315,7 +317,8 @@ function App() {
 		catAvatarPicture,
 		setCatAvatarPicture,
 		userName,
-		setUserName
+		setUserName,
+		logInError
 	}
 
 	const lobbyProps = {
