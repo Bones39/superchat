@@ -546,4 +546,11 @@ tried to use keyframes and animation but it didn't worked...*/
 	width: 4rem;
 	flex-shrink: 0;
 }
+
+#customCatImage:hover {
+	cursor: pointer;
+	scale: 1.15;
+	background-color: #fa772c;
+	transform: translate(0, -2px);
+}
 /*--------------- BEHAVIOUR ------------- */
