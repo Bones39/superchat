@@ -1,3 +1,5 @@
+import { FaCat } from "react-icons/fa";
+
 const CatCarousel = ({props}) => {
 
 	const {data, isLoading, setCatAvatarPicture} = props;
@@ -14,6 +16,10 @@ const CatCarousel = ({props}) => {
 
 	return(
 		<div className="catPictureContainer">
+			<label id="customCatImage">
+				<FaCat/>
+				<input className='fileInput' type='file'/> {/* onChange={(e)=>sendImage(e)} */}
+			</label>
 			{data && data.map(element =>
 				<div key={element.url.split("/")[4]}>
 					<img id="logInCatImages" src={element.url} alt="" key={element.url} onClick={() => setCatAvatarPicture(element.url)}/>

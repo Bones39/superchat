@@ -2,9 +2,9 @@
 neutral color (bg) 60%: 			GREY 			#282b30
 neutral color (bg) 60%: 			GREY SOMBRE 	#282b30
 neutral color (bg) 60%: 			GREY CLAIRE 	#36393e
-Primary color (main color)	40%		SMOKEDWHITE		#f5f5f5
+Primary color (main color)	30%		SMOKEDWHITE		#f5f5f5
 Call to action (blue) 10%  			BLUE			#7289da
-Calle to action bis: 				YELLOW			#ffde59 (de la maquette sur canvas)
+Call to action bis: 				YELLOW			#ffde59 (de la maquette sur canvas)
 */
 /*--------------- LAYOUT ------------- */
 /* #root {
@@ -500,6 +500,7 @@ tried to use keyframes and animation but it didn't worked...*/
 }
 
 #logInCatImages:hover {
+	cursor: pointer;
 	scale: 1.25;
 	transform: translate(0, -2px);
 }
@@ -530,5 +531,19 @@ tried to use keyframes and animation but it didn't worked...*/
 
 #loginErrorMessage{
 	color: #cf7474;
+}
+
+#customCatImage {
+	/* parent: .catPictureContainer */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #ffde59;
+	color: #282b30;
+	border-radius: 50%;
+	font-size: 3em;
+	height: 4rem;
+	width: 4rem;
+	flex-shrink: 0;
 }
 /*--------------- BEHAVIOUR ------------- */
