@@ -246,6 +246,7 @@ function App() {
 				});
 			})
 
+			// read the binary data and encode it as base64 data url.
 			reader.readAsDataURL(file);
 	
 			// reset the value in the input field once sent
