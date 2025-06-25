@@ -573,6 +573,25 @@ tried to use keyframes and animation but it didn't worked...*/
 }
 
 .loginPhaseButton {
+	background-color: #282b30;
+	color: aliceblue;
+	border: none;
+	padding: 0.6em 1.2em;
+	font-size: 1em;
+	font-weight: 100;
+	font-family: inherit;
+	margin: 0 5px;
+	cursor: pointer;
+}
+
+.active {
 	background-color: #36393e;
+	color: #ffde59;
+	font-weight: 500;
+	cursor: default;
+}
+
+#logingPhaseButtonContainer {
+	display: flex;
 }
 /*--------------- BEHAVIOUR ------------- */

@@ -64,6 +64,7 @@ const LogIn = ({props}) => {
 		setUserName,
 		logInError,
 		setLogInError,
+		setSwitchToUserExistsPage,
 		searchForExistingUser
 	} = props;
 
@@ -75,6 +76,10 @@ const LogIn = ({props}) => {
 
 	return (
 		<div className="signInContainer">
+			<div id='logingPhaseButtonContainer'>
+				<button className='loginPhaseButton active' disabled>Create an accout</button>
+				<button className='loginPhaseButton' onClick={() => setSwitchToUserExistsPage(true)}>Existing account</button>
+			</div>
 			<form className="signInFormContainer" onSubmit={signIn}>
 				<span></span>
 				<header>Are you mew here?</header>

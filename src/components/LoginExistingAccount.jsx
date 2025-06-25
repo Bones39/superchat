@@ -43,6 +43,7 @@ const LoginExistingAccount = ({props}) => {
 		userName,
 		setUserName,
 		logInError,
+		setLogInError,
 		switchToUserExistsPage,
 		setSwitchToUserExistsPage,
 		connectWithExistingAccount
@@ -54,19 +55,29 @@ const LoginExistingAccount = ({props}) => {
 		setCatAvatarPicture
 	}
 
-	// useEffect
+	useEffect(()=> setLogInError(""));
 
 	return (
 		<div className="signInContainer">
-			{switchToUserExistsPage && <button className='loginPhaseButton' onClick={() => setSwitchToUserExistsPage(false)}>Create an accout</button>}
+			<div id='logingPhaseButtonContainer'>
+				<button className='loginPhaseButton' onClick={() => setSwitchToUserExistsPage(false)}>Create an accout</button>
+				<button className='loginPhaseButton active' disabled>Existing account</button>
+			</div>
 			<form className="signInFormContainer" onSubmit={signIn}>
 				<span></span>
-				<header>Glad to see you back</header>
-				<header className='emphasized'>{userName}</header>
+				{
+					email ? 
+					<div>
+						<header>Glad to see you back</header>
+						<header className='emphasized'>{userName}</header>
+					</div>
+					:
+					<header>Who are you?</header>
+				}
 				<input className="signInInput" type="text" placeholder='Emeowl' value={email} onChange={(e) => setEmail(e.target.value)}/>
 				<input className="signInInput" type="password" placeholder='miassword' value={password} onChange={(e) => setPassword(e.target.value)}/>
 				<button className="button" onClick={connectWithExistingAccount}>Let's chat!</button>
-				<img id="logInCatAvatar" src={catAvatarPicture? catAvatarPicture : logoImage} alt=''/>
+				{email && <img id="logInCatAvatar" src={catAvatarPicture? catAvatarPicture : logoImage} alt=''/>}
 			</form>
 			<div id='loginErrorMessage'>{logInError}</div>
 		</div>
