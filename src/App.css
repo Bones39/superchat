@@ -478,6 +478,11 @@ tried to use keyframes and animation but it didn't worked...*/
 	border-color: #ffde59;
 }
 
+.inputError {
+	border-color: #fc1414;
+	border-width: 2pt;
+}
+
 .logoSignIn {
 	/* Parent: .header */
 	display: flex;
@@ -505,6 +510,13 @@ tried to use keyframes and animation but it didn't worked...*/
 	transform: translate(0, -2px);
 }
 
+#logInCatAvatar {
+	position: relative;
+	height: 8rem;
+	width: 8rem;
+	object-fit:cover;
+	border-radius: 50%;
+}
 
 #chooseYourAvatar {
 	/* position: absolute; */
@@ -552,5 +564,15 @@ tried to use keyframes and animation but it didn't worked...*/
 	scale: 1.15;
 	background-color: #fa772c;
 	transform: translate(0, -2px);
+}
+
+.emphasized {
+	color: #ffde59;
+	font-weight: bold;
+	font-size: 2em;
+}
+
+.loginPhaseButton {
+	background-color: #36393e;
 }
 /*--------------- BEHAVIOUR ------------- */

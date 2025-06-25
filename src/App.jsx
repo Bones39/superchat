@@ -8,6 +8,7 @@ import { addDoc, collection, deleteDoc, doc, limit, onSnapshot, orderBy, query, 
 import Chatroom from './components/Chatroom'
 import Lobby from './components/Lobby'
 import LogIn from './components/LogIn'
+import LoginExistingAccount from './components/LoginExistingAccount'
 import logoImage from './assets/LogoSuperChatCroped.png'
 import UserDetails from './components/UserDetails'
 import { useAuth } from './context'
@@ -97,6 +98,7 @@ function App() {
 	const [isTyping, setIsTyping] = useState(false);
 	const [isInactive, SetIsInactive] = useState(false);
 	const [scrollIntoView, setScrollIntoView] = useState(true);
+	const [switchToUserExistsPage, setSwitchToUserExistsPage] = useState(false);
 	let timerId = useRef(null);
 	let intervalId = useRef(null);
 	// set the inactivity time upon deconnexion
@@ -104,7 +106,7 @@ function App() {
 	
 	// ------- related to Lobby -------
 	const connectedRef = collection(firestoreDb, 'connected');
-	// const userRef = collection(firestoreDb, 'Users')
+	const userRef = collection(firestoreDb, 'users');
 	const connectedQuery = query(connectedRef);
 	const [connected, setConnected] = useState([]);
 	const [photoId, setPhotoId] = useState(auth?.currentUser?.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
@@ -136,6 +138,34 @@ function App() {
 		}
 	}
 
+	/**
+	 * Function called to create a user table to save additionnal parameters
+	 */
+	const createUser = async () => {
+		await setDoc(doc(firestoreDb, 'users', email), {
+			email: email,
+			username: userName,
+			catAvatarImageUrl: catAvatarPicture,
+		})
+	}
+
+	const searchForExistingUser = async (userEmail) => {
+		const userRef = collection(firestoreDb, "users");
+		// const docSnap = await getDoc(userRef);
+		const queryOptions = query(userRef, where("email", "==", userEmail));
+		const querySnapshot = await getDocs(queryOptions);
+		querySnapshot.forEach(doc => {
+			console.log(doc.id, " => ", doc.data());
+			if (doc.data().hasOwnProperty("email")) {
+				setSwitchToUserExistsPage(true);
+				setUserName(doc.data().username);
+				setEmail(doc.data().email);
+				setCatAvatarPicture(doc.data().catAvatarImageUrl);
+			}
+		})
+
+	}
+
 	const signIn = async (e) => {
 		e.preventDefault();
 		try {
@@ -143,17 +173,25 @@ function App() {
 			setEmail(auth?.currentUser?.email);
 			console.log("sign in: " + email);
 			updateConnectionState("connection");
+			createUser();
 		} catch (error) {
 			console.log(`${error}`);
 			setLogInError(error.message);
 			// check if the error is beacause the account already exists
 			if (error.message.includes("email-already-in-use")) {
-				await signInWithEmailAndPassword(auth, email, password);
-				setEmail(auth?.currentUser?.email);
-				console.log("sign in: " + email);
-				updateConnectionState("connection");
+				// await signInWithEmailAndPassword(auth, email, password);
+				// setEmail(auth?.currentUser?.email);
+				// console.log("sign in: " + email);
+				// updateConnectionState("connection");
 			}
 		}
+	}
+
+	const connectWithExistingAccount = async (e) => {
+		await signInWithEmailAndPassword(auth, email, password);
+		setEmail(auth?.currentUser?.email);
+		console.log("sign in: " + email);
+		updateConnectionState("connection");
 	}
 
 	const signInWithGoogle = async () => {
@@ -319,7 +357,12 @@ function App() {
 		setCatAvatarPicture,
 		userName,
 		setUserName,
-		logInError
+		logInError,
+		setLogInError,
+		searchForExistingUser,
+		switchToUserExistsPage,
+		setSwitchToUserExistsPage,
+		connectWithExistingAccount
 	}
 
 	const lobbyProps = {
@@ -391,9 +434,12 @@ function App() {
 					<Chatroom props={props} ></Chatroom>
 				</div>
 			</div>
-			:
-			// component authentification page
-			<LogIn props={signInProps}></LogIn>
+			// :
+			: switchToUserExistsPage?
+				// component authentification page
+				<LoginExistingAccount props={signInProps}></LoginExistingAccount>
+				:
+				<LogIn props={signInProps}></LogIn>
 		}
 	</main>
   )

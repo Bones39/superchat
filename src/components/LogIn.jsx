@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import logoImage from '../assets/LogoSuperChatCroped.png'
 import CatCarousel from "./CatCarousel"
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 // miaoullias
 // miaoussword
@@ -12,6 +12,9 @@ import { useState } from 'react';
 // https://thecatapi.com/
 
 const LogIn = ({props}) => {
+
+	const inputPasswordRef = useRef(null);
+	const [error, setError] = useState(null);
 
 	const { data, isLoading } = useQuery({
 		queryKey: ['logInCatImages'],
@@ -28,7 +31,25 @@ const LogIn = ({props}) => {
 		refetchOnReconnect: false
 	})
 
-	// const [catAvatarPicture, setCatAvatarPicture] = useState();
+	const checkPasswordConfirmation = (e) => {
+		if (!e.target.value) {
+			setError(true);
+			setLogInError("Please confirm the password");
+		}else if (e.target.value === inputPasswordRef.current.value) {
+			setError(false);
+			setLogInError("");
+		} else {
+			setError(true);
+			setLogInError("Passwords are not identical");
+		}
+	}
+	
+	const resetError = (e) => {
+		if (!e.target.value) {
+			setError(false);
+			setLogInError("");
+		}
+	}
 
 	const {
 		email,
@@ -41,7 +62,9 @@ const LogIn = ({props}) => {
 		setCatAvatarPicture,
 		userName,
 		setUserName,
-		logInError
+		logInError,
+		setLogInError,
+		searchForExistingUser
 	} = props;
 
 	const catCarouselProps = {
@@ -55,12 +78,11 @@ const LogIn = ({props}) => {
 			<form className="signInFormContainer" onSubmit={signIn}>
 				<span></span>
 				<header>Are you mew here?</header>
-				<input className="signInInput" type="text" placeholder='Emeowl' value={email} onChange={(e) => setEmail(e.target.value)}/>
-				<input className="signInInput" type="text" placeholder='Usernamiaou' value={userName} onChange={(e) => setUserName(e.target.value)}/>
-				<input className="signInInput" type="password" placeholder='miassword' value={password} onChange={(e) => setPassword(e.target.value)}/>
+				<input className="signInInput" type="text" placeholder='Emeowl (a random one is ok)' value={email} onChange={(e) => setEmail(e.target.value)} onBlur={() => searchForExistingUser(email)}/>
+				<input className="signInInput" type="text" placeholder='Usernamiaou (be creative)' value={userName} onChange={(e) => setUserName(e.target.value)}/>
+				<input className="signInInput" type="password" placeholder='miassword' ref={inputPasswordRef} onBlur={(e) => resetError(e)}/>
+				<input className={`signInInput ${error ? 'inputError' : ''}`} type="password" placeholder='confirm miassword' onBlur={(e) => checkPasswordConfirmation(e)}/>
 				<button className="button" onClick={signIn}>Sign In</button>
-				-------------- or --------------
-				<button className="button" onClick={signInWithGoogle}>Sign In with Google</button>
 				<div className='logoSignIn'>
 					<p>Super</p><img id="logInCatImages" src={catAvatarPicture? catAvatarPicture : logoImage} alt=''/><p>Chat</p>
 				</div>
