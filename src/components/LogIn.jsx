@@ -54,17 +54,13 @@ const LogIn = ({props}) => {
 	const {
 		email,
 		setEmail,
-		password,
-		setPassword,
 		signIn,
-		signInWithGoogle,
 		catAvatarPicture,
 		setCatAvatarPicture,
 		userName,
 		setUserName,
 		logInError,
 		setLogInError,
-		setSwitchToUserExistsPage,
 		searchForExistingUser,
 		setDisplayExistingUserPage
 	} = props;

@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import logoImage from '../assets/LogoSuperChatCroped.png'
-import CatCarousel from "./CatCarousel"
-import { useEffect, useState } from 'react';
-import { doc, getDoc } from "firebase/firestore";
+import { useEffect } from 'react';
 
 // miaoullias
 // miaoussword
@@ -37,15 +35,11 @@ const LoginExistingAccount = ({props}) => {
 		password,
 		setPassword,
 		signIn,
-		signInWithGoogle,
 		catAvatarPicture,
 		setCatAvatarPicture,
 		userName,
-		setUserName,
 		logInError,
 		setLogInError,
-		switchToUserExistsPage,
-		setSwitchToUserExistsPage,
 		connectWithExistingAccount,
 		searchForExistingUser,
 		setDisplayExistingUserPage,
@@ -53,19 +47,13 @@ const LoginExistingAccount = ({props}) => {
 		userFound
 	} = props;
 
-	const catCarouselProps = {
-		data,
-		isLoading,
-		setCatAvatarPicture
-	}
-
 	useEffect(()=> {
-		setLogInError("");
+		// setLogInError("");
 		// since this will execute only if the page is display set it to true to avoid switching to create account as soon as the user is not found
 		if (!displayExistingUserPage) {
 			setDisplayExistingUserPage(true);
 		}
-	});
+	}/* ,[displayExistingUserPage, userFound] */);
 
 	return (
 		<div className="signInContainer">
@@ -73,7 +61,7 @@ const LoginExistingAccount = ({props}) => {
 				<button className='loginPhaseButton' onClick={() => setDisplayExistingUserPage(false)}>Create an accout</button>
 				<button className='loginPhaseButton active' disabled>Existing account</button>
 			</div>
-			<form className="signInFormContainer" onSubmit={signIn}>
+			<form className="signInFormContainer" onSubmit={connectWithExistingAccount}>
 				<span></span>
 				{
 					userFound ? 

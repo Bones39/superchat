@@ -184,14 +184,16 @@ function App() {
 			setLogInError(error.message);
 		}
 	}
-
+	
 	const connectWithExistingAccount = async (e) => {
+		e.preventDefault();
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
 			setEmail(auth?.currentUser?.email);
 			console.log("sign in: " + email);
 			updateConnectionState("connection");
 		} catch (error) {
+			console.log(`${error}`);
 			setLogInError(error.message);
 		}
 	}
