@@ -65,7 +65,8 @@ const LogIn = ({props}) => {
 		logInError,
 		setLogInError,
 		setSwitchToUserExistsPage,
-		searchForExistingUser
+		searchForExistingUser,
+		setDisplayExistingUserPage
 	} = props;
 
 	const catCarouselProps = {
@@ -78,7 +79,7 @@ const LogIn = ({props}) => {
 		<div className="signInContainer">
 			<div id='logingPhaseButtonContainer'>
 				<button className='loginPhaseButton active' disabled>Create an accout</button>
-				<button className='loginPhaseButton' onClick={() => setSwitchToUserExistsPage(true)}>Existing account</button>
+				<button className='loginPhaseButton' onClick={() => setDisplayExistingUserPage(true)}>Existing account</button>
 			</div>
 			<form className="signInFormContainer" onSubmit={signIn}>
 				<span></span>

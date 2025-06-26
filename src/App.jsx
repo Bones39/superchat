@@ -99,6 +99,8 @@ function App() {
 	const [isInactive, SetIsInactive] = useState(false);
 	const [scrollIntoView, setScrollIntoView] = useState(true);
 	const [switchToUserExistsPage, setSwitchToUserExistsPage] = useState(false);
+	const [userFound, setUserFound] = useState(false);
+	const [displayExistingUserPage, setDisplayExistingUserPage] = useState(false);
 	let timerId = useRef(null);
 	let intervalId = useRef(null);
 	// set the inactivity time upon deconnexion
@@ -152,18 +154,21 @@ function App() {
 	const searchForExistingUser = async (userEmail) => {
 		const userRef = collection(firestoreDb, "users");
 		// const docSnap = await getDoc(userRef);
+		// reset avatar picture
 		const queryOptions = query(userRef, where("email", "==", userEmail));
 		const querySnapshot = await getDocs(queryOptions);
-		querySnapshot.forEach(doc => {
-			console.log(doc.id, " => ", doc.data());
-			if (doc.data().hasOwnProperty("email")) {
-				setSwitchToUserExistsPage(true);
-				setUserName(doc.data().username);
-				setEmail(doc.data().email);
-				setCatAvatarPicture(doc.data().catAvatarImageUrl);
-			}
-		})
-
+		if (!querySnapshot.empty) {
+			setUserFound(true);
+			querySnapshot.forEach(doc => {
+				if (doc.data().hasOwnProperty("email")) {
+					setUserName(doc.data().username);
+					setEmail(doc.data().email);
+					setCatAvatarPicture(doc.data().catAvatarImageUrl);
+				}
+			})
+		} else {
+			setUserFound(false);
+		}
 	}
 
 	const signIn = async (e) => {
@@ -177,21 +182,18 @@ function App() {
 		} catch (error) {
 			console.log(`${error}`);
 			setLogInError(error.message);
-			// check if the error is beacause the account already exists
-			if (error.message.includes("email-already-in-use")) {
-				// await signInWithEmailAndPassword(auth, email, password);
-				// setEmail(auth?.currentUser?.email);
-				// console.log("sign in: " + email);
-				// updateConnectionState("connection");
-			}
 		}
 	}
 
 	const connectWithExistingAccount = async (e) => {
-		await signInWithEmailAndPassword(auth, email, password);
-		setEmail(auth?.currentUser?.email);
-		console.log("sign in: " + email);
-		updateConnectionState("connection");
+		try {
+			await signInWithEmailAndPassword(auth, email, password);
+			setEmail(auth?.currentUser?.email);
+			console.log("sign in: " + email);
+			updateConnectionState("connection");
+		} catch (error) {
+			setLogInError(error.message);
+		}
 	}
 
 	const signInWithGoogle = async () => {
@@ -362,7 +364,10 @@ function App() {
 		searchForExistingUser,
 		switchToUserExistsPage,
 		setSwitchToUserExistsPage,
-		connectWithExistingAccount
+		connectWithExistingAccount,
+		setDisplayExistingUserPage,
+		displayExistingUserPage,
+		userFound
 	}
 
 	const lobbyProps = {
@@ -434,8 +439,8 @@ function App() {
 					<Chatroom props={props} ></Chatroom>
 				</div>
 			</div>
-			// :
-			: switchToUserExistsPage?
+			// switch to existing user page if "existing account" clicked or if while on creating account page a user was found
+			: displayExistingUserPage || (!displayExistingUserPage && userFound) ?
 				// component authentification page
 				<LoginExistingAccount props={signInProps}></LoginExistingAccount>
 				:

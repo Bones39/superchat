@@ -46,7 +46,11 @@ const LoginExistingAccount = ({props}) => {
 		setLogInError,
 		switchToUserExistsPage,
 		setSwitchToUserExistsPage,
-		connectWithExistingAccount
+		connectWithExistingAccount,
+		searchForExistingUser,
+		setDisplayExistingUserPage,
+		displayExistingUserPage,
+		userFound
 	} = props;
 
 	const catCarouselProps = {
@@ -55,18 +59,24 @@ const LoginExistingAccount = ({props}) => {
 		setCatAvatarPicture
 	}
 
-	useEffect(()=> setLogInError(""));
+	useEffect(()=> {
+		setLogInError("");
+		// since this will execute only if the page is display set it to true to avoid switching to create account as soon as the user is not found
+		if (!displayExistingUserPage) {
+			setDisplayExistingUserPage(true);
+		}
+	});
 
 	return (
 		<div className="signInContainer">
 			<div id='logingPhaseButtonContainer'>
-				<button className='loginPhaseButton' onClick={() => setSwitchToUserExistsPage(false)}>Create an accout</button>
+				<button className='loginPhaseButton' onClick={() => setDisplayExistingUserPage(false)}>Create an accout</button>
 				<button className='loginPhaseButton active' disabled>Existing account</button>
 			</div>
 			<form className="signInFormContainer" onSubmit={signIn}>
 				<span></span>
 				{
-					email ? 
+					userFound ? 
 					<div>
 						<header>Glad to see you back</header>
 						<header className='emphasized'>{userName}</header>
@@ -74,10 +84,10 @@ const LoginExistingAccount = ({props}) => {
 					:
 					<header>Who are you?</header>
 				}
-				<input className="signInInput" type="text" placeholder='Emeowl' value={email} onChange={(e) => setEmail(e.target.value)}/>
+				<input className="signInInput" type="text" placeholder='Emeowl' value={email} onChange={(e) => setEmail(e.target.value)} onBlur={(e) => searchForExistingUser(e.target.value)}/>
 				<input className="signInInput" type="password" placeholder='miassword' value={password} onChange={(e) => setPassword(e.target.value)}/>
 				<button className="button" onClick={connectWithExistingAccount}>Let's chat!</button>
-				{email && <img id="logInCatAvatar" src={catAvatarPicture? catAvatarPicture : logoImage} alt=''/>}
+				<img id="logInCatAvatar" src={userFound? catAvatarPicture : logoImage} alt=''/>
 			</form>
 			<div id='loginErrorMessage'>{logInError}</div>
 		</div>
