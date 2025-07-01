@@ -58,7 +58,7 @@ const LoginExistingAccount = ({props}) => {
 	return (
 		<div className="signInContainer">
 			<div id='logingPhaseButtonContainer'>
-				<button className='loginPhaseButton' onClick={() => setDisplayExistingUserPage(false)}>Create an accout</button>
+				<button className='loginPhaseButton' onClick={() => setDisplayExistingUserPage(false)}>Create an account</button>
 				<button className='loginPhaseButton active' disabled>Existing account</button>
 			</div>
 			<form className="signInFormContainer" onSubmit={connectWithExistingAccount}>

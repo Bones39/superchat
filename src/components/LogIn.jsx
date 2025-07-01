@@ -35,7 +35,7 @@ const LogIn = ({props}) => {
 		if (!e.target.value) {
 			setError(true);
 			setLogInError("Please confirm the password");
-		}else if (e.target.value === inputPasswordRef.current.value) {
+		} else if (e.target.value === inputPasswordRef.current.value) {
 			setError(false);
 			setLogInError("");
 		} else {
@@ -55,6 +55,8 @@ const LogIn = ({props}) => {
 		email,
 		setEmail,
 		signIn,
+		password,
+		setPassword,
 		catAvatarPicture,
 		setCatAvatarPicture,
 		userName,
@@ -74,7 +76,7 @@ const LogIn = ({props}) => {
 	return (
 		<div className="signInContainer">
 			<div id='logingPhaseButtonContainer'>
-				<button className='loginPhaseButton active' disabled>Create an accout</button>
+				<button className='loginPhaseButton active' disabled>Create an account</button>
 				<button className='loginPhaseButton' onClick={() => setDisplayExistingUserPage(true)}>Existing account</button>
 			</div>
 			<form className="signInFormContainer" onSubmit={signIn}>
@@ -82,7 +84,7 @@ const LogIn = ({props}) => {
 				<header>Are you mew here?</header>
 				<input className="signInInput" type="text" placeholder='Emeowl (a random one is ok)' value={email} onChange={(e) => setEmail(e.target.value)} onBlur={() => searchForExistingUser(email)}/>
 				<input className="signInInput" type="text" placeholder='Usernamiaou (be creative)' value={userName} onChange={(e) => setUserName(e.target.value)}/>
-				<input className="signInInput" type="password" placeholder='miassword' ref={inputPasswordRef} onBlur={(e) => resetError(e)}/>
+				<input className="signInInput" type="password" placeholder='miassword' value={password} onChange={(e) => setPassword(e.target.value)}/>
 				<input className={`signInInput ${error ? 'inputError' : ''}`} type="password" placeholder='confirm miassword' onBlur={(e) => checkPasswordConfirmation(e)}/>
 				<button className="button" onClick={signIn}>Sign In</button>
 				<div className='logoSignIn'>
