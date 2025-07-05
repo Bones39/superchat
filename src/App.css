@@ -257,6 +257,8 @@ tried to use keyframes and animation but it didn't worked...*/
 }
 
 .received {
+	display: flex;
+	flex-direction: column;
 	background-color: rgb(206, 203, 203);
 	padding: 1rem;
 	border-radius: 15px;

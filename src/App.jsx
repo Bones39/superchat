@@ -17,22 +17,22 @@ import { auth, firestoreDb, googleProvider } from './firebaseConfig'
 // todo
 /* 
  ------------- EN COURS --------------------
- - changer les photos de profil en photo de chat: https://cataas.com/doc.html
- - ajouter la possibilité de supprimer ou de modifier son message
+ - ajouter la possibilité de supprimer ou de modifier son message 
  - prendre en compte les liens hypertext
  - utiliser tanstackquery pour sauvegarder les cookies
  - corriger la connexion EN COURS
-	- des fois l'utilisateur se deconnecte sans raison, notemment quand on refresh - cloud fonction pour gérer le autodisconnect
- - ajouter les whiiiz EN COURS
-  	- pour l'animation du wiiz: https://www.youtube.com/watch?v=ZqLWNxsFz_o
+ - des fois l'utilisateur se deconnecte sans raison, notemment quand on refresh - cloud fonction pour gérer le autodisconnect
  - creer une fonction qui deconnecte les utilisateurs inactifs (pas l'utilisateur actuel) -> could function
-	- corriger la deconnexion quand on refresh
-- voir la vidéo pour faire apparaitre la barre de smiley https://www.youtube.com/watch?v=DNXEORSk4GU&t=616s
-- ajouter le scroll pour consulter les anciens messages EN COURS
-	- utiliser tanstack query, mettre les éléments chargés dans un cache
-	- utiliser reactStately et useAsyncList https://www.youtube.com/watch?v=nR85ayDEVBc&t=132s
-- Modifier la page d'accueil pour ne prendre en compte que le nom
-------------- FAIT --------------------
+ - revoir la cloud fonction car les users inactifs ne sont pas deconnectés
+ - voir la vidéo pour faire apparaitre la barre de smiley https://www.youtube.com/watch?v=DNXEORSk4GU&t=616s
+ - ajouter le scroll pour consulter les anciens messages OK
+ - utiliser tanstack query, mettre les éléments chargés dans un cache
+ - utiliser reactStately et useAsyncList https://www.youtube.com/watch?v=nR85ayDEVBc&t=132s
+ ------------- FAIT --------------------
+ - changer les photos de profil en photo de chat: https://cataas.com/doc.html OK
+- ajouter les whiiiz OK
+		- pour l'animation du wiiz: https://www.youtube.com/watch?v=ZqLWNxsFz_o
+- Modifier la page d'accueil pour ne prendre en compte que le nom OK
 - ajouter les whiiiz OK
  	- gerer le cas où la notif reste 1/2 sec OK
 		- tester de mettre un snapshot sur une query qui récupère la donnée filtrée par utilisateur et par date (utiliser le threshold)
