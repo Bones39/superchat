@@ -33,6 +33,7 @@ export function AuthProvider({children}) {
 	
 	const value = {
 		currentUser,
+		setUserIsLoggedIn,
 		userIsLoggedIn,
 		loading
 	}

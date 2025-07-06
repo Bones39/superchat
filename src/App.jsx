@@ -80,7 +80,7 @@ function App() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [formValue, setFormValue] = useState("");
-	const { userIsLoggedIn, currentUser } = useAuth();
+	const { userIsLoggedIn, currentUser, setUserIsLoggedIn } = useAuth();
 	const [catAvatarPicture, setCatAvatarPicture] = useState();
 	const [userName, setUserName] = useState();
 
@@ -224,6 +224,10 @@ function App() {
 		// search for user that should be disconnected (due to reapplied cached data they are not)
 		let queryOptions = query(connectedRef/* , or(where("email", "==", null), where("email", "==", "")) */);
 		let querySnapshot = await getDocs(queryOptions);
+		if (querySnapshot.empty) {
+			setUserIsLoggedIn(false);
+			return;
+		}
 		querySnapshot.forEach(async (doc) => {
 		// doc.data() is never undefined for query doc snapshots
 			console.log(doc.id, " => ", doc.data());
