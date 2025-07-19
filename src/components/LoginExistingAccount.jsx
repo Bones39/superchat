@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import logoImage from '../assets/LogoSuperChatCroped.png'
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 // miaoullias
 // miaoussword
@@ -26,8 +26,7 @@ const LoginExistingAccount = ({props}) => {
 		refetchOnMount: false,
 		refetchOnReconnect: false
 	})
-
-	// const [catAvatarPicture, setCatAvatarPicture] = useState();
+	const emailRef = useRef();
 
 	const {
 		email,
@@ -44,11 +43,19 @@ const LoginExistingAccount = ({props}) => {
 		searchForExistingUser,
 		setDisplayExistingUserPage,
 		displayExistingUserPage,
-		userFound
+		userFound,
+		setUserFound
 	} = props;
+
+	const resetEmailValue = () => {
+		emailRef.current.value = "";
+	}
 
 	useEffect(()=> {
 		// setLogInError("");
+		if (!userFound) {
+			resetEmailValue();
+		}
 		// since this will execute only if the page is display set it to true to avoid switching to create account as soon as the user is not found
 		if (!displayExistingUserPage) {
 			setDisplayExistingUserPage(true);
@@ -58,7 +65,7 @@ const LoginExistingAccount = ({props}) => {
 	return (
 		<div className="signInContainer">
 			<div id='logingPhaseButtonContainer'>
-				<button className='loginPhaseButton' onClick={() => setDisplayExistingUserPage(false)}>Create an account</button>
+				<button className='loginPhaseButton' onClick={() => {resetEmailValue();setDisplayExistingUserPage(false);setUserFound(false)}}>Create an account</button>
 				<button className='loginPhaseButton active' disabled>Existing account</button>
 			</div>
 			<form className="signInFormContainer" onSubmit={connectWithExistingAccount}>
@@ -72,7 +79,7 @@ const LoginExistingAccount = ({props}) => {
 					:
 					<header>Who are you?</header>
 				}
-				<input className="signInInput" type="text" placeholder='Emeowl' value={email} onChange={(e) => setEmail(e.target.value)} onBlur={(e) => searchForExistingUser(e.target.value)}/>
+				<input ref={emailRef} className="signInInput" type="text" placeholder='Emeowl' value={email} onChange={(e) => setEmail(e.target.value)} onBlur={(e) => searchForExistingUser(e.target.value)}/>
 				<input className="signInInput" type="password" placeholder='miassword' value={password} onChange={(e) => setPassword(e.target.value)}/>
 				<button className="button" onClick={connectWithExistingAccount}>Let's chat!</button>
 				<img id="logInCatAvatar" src={userFound? catAvatarPicture : logoImage} alt=''/>

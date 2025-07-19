@@ -114,6 +114,7 @@ function App() {
 	const [photoId, setPhotoId] = useState(auth?.currentUser?.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''));
 	const [allias, setAllias] = useState(auth?.currentUser?.email.substring(0,3));
 	const [logInError, setLogInError] = useState('');
+	const emailRef = useRef();
 
 	const updateConnectionState = async (action) => {
 		if (action === "connection") {
@@ -373,7 +374,9 @@ function App() {
 		connectWithExistingAccount,
 		setDisplayExistingUserPage,
 		displayExistingUserPage,
-		userFound
+		userFound,
+		setUserFound,
+		emailRef
 	}
 
 	const lobbyProps = {

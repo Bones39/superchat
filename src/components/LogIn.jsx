@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import logoImage from '../assets/LogoSuperChatCroped.png'
 import CatCarousel from "./CatCarousel"
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // miaoullias
 // miaoussword
@@ -15,6 +15,9 @@ const LogIn = ({props}) => {
 
 	const inputPasswordRef = useRef(null);
 	const [error, setError] = useState(null);
+
+	const emailRef = useRef();
+	const nameRef = useRef();
 
 	const { data, isLoading } = useQuery({
 		queryKey: ['logInCatImages'],
@@ -64,7 +67,8 @@ const LogIn = ({props}) => {
 		logInError,
 		setLogInError,
 		searchForExistingUser,
-		setDisplayExistingUserPage
+		setDisplayExistingUserPage,
+		displayExistingUserPage
 	} = props;
 
 	const catCarouselProps = {
@@ -72,6 +76,16 @@ const LogIn = ({props}) => {
 		isLoading,
 		setCatAvatarPicture
 	}
+
+
+	const resetFormValue = () => {
+		emailRef.current.value = "";
+		nameRef.current.value = "";
+	}
+	useEffect(() => {
+		// reset the value in the email field if we are coming from the existing user page
+		resetFormValue();
+	}, [displayExistingUserPage])
 
 	return (
 		<div className="signInContainer">
@@ -82,8 +96,8 @@ const LogIn = ({props}) => {
 			<form className="signInFormContainer" onSubmit={signIn}>
 				<span></span>
 				<header>Are you mew here?</header>
-				<input className="signInInput" type="text" placeholder='Emeowl (a random one is ok)' value={email} onChange={(e) => setEmail(e.target.value)} onBlur={() => searchForExistingUser(email)}/>
-				<input className="signInInput" type="text" placeholder='Usernamiaou (be creative)' value={userName} onChange={(e) => setUserName(e.target.value)}/>
+				<input ref={emailRef} className="signInInput" type="text" placeholder='Emeowl (a random one is ok)' value={email} onChange={(e) => setEmail(e.target.value)} onBlur={() => searchForExistingUser(email)}/>
+				<input ref={nameRef} className="signInInput" type="text" placeholder='Usernamiaou (be creative)' value={userName} onChange={(e) => setUserName(e.target.value)}/>
 				<input className="signInInput" type="password" placeholder='miassword' value={password} onChange={(e) => setPassword(e.target.value)}/>
 				<input className={`signInInput ${error ? 'inputError' : ''}`} type="password" placeholder='confirm miassword' onBlur={(e) => checkPasswordConfirmation(e)}/>
 				<button className="button" onClick={signIn}>Sign In</button>
