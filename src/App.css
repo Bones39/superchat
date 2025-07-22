@@ -276,6 +276,7 @@ tried to use keyframes and animation but it didn't worked...*/
 	border-radius: 50%;
 	border: solid #646cff 2px;
 	margin-bottom: 2px;
+	margin-top: 15px;
 }
 
 .image {
@@ -284,7 +285,9 @@ tried to use keyframes and animation but it didn't worked...*/
 }
 
 .horizontalLayout {
+	/* parent: reactionContainer */
 	display: flex;
+	align-items: center;
 	/* flex-direction: row; */
 }
 
@@ -294,15 +297,24 @@ tried to use keyframes and animation but it didn't worked...*/
 
 .userReaction {
 	background-color: rgb(119, 173, 243);
-	padding-top: 20px;
+	/* padding-top: 20px; */
 	padding-bottom: 2px;
 	border-radius: 30%;
-	transform: translate(0, -18px);
+	/* transform: translate(0, -18px); */
 }
 
 .userReaction:hover {
-	transform: translate(0, -20px);
+	transform: translate(0, -2px);
 	/* box-shadow: 3px 3px 8px 1px rgba(27, 27, 27, 0.2); */
+}
+
+#reactionContainer {
+	position: relative;
+}
+
+#plusIcon:hover {
+	color: #ffde59;
+	scale: 1.2;
 }
 
 .timeStamp {
@@ -310,6 +322,16 @@ tried to use keyframes and animation but it didn't worked...*/
 	margin-bottom: 5px;
 	font-size: 0.7em;
 	font-family: Arial, Helvetica, sans-serif;
+}
+
+.gridLayout {
+	/* parent: reactionContainer */
+	display: flex;
+	flex-wrap: wrap;
+	height: 70px;
+	width: 155px;
+	border: solid #fc1414;
+	overflow-y: scroll;
 }
 
 .alignRight {
