@@ -39,7 +39,7 @@ const Reactions = ({props}) => {
 				{/* <MdOutlineQuestionAnswer size="1.7em"/> */}
 			</div>
 			<div>{selectedReaction}</div>
-			<div className={`${ showAdditionnalReactions ? "" : "hidden"} gridLayout`} onMouseEnter={onHover} onMouseLeave={onLeave}>
+			<div className={`${ showAdditionnalReactions ? "" : "hidden"} gridLayout scrollable`} onMouseEnter={onHover} onMouseLeave={onLeave}>
 				{additionalSmileyArray.map((smiley) => <div key={smiley} className="smiley" onClick={()=>saveReaction(smiley)}>{smiley}</div>)}
 			</div>
 		</div>
