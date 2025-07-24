@@ -5,6 +5,7 @@ import { useSound } from 'use-sound';
 import wiizSound from '../assets/MSN_WIZZ_SOUND.mp3';
 import meowSound from '../assets/WIZZ_SOUND_MEOW_1.mp3';
 import wakeUpSound from '../assets/WIZZ_SOUND_WAKEUP.mp3';
+import deepMeowSound from '../assets/WIZZ_SOUND_deep-ass-meow.mp3';
 import { useRef } from 'react';
 
 const ReadWiiz = ({readWiizProps}) => {
@@ -16,9 +17,10 @@ const ReadWiiz = ({readWiizProps}) => {
 	const [play] = useSound(wiizSound, { volume: 0.08 });
 	const [playMeow] = useSound(meowSound, { volume: 0.95 });
 	const [playWakeUp] = useSound(wakeUpSound, { volume: 0.08 });
+	const [playDeepMoew] = useSound(deepMeowSound, { volume: 0.08 });
 	const [sender, setSender] = useState();
 
-	const soundArray = [play, playMeow, playWakeUp]
+	const soundArray = [play, play, playMeow, playWakeUp, playDeepMoew]
 	let wizzCleanTimeOutId = useRef();
 	const unsub = useRef();
 
