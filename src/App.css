@@ -291,6 +291,10 @@ tried to use keyframes and animation but it didn't worked...*/
 	/* flex-direction: row; */
 }
 
+.smiley:hover {
+	scale: 1.18;
+}
+
 .selectable {
 	cursor: pointer;
 }

@@ -7,6 +7,7 @@ const Reactions = ({props}) => {
 	const {displayReaction, selectingReaction, setSelectingReaction, selectedReaction, saveReaction} = props;
 	let fadingTimeoutId = useRef();
 	const [hovered, setHoverd] = useState('');
+	const [showAdditionnalReactions, setShowAdditionnalReactions] = useState(false);
 	// -----------------------------------------------------------
 	const reactionArray = ['👍', '😄', '😥', '🤬', '🧡'];
 
@@ -18,7 +19,7 @@ const Reactions = ({props}) => {
 	}
 
 	const openAdditionnalReactions = () => {
-
+		setShowAdditionnalReactions(true);
 	}
 
 	const onLeave = () => {
@@ -26,6 +27,7 @@ const Reactions = ({props}) => {
 		fadingTimeoutId = setTimeout(() => {
 			// the visibility of the reactions is also manage on the Message parent component
 			setSelectingReaction(false);
+			setShowAdditionnalReactions(false);
 		}, 600);
 	}
 
@@ -33,11 +35,11 @@ const Reactions = ({props}) => {
 		<div id="reactionContainer">
 			<div className={`${(displayReaction || selectingReaction)? "" : "hidden"} horizontalLayout`} onMouseEnter={onHover} onMouseLeave={onLeave}>
 				{reactionArray.map((smiley) => <div key={smiley} className="smiley" onClick={()=>saveReaction(smiley)}>{smiley}</div>)}
-				<FaCirclePlus id="plusIcon" onClick={()=>console.log("ckicked!")}/>
+				<FaCirclePlus id="plusIcon" onClick={() => openAdditionnalReactions()}/>
 				{/* <MdOutlineQuestionAnswer size="1.7em"/> */}
 			</div>
 			<div>{selectedReaction}</div>
-			<div className={`${(displayReaction || selectingReaction)? "" : "hidden"} gridLayout`} onMouseEnter={onHover} onMouseLeave={onLeave}>
+			<div className={`${ showAdditionnalReactions ? "" : "hidden"} gridLayout`} onMouseEnter={onHover} onMouseLeave={onLeave}>
 				{additionalSmileyArray.map((smiley) => <div key={smiley} className="smiley" onClick={()=>saveReaction(smiley)}>{smiley}</div>)}
 			</div>
 		</div>
