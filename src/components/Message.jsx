@@ -4,6 +4,7 @@ import { auth, firestoreDb } from '../firebaseConfig';
 import Reactions from './Reactions';
 import firebase from 'firebase/compat/app'
 import { useInView } from 'react-intersection-observer';
+import Linkify from './linkify';
 
 const Message = ({props}) => {
 	const {messages, message, index, setScrollIntoView, messagesReferencesArray, setDisplayPreviousButton} = props;
@@ -128,8 +129,8 @@ const Message = ({props}) => {
 		<div ref={ref => messagesReferencesArray.current[index] = ref} className={message.uid === auth.currentUser.uid ? "right " : "left"} key={message.id + 'frag'}>
 			{/* display the picture above the message if the first message is not from the current user or if a message comes after a message which is not his */}
 			{bDisplayUserPicture && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} userTag`} key={message.id + 'tag'} style={{backgroundImage: `url("${message.catAvatarImageUrl ? message.catAvatarImageUrl : `https://randomuser.me/api/portraits/men/${message.photoId}.jpg`}")`, backgroundPosition: "center", backgroundSize: "110%"}}>{message.allias}</div>}
-			{/* display the message text or the image */}
-			{!message.type && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}>{message.text}</div>}
+			{/* display the message text or the link or the image*/}
+			{!message.type && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}><Linkify originalText = {message.text}/></div>}
 			{(message.type && message.type ==="image") && <div className={`${message.uid === auth.currentUser.uid ? "sent" : "received"} image message`} key={message.id} onMouseEnter={onHover} onMouseLeave={onLeave} onClick={onMessageClick}><img className="displayedImage" src={message.text} alt="Base64 Image"/></div>}
 			{/* display selected reactions */}
 			{message.reactions &&
