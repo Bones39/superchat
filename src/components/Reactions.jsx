@@ -4,7 +4,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 import additionalSmileyArray from "../assets/additionnalReactionSmiley";
 
 const Reactions = ({props}) => {
-	const {displayReaction, selectingReaction, setSelectingReaction, selectedReaction, saveReaction} = props;
+	const {displayReaction, selectingReaction, setSelectingReaction, selectedReaction, saveReaction, inputTextArea, isAnswering, setIsAnswering} = props;
 	let fadingTimeoutId = useRef();
 	const [hovered, setHoverd] = useState('');
 	const [showAdditionnalReactions, setShowAdditionnalReactions] = useState(false);
@@ -22,6 +22,12 @@ const Reactions = ({props}) => {
 		setShowAdditionnalReactions(true);
 	}
 
+	const answerToMessage = () => {
+		console.log(`answer to message`);
+		inputTextArea?.current.focus();
+		setIsAnswering(true);
+	}
+
 	const onLeave = () => {
 		// console.log("reaction leaved!");
 		fadingTimeoutId = setTimeout(() => {
@@ -36,7 +42,7 @@ const Reactions = ({props}) => {
 			<div className={`${(displayReaction || selectingReaction)? "" : "hidden"} horizontalLayout`} onMouseEnter={onHover} onMouseLeave={onLeave}>
 				{reactionArray.map((smiley) => <div key={smiley} className="smiley" onClick={()=>saveReaction(smiley)}>{smiley}</div>)}
 				<FaCirclePlus id="plusIcon" onClick={() => openAdditionnalReactions()}/>
-				{/* <MdOutlineQuestionAnswer size="1.7em"/> */}
+				<MdOutlineQuestionAnswer id="answerIcon" size="1.3em" onClick={() => answerToMessage()}/>
 			</div>
 			<div>{selectedReaction}</div>
 			<div className={`${ showAdditionnalReactions ? "" : "hidden"} gridLayout scrollable`} onMouseEnter={onHover} onMouseLeave={onLeave}>

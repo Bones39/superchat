@@ -15,8 +15,11 @@ const Chatroom = ({props}) => {
 	const [controlPressed, setControlPressed] = useState();
 	const [shiftPressed, setShiftPressed] = useState();
 	const [enterPressed, setEnterPressed] = useState();
+	const [isAnswering, setIsAnswering] = useState(false);
+	const [messageClicked, setMessageClicked] = useState();
 	const keyPressed = {};
 	const inputRef = useRef()
+	const inputTextArea = useRef()
 
 
 	useEffect(() => {
@@ -65,15 +68,16 @@ const Chatroom = ({props}) => {
 				{/* // chat room */}
 				{messages && messages.map((message, index) =>
 					{
-						return <Message props={{messages, message, index, setScrollIntoView, scrollIntoView, messagesReferencesArray, setDisplayPreviousButton}} key={message.id}></Message>
+						return <Message props={{messages, message, index, setScrollIntoView, scrollIntoView, messagesReferencesArray, setDisplayPreviousButton, inputTextArea, isAnswering, setIsAnswering, setMessageClicked}} key={message.id}></Message>
 					}
 				)}
 				<div ref={dummyRef}></div>
 			</div>
+			{isAnswering && <div>Is answering to {messageClicked}</div>}
 			{/** display the form*/}
 			<form className='messageInputForm' id='messageForm' ref={inputRef} onSubmit={sendMessage}>
 				<div className="inputContainer">
-					<textarea className='messageInputArea' id='messageInputValue' wrap='hard' cols='40' autoFocus={true} placeholder='  Miaou...' value={formValue} onChange={(e)=>typing(e)} onKeyDown={(e)=>{handleKeyDown(e)}} onKeyUp={handleKeyUp}/>
+					<textarea ref={inputTextArea} className='messageInputArea' id='messageInputValue' wrap='hard' cols='40' autoFocus={true} placeholder='  Miaou...' value={formValue} onChange={(e)=>typing(e)} onKeyDown={(e)=>{handleKeyDown(e)}} onKeyUp={handleKeyUp}/>
 					<button type='submit' id='sendButton' className='sendButton'><RiSendPlaneFill/></button>
 				</div>
 				<label className='customFileUpload'>

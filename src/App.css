@@ -316,10 +316,15 @@ tried to use keyframes and animation but it didn't worked...*/
 	position: relative;
 }
 
-#plusIcon:hover {
+#answerIcon{
+	margin-left: 0.8em;
+}
+
+#plusIcon:hover, #answerIcon:hover {
 	color: #ffde59;
 	scale: 1.2;
 }
+
 
 .timeStamp {
 	margin-top: 2px;

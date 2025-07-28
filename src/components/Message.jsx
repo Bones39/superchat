@@ -7,7 +7,7 @@ import { useInView } from 'react-intersection-observer';
 import Linkify from './Linkify';
 
 const Message = ({props}) => {
-	const {messages, message, index, setScrollIntoView, messagesReferencesArray, setDisplayPreviousButton} = props;
+	const {messages, message, index, setScrollIntoView, messagesReferencesArray, setDisplayPreviousButton, inputTextArea, isAnswering, setIsAnswering, setMessageClicked} = props;
 	const [abortController, setAbortController] = useState(new AbortController());
 	const [messageHovered, setMessageHovered] = useState(false);
 	const [displayReaction, setDisplayReaction] = useState(false);
@@ -65,7 +65,8 @@ const Message = ({props}) => {
 	const onMessageClick = () => {
 		// toggle visibility of the reactions array
 		setDisplayReaction(previousState => !previousState);
-		console.log(`display reaction: ${displayReaction}`);
+		setMessageClicked(message.id);
+		console.log(`message clicked: ${message.id}`);
 	}
 			
 	const onLeave = () => {
@@ -138,7 +139,7 @@ const Message = ({props}) => {
 					{message.reactions.map((smiley) => <div key={`reaction-${smiley}`} className={`${smiley.split(",")[1] === auth.currentUser.uid ? "selectable userReaction" : ""}`} onClick={smiley.split(",")[1] === auth.currentUser.uid? () => removeReaction(message, smiley) : null}>{smiley.split(",")[0]}</div>)}
 				</div>}
 			{/* display the avalaible reactions */}
-			<div className={`${message.uid === auth.currentUser.uid ? "right " : "left"} selectable`}><Reactions props={{displayReaction, selectingReaction, setSelectingReaction, selectedReaction, saveReaction}}/></div>
+			<div className={`${message.uid === auth.currentUser.uid ? "right " : "left"} selectable`}><Reactions props={{displayReaction, selectingReaction, setSelectingReaction, selectedReaction, saveReaction, inputTextArea, isAnswering, setIsAnswering}}/></div>
 			<div className={`timeStamp ${message.uid === auth.currentUser.uid ? "alignRight " : ""}`} key={message.id + "timeStamp"}>{formatedDate}</div>
 		</div>
 	)
