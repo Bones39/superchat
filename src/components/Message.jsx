@@ -4,7 +4,7 @@ import { auth, firestoreDb } from '../firebaseConfig';
 import Reactions from './Reactions';
 import firebase from 'firebase/compat/app'
 import { useInView } from 'react-intersection-observer';
-import Linkify from './linkify';
+import Linkify from './Linkify';
 
 const Message = ({props}) => {
 	const {messages, message, index, setScrollIntoView, messagesReferencesArray, setDisplayPreviousButton} = props;
