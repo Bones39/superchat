@@ -305,6 +305,17 @@ tried to use keyframes and animation but it didn't worked...*/
 	/* margin: 2px; */
 }
 
+.answered {
+	display: flex;
+	flex-direction: column;
+	background-color: rgb(161, 161, 161);
+	color: #282b30;
+	padding: 0.4rem;
+	border-radius: 8px;
+	width: fit-content;
+	font-size: small;
+}
+
 .userTag {
 	display: flex;
 	color: white;
