@@ -101,6 +101,9 @@ function App() {
 	const [switchToUserExistsPage, setSwitchToUserExistsPage] = useState(false);
 	const [userFound, setUserFound] = useState(false);
 	const [displayExistingUserPage, setDisplayExistingUserPage] = useState(false);
+	const [messageClicked, setMessageClicked] = useState();
+	const [isAnswering, setIsAnswering] = useState(false);
+	const [answerToMessage, setAnswerToMessage] = useState("");
 	let timerId = useRef(null);
 	let intervalId = useRef(null);
 	// set the inactivity time upon deconnexion
@@ -251,7 +254,7 @@ function App() {
 		if (formValue !== "") {
 			const {uid} = auth.currentUser;
 	
-			await addDoc(messagesRef, {
+			const messageObject = {
 				text: formValue,
 				uid,
 				allias: allias,// currentUser.email.substring(0,3),
@@ -259,11 +262,18 @@ function App() {
 				photoId: photoId, //currentUser.uid.split("").filter(e => /^\d/.test(e)).join('').substring(0,2).replace(/^0/, ''),
 				catAvatarImageUrl: connected?.filter(user => user.email === auth?.currentUser?.email)[0].catAvatarImageUrl || "", // catAvatarPicture || "",
 				createdAt: firebase.firestore.FieldValue.serverTimestamp()
-			});
+			}
+			// append the original message if the message answers to another one
+			if (isAnswering) {
+				messageObject.answerTo = answerToMessage;
+			}
+
+			await addDoc(messagesRef, messageObject);
 	
 			// reset the value in the input field once sent
 			setFormValue("");
 			setScrollIntoView(true);
+			setIsAnswering(false);
 			// dummy.current.scrollIntoView();
 			// when the message has been sent, the user is not considered typing anymore
 			/* await setDoc(doc(firestoreDb, "connected", auth?.currentUser?.email), {
@@ -352,7 +362,13 @@ function App() {
 		typing,
 		setScrollIntoView,
 		scrollIntoView,
-		getNextMessagesBatch
+		getNextMessagesBatch,
+		messageClicked,
+		setMessageClicked,
+		isAnswering,
+		setIsAnswering,
+		answerToMessage,
+		setAnswerToMessage
 	}
 
 	const signInProps = {

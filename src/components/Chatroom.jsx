@@ -5,9 +5,10 @@ import { RiArrowUpDoubleLine } from "react-icons/ri";
 import { GrSend } from "react-icons/gr";
 import { RiSendPlaneFill } from "react-icons/ri";
 import { LuImagePlus } from "react-icons/lu";
+import AnswerTo from './AnswerTo';
 
 const Chatroom = ({props}) => {
-	const {messages, formValue, sendMessage, sendImage, typing, setScrollIntoView, scrollIntoView, getNextMessagesBatch} = props;
+	const {messages, formValue, sendMessage, sendImage, typing, setScrollIntoView, scrollIntoView, getNextMessagesBatch,messageClicked ,setMessageClicked, isAnswering, setIsAnswering, answerToMessage, setAnswerToMessage} = props;
 	const dummyRef = useRef();
 	const genericRef = useRef();
 	const messagesReferencesArray = useRef(Array(messages.length).fill(null));
@@ -15,8 +16,6 @@ const Chatroom = ({props}) => {
 	const [controlPressed, setControlPressed] = useState();
 	const [shiftPressed, setShiftPressed] = useState();
 	const [enterPressed, setEnterPressed] = useState();
-	const [isAnswering, setIsAnswering] = useState(false);
-	const [messageClicked, setMessageClicked] = useState();
 	const keyPressed = {};
 	const inputRef = useRef()
 	const inputTextArea = useRef()
@@ -68,12 +67,15 @@ const Chatroom = ({props}) => {
 				{/* // chat room */}
 				{messages && messages.map((message, index) =>
 					{
-						return <Message props={{messages, message, index, setScrollIntoView, scrollIntoView, messagesReferencesArray, setDisplayPreviousButton, inputTextArea, isAnswering, setIsAnswering, setMessageClicked}} key={message.id}></Message>
+						return <Message props={{messages, message, index, setScrollIntoView, scrollIntoView, messagesReferencesArray, setDisplayPreviousButton, inputTextArea, isAnswering, setIsAnswering, setMessageClicked, answerToMessage}} key={message.id}></Message>
 					}
 				)}
 				<div ref={dummyRef}></div>
 			</div>
-			{isAnswering && <div>Is answering to {messageClicked}</div>}
+			{/* display the orginal message being answered */}
+			{isAnswering && <div className='center'>
+				<AnswerTo props={{messages, messageClicked, setIsAnswering, answerToMessage, setAnswerToMessage}}/>
+			</div>}
 			{/** display the form*/}
 			<form className='messageInputForm' id='messageForm' ref={inputRef} onSubmit={sendMessage}>
 				<div className="inputContainer">
