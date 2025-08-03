@@ -265,7 +265,7 @@ function App() {
 			}
 			// append the original message if the message answers to another one
 			if (isAnswering) {
-				messageObject.answerTo = answerToMessage;
+				messageObject.answerTo = answerToMessage.indexOf("data:image/") === 0 ? "Flemme de mettre l'image, dsl les gars": answerToMessage;
 			}
 
 			await addDoc(messagesRef, messageObject);
