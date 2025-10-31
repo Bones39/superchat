@@ -220,6 +220,7 @@ tried to use keyframes and animation but it didn't worked...*/
 	color: #1e2124;
 	font-weight: 450;
 	z-index: 2;  /* put a z-index so that the message is above the user reactions*/
+	max-width: 30%;
 }
 
 .message:hover {
